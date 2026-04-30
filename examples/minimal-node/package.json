@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node src/query.mjs"
+    "start": "node src/query.mjs",
+    "provision": "node src/provision.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4"

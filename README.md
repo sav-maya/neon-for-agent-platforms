@@ -1,30 +1,73 @@
-# Neon for agent platforms
+# Neon for Agent Platforms
 
-**Start here:** [**docs/MINI_REFERENCE_AND_SKILL.md**](docs/MINI_REFERENCE_AND_SKILL.md) — step-by-step: clone → run [`examples/minimal-node`](examples/minimal-node) → install the skill:
+Everything you need to get started with the [Neon AI Agent Program](https://neon.com/use-cases/ai-agents) — provision Postgres databases for your users, manage free and paid tiers, and build with AI-assisted tooling.
+
+## Quick start
+
+### 1. Provision a project
 
 ```bash
-npx skills add neondatabase/agent-skill -s neon-postgres-agent-platforms
+git clone https://github.com/sav-maya/neon-for-agent-platforms.git
+cd neon-for-agent-platforms/examples/minimal-node
+npm install
+cp .env.example .env
 ```
 
-**Agent Program partners:** deeper orientation is [**docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md**](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md). This repo does **not** repeat Neon’s main [**Agent Skill**](https://neon.com/docs/ai/agent-skills) (`neon-postgres`) — use that (or **`npx neonctl@latest init`**) for Auth, Data API, toolkit, MCP, drivers, and the rest.
+Add your `NEON_API_KEY` to `.env`, then:
 
-| Doc | What |
-|-----|------|
-| [**How to use this repo**](docs/MINI_REFERENCE_AND_SKILL.md) | Reference implementation + skill install commands |
-| [**Partner guide**](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) | Two-org Agent Program model + links |
+```bash
+npm run provision
+```
 
-## Reference implementation
+This creates a Neon project and returns a connection string.
 
-[**github.com/sav-maya/neon-for-agent-platforms**](https://github.com/sav-maya/neon-for-agent-platforms) — [`examples/minimal-node`](examples/minimal-node)
+### 2. Connect and query
 
-## Skills
+Add the `DATABASE_URL` from step 1 to `.env`, then:
 
-- **This repo (program + snippets):** `npx skills add neondatabase/agent-skill -s neon-postgres-agent-platforms` — source: [`skills/neon-postgres-agent-platforms`](skills/neon-postgres-agent-platforms)
-- **General Neon:** `npx skills add neondatabase/agent-skills -s neon-postgres` or `npx neonctl@latest init`
+```bash
+npm run start
+```
 
-## Program
+### 3. Install Neon's AI skills (optional but highly encouraged)
 
-[**Neon AI Agent Program**](https://neon.com/use-cases/ai-agents)
+Give your AI assistant full Neon platform knowledge (Auth, Data API, MCP, drivers, branching, and more):
+
+```bash
+npx skills add neondatabase/agent-skills -s neon-postgres
+```
+
+Or bootstrap skills + MCP in one step: `npx neonctl@latest init`
+
+Add the Agent Program companion skill for org layout, transfers, fleet patterns, and cost guidance:
+
+```bash
+npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms
+```
+
+## Key docs
+
+| Resource | Description |
+|----------|-------------|
+| [Agent Plan](https://neon.com/docs/introduction/agent-plan) | Pricing, features, credits, two-org model |
+| [Integration guide](https://neon.com/docs/guides/ai-agent-integration) | Provisioning, transfers, versioning, monitoring |
+| [Database versioning](https://neon.com/docs/ai/ai-database-versioning) | Snapshots and checkpoints for undo/redo |
+| [Partner guide](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) | Post-call orientation for Agent Program partners |
+| [Agent Skills](https://github.com/neondatabase/agent-skills) | AI skills for Neon (install `neon-postgres` for full platform coverage) |
+
+## What's in this repo
+
+```
+examples/minimal-node/     Provision a project + connect and query (zero config)
+skills/                    Agent Program AI skill (neon-postgres-agent-platforms)
+docs/                      Partner guide, reference links, how-to
+```
+
+## Support
+
+- **Shared Slack channel** — every Agent Program participant gets direct access to the Neon team
+- **Email** — agents@neon.tech for limit increases and account requests
+- **Docs** — [neon.com/docs](https://neon.com/docs) | [API reference](https://api-docs.neon.tech)
 
 ## License
 
