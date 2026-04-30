@@ -7,9 +7,11 @@ description: >-
   (checkpoints), dev vs prod environments via branching, cost implications and
   consumption tracking, agent plan features and pricing summary, co-marketing
   opportunities, technical and billing support channels, and the minimal Node
-  sample at github.com/neondatabase/neon-for-agent-platforms. Does not replace
-  the neon-postgres skill—use neondatabase/agent-skills -s neon-postgres for
-  Auth, Data API, toolkit, MCP, drivers, and general Neon topics. Use when the
+  sample at github.com/neondatabase/neon-for-agent-platforms. Optional add-on:
+  pair with neon-postgres from github.com/neondatabase/agent-skills first for
+  the best agent experience. Does not replace the neon-postgres skill—use
+  neondatabase/agent-skills -s neon-postgres for Auth, Data API, toolkit, MCP,
+  drivers, and general Neon topics. Use when the
   user mentions Neon Agent Program, Agent Plan, dual org setup, free vs paid
   Neon org, project transfer, fleet provisioning, snapshots, checkpoints,
   database versioning, agent plan pricing, co-marketing, org project limit
@@ -20,13 +22,23 @@ description: >-
 
 Neon’s **Agent Program** is for products where **you provision Neon Postgres for end users** (agent platforms, codegen tools, multi-tenant SaaS). Your Neon contact and [**neon.com**](https://neon.com) define pricing, limits, and eligibility.
 
-This skill stays **narrow**: **organization model**, **transfers**, **fleet shape**, and the **mini GitHub reference**. For connections, Neon Auth, Data API, `@neondatabase/toolkit`, MCP, branching detail, consumption polling, and the rest of Neon—use the **`neon-postgres`** skill ([**Agent Skills**](https://neon.com/docs/ai/agent-skills)):
+## Start here: install Neon's agent skills
+
+**Step 1** — Install Neon's primary skill from **[github.com/neondatabase/agent-skills](https://github.com/neondatabase/agent-skills)**. This gives your AI assistant full Neon platform knowledge (Auth, Data API, `@neondatabase/toolkit`, MCP, drivers, branching, consumption APIs, and more):
 
 ```bash
 npx skills add neondatabase/agent-skills -s neon-postgres
 ```
 
-Or run **`npx neonctl@latest init`** to wire skills and MCP for your editor.
+Or bootstrap skills + MCP together: **`npx neonctl@latest init`** — see [Agent Skills docs](https://neon.com/docs/ai/agent-skills).
+
+**Step 2** (optional) — Add this companion skill for **Agent Program**-specific context (org layout, transfers, fleet patterns, cost guidance):
+
+```bash
+npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms
+```
+
+Use both together for the best experience. **Do not** rely on this skill alone for full Neon guidance.
 
 ## Neon Documentation
 
@@ -46,16 +58,6 @@ https://neon.com/docs/llms.txt
 ```
 
 Search the index instead of guessing URLs.
-
-## Install This Skill (program + mini repo)
-
-For assistants that only need Agent Program org context plus **`neondatabase/neon-for-agent-platforms`** snippets:
-
-```bash
-npx skills add neondatabase/agent-skill -s neon-postgres-agent-platforms
-```
-
-Use **`neondatabase/agent-skills`** if that is how Neon packages skills in your environment.
 
 ## Agent Plan & Two Organizations
 
