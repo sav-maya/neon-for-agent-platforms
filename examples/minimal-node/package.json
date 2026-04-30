@@ -1,0 +1,11 @@
+{
+  "name": "neon-agent-platform-minimal",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/query.mjs"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  }
+}
