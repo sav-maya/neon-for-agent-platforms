@@ -8,7 +8,7 @@ For teams where **AI or automation provisions Postgres for end users**. This pag
 
 ## Use Neon’s Agent Skill for general Neon (don’t duplicate here)
 
-Install Neon's primary skill so assistants know Auth, Data API, `@neondatabase/toolkit`, MCP, consumption APIs, branching, drivers, etc.:
+For the **best assistant experience**, start from Neon’s published skills repo: **[github.com/neondatabase/agent-skills](https://github.com/neondatabase/agent-skills)**. Install the primary topic so assistants know Auth, Data API, `@neondatabase/toolkit`, MCP, consumption APIs, branching, drivers, etc.:
 
 ```bash
 npx skills add neondatabase/agent-skills -s neon-postgres
@@ -16,7 +16,7 @@ npx skills add neondatabase/agent-skills -s neon-postgres
 
 Or bootstrap skills + MCP in one step: **`npx neonctl@latest init`** — see [**Agent Skills**](https://neon.com/docs/ai/agent-skills).
 
-**This repo’s skill** (`neon-postgres-agent-platforms`) only adds: **Agent Program org model** + **summaries of the mini repo** below—not a second copy of `neon-postgres`.
+**This repo’s skill** (`neon-postgres-agent-platforms`) is **optional** and only adds: **Agent Program org model** + **summaries of the mini repo** below—not a second copy of `neon-postgres`. Pair it with `neon-postgres` from **`agent-skills`**, not instead of it.
 
 ---
 
