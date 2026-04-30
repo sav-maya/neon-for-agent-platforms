@@ -3,13 +3,17 @@ name: neon-postgres-agent-platforms
 description: >-
   Neon AI Agent Program for platforms that provision Postgres per customer: two
   organizations (sponsored free + paid), project transfer and API keys,
-  project-per-tenant fleet patterns, and the minimal Node sample at
-  github.com/neondatabase/neon-for-agent-platforms. Does not replace the
-  neon-postgres skill—use neondatabase/agent-skills -s neon-postgres for Auth,
-  Data API, toolkit, MCP, drivers, consumption APIs, and general Neon topics.
-  Use when the user mentions Neon Agent Program, Agent Plan, dual org setup,
-  free vs paid Neon org, project transfer, fleet provisioning, org project
-  limit increases, HIPAA and Agent Plan, or neon-for-agent-platforms.
+  project-per-tenant fleet patterns, snapshots and database versioning
+  (checkpoints), dev vs prod environments via branching, cost implications and
+  consumption tracking, agent plan features and pricing summary, co-marketing
+  opportunities, technical and billing support channels, and the minimal Node
+  sample at github.com/neondatabase/neon-for-agent-platforms. Does not replace
+  the neon-postgres skill—use neondatabase/agent-skills -s neon-postgres for
+  Auth, Data API, toolkit, MCP, drivers, and general Neon topics. Use when the
+  user mentions Neon Agent Program, Agent Plan, dual org setup, free vs paid
+  Neon org, project transfer, fleet provisioning, snapshots, checkpoints,
+  database versioning, agent plan pricing, co-marketing, org project limit
+  increases, HIPAA and Agent Plan, or neon-for-agent-platforms.
 ---
 
 # Neon AI Agent Program
@@ -113,6 +117,157 @@ Key points:
 Link: https://neon.com/docs/manage/orgs-project-transfer.md
 
 Link: https://neon.com/docs/guides/ai-agent-integration.md
+
+## Snapshots & Database Versioning
+
+Use this when an Agent Program partner needs **undo/redo**, **checkpoints**, or **version control** for tenant databases.
+
+Key points:
+
+- **Snapshots** capture a point-in-time state of a root branch. Free org projects get **1 manual snapshot**; paid org projects get **10 manual snapshots**.
+- The recommended pattern is the **active branch pattern**: each tenant project has one root branch (production). Snapshots save versions. Restoring with `finalize_restore: true` replaces data in-place while **keeping the connection string stable**.
+- Restoring with `finalize_restore: false` creates a **preview branch** with its own connection string — useful for "what if" exploration without touching production.
+- After a finalized restore, the **branch ID changes** (the old branch becomes orphaned with `(old)` suffix). Update any stored branch IDs and delete orphaned branches to avoid storage costs.
+- **Always poll operations** to completion before reconnecting — connections made before operations finish will hit the old state.
+- Snapshots are **free during Beta**. Billing starts at **$0.09/GB-month** on May 1, 2026.
+- **Snapshot scheduling** (automated backups) is **not available** on the Agent Plan. Partners can build their own via the snapshot creation API + a cron/scheduler.
+- For recent history within the restore window, use **PITR** (point-in-time recovery): 1-day window in free org, up to 7-day window in paid org.
+
+When to create snapshots:
+- Before schema migrations
+- Start of each agent session
+- After successful operations (user-initiated save points)
+- Before promoting changes to production
+
+Link: https://neon.com/docs/ai/ai-database-versioning.md
+
+Link: https://neon.com/docs/guides/backup-restore.md
+
+Demo repo: https://github.com/neondatabase-labs/snapshots-as-checkpoints-demo
+
+## Dev vs. Prod Environments
+
+Use this when a partner needs **isolated development or preview environments** alongside production for their tenant projects.
+
+Key points:
+
+- Each tenant project can have a **production branch** (root/main) and **development branches** created from it via the API.
+- Development branches are **instant** (copy-on-write), **fully isolated** (separate compute), and **cost-efficient** (only pay for storage diffs and compute time).
+- Free org projects support up to **10 branches** total (including main). Paid org projects support up to **1,000 branches**.
+- Set `suspend_timeout_seconds: 300` (5 min) on dev branches to keep costs low — they scale to zero when idle.
+- Dev branches can be **reset** to match production at any time, or deleted after testing.
+- Combine with snapshots: create a snapshot before promoting dev → prod, so you have a rollback point.
+
+Link: https://neon.com/docs/guides/ai-agent-integration.md
+
+## Cost Implications & Tracking
+
+Use this when a partner asks about **pricing**, **cost optimization**, or **consumption monitoring** for their fleet.
+
+Key points — pricing (paid org only, free org is $0):
+
+- **Compute**: $0.106/CU-hour (roughly half of standard Scale pricing at $0.222)
+- **Storage**: $0.35/GB-month
+- **Instant restore (PITR)**: $0.20/GB-month for change history
+- **Snapshots**: $0.09/GB-month (after Beta, starting May 1, 2026)
+- **Extra branches**: $1.50/branch-month (beyond plan allowance)
+- **Public network transfer**: 100 GB included, then $0.10/GB
+- **Initial credits**: up to **$25,000** for the paid org
+
+Key points — cost optimization levers:
+
+- **Scale-to-zero**: Most tenant databases are idle most of the time. Set `suspend_timeout_seconds` aggressively (300s for free, 60s–300s for paid).
+- **Autoscaling caps**: Set `autoscaling_limit_max_cu` per project to prevent runaway compute. Free: max 2 CU. Paid: up to 16 CU.
+- **Per-project quotas**: Configure `active_time_seconds`, `logical_size_bytes`, `compute_time_seconds`, `data_transfer_bytes` on project creation or via PATCH.
+- **Branch cleanup**: Delete old dev branches and orphaned `(old)` branches after restores.
+- **Snapshot rotation**: Delete snapshots no longer needed; use `expires_at` for automatic cleanup.
+
+Key points — consumption tracking:
+
+- Use the **consumption metrics API** to poll per-project usage: `active_time_seconds`, `compute_time_seconds`, `written_data_bytes`, `synthetic_storage_size_bytes`.
+- Poll every ~15 minutes. Polling does **not** wake suspended computes.
+- Alert users at **80%** and **95%** of their quota to prevent unexpected suspension.
+- Use consumption data to build **usage-based billing** into your platform.
+
+Link: https://neon.com/docs/introduction/agent-plan.md
+
+Link: https://neon.com/docs/guides/consumption-metrics.md
+
+Link: https://neon.com/docs/guides/consumption-limits.md
+
+Link: https://neon.com/docs/introduction/cost-optimization.md
+
+## Agent Plan Features Summary
+
+Use this when a partner asks **what's included** in the Agent Plan. Do not invent numbers — verify against live docs. This summary reflects the docs as of April 2026.
+
+Key points — database and compute:
+
+- Up to **30,000 projects per org** (can request increases via `agents@neon.tech`)
+- **25 branches per project** (paid), 10 (free)
+- Autoscaling up to **16 CU** (paid) or **2 CU** (free); fixed computes up to 56 CU on paid
+- **Scale to zero**: configurable 1 min to always-on (paid); 5 min fixed (free)
+- Up to **16 TB** logical data per branch
+
+Key points — APIs and services:
+
+- **Neon Auth** — managed auth built on Better Auth (up to 1M MAU on paid)
+- **Data API** — PostgREST-compatible REST API for direct DB access
+- **Management API** — full CRUD for projects, branches, snapshots, quotas
+- **Higher rate limits** on both Management and Data APIs for Agent Plan
+
+Key points — versioning and recovery:
+
+- **Instant restore** with up to **30-day** restore window (paid), 1-day (free)
+- **10 manual snapshots** per project (paid), 1 (free)
+- Copy-on-write branching for dev environments
+
+Key points — security and compliance:
+
+- SOC 2, SOC 3, ISO 27001, ISO 27701, GDPR, CCPA
+- **HIPAA** included (contact Neon to enable)
+- **Protected branches**, **IP Allow**, **Private Networking** (AWS PrivateLink)
+
+Key points — monitoring:
+
+- **14-day** monitoring retention (paid)
+- **Metrics/logs export** to Datadog or OTel-compatible platforms
+
+Key points — what's NOT included:
+
+- **Automated backup schedules** are not available on the Agent Plan (build your own via API)
+
+Link: https://neon.com/docs/introduction/plans.md
+
+Link: https://neon.com/docs/introduction/agent-plan.md
+
+## Co-Marketing
+
+Use this when a partner asks about **joint marketing opportunities** with Neon.
+
+Key points:
+
+- Co-marketing is an included **Agent Plan benefit**.
+- Available opportunities: **joint blog posts**, **social promotion** from Neon's channels, **hackathon sponsorship/support**, **case studies**, and landing page features.
+- To get started, the partner should reach out via their **shared Slack channel** with Neon or contact their **Neon representative** directly.
+- Provide context on what they're building, user/growth numbers, and the type of co-marketing they're interested in.
+
+Link: https://neon.com/docs/introduction/agent-plan.md
+
+## Support
+
+Use this when a partner asks about getting **technical help**, **billing support**, or **limit increases**.
+
+Key points:
+
+- **Shared Slack channel**: Every Agent Plan participant gets a dedicated Slack channel with direct access to the Neon team. This is the fastest path for technical questions and urgent issues.
+- **Neon representative**: Each partner has a primary contact at Neon for account-level requests, custom configuration, and escalations.
+- **Limit increases** (project caps, rate limits, etc.): Email **`agents@neon.tech`** with org ID(s), growth context, and timeline. Also flag in the shared Slack channel.
+- **Billing questions**: Raise via the shared Slack channel or through the Neon representative. Credit balances and invoices are visible in the Neon Console under Billing for each org.
+- **Priority support**: Agent Plan participants receive faster response times for platform-critical issues.
+- **Community resources**: [Neon Discord](https://discord.gg/92vNTzKDGp), [Neon documentation](https://neon.com/docs), [API reference](https://api-docs.neon.tech).
+
+Contact: mailto:agents@neon.tech
 
 ## Mini Reference Implementation
 
