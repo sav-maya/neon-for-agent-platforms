@@ -45,10 +45,12 @@ flowchart LR
 
 ### What’s in this repository
 
+**Start here for runnable samples:** [`examples/README.md`](examples/README.md) (hub) · **[`examples/minimal-node/README.md`](examples/minimal-node/README.md)** · **[`examples/api-scripts/README.md`](examples/api-scripts/README.md)** (every script, env vars, flows).
+
 | Path | Purpose |
 |------|--------|
 | [`examples/minimal-node/`](examples/minimal-node/) | Smallest path: **provision** a project (optional) and run a **query** with `pg` + `DATABASE_URL`. |
-| [`examples/api-scripts/`](examples/api-scripts/) | **REST** (`fetch` to `console.neon.tech/api/v2`): create/delete project, branches, snapshots, org **transfer**, **consumption** history, Neon **Auth** users; shared [`lib/neon-client.mjs`](examples/api-scripts/lib/neon-client.mjs). For “Auth REST vs Postgres roles vs billing metrics”, see [`docs/REST_API_META.md`](docs/REST_API_META.md). |
+| [`examples/api-scripts/`](examples/api-scripts/) | **REST** (`fetch` to `console.neon.tech/api/v2`): create/delete project, branches, **snapshot + restore** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org **transfer**, **consumption** history, Neon **Auth** users; shared [`lib/neon-client.mjs`](examples/api-scripts/lib/neon-client.mjs). Run **`npm run versioning-flow`** for the full demo. For “Auth REST vs Postgres roles vs billing metrics”, see [`docs/REST_API_META.md`](docs/REST_API_META.md). |
 | [`skills/neon-postgres-agent-platforms/`](skills/neon-postgres-agent-platforms/) | Companion **Cursor/agent skill** topic—Agent Program context (orgs, transfers, fleet patterns, costs). Use **with** [`neon-postgres`](https://github.com/neondatabase/agent-skills), not instead of it. |
 | [`docs/`](docs/) | [`AGENT_PROGRAM_REFERENCE.md`](docs/AGENT_PROGRAM_REFERENCE.md) (link index), [`REST_API_META.md`](docs/REST_API_META.md), [`NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md`](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) (short partner note + extra links). |
 
@@ -92,10 +94,11 @@ If you already have a database, skip step 1 and set `DATABASE_URL` in `.env` (fr
 
 ### 3. REST scripts (create / delete / branch / snapshot / transfer)
 
-Automation without extra dependencies — uses `fetch` against `console.neon.tech/api/v2`:
+Uses `fetch` against `console.neon.tech/api/v2`. Install once in this folder (`pg` is used only for the optional SQL step in the versioning demo):
 
 ```bash
 cd neon-for-agent-platforms/examples/api-scripts
+npm install
 cp .env.example .env
 # Node 20+: load vars from .env
 node --env-file=.env create-project.mjs
@@ -104,7 +107,19 @@ node --env-file=.env consumption-query.mjs
 node --env-file=.env auth-users.mjs meta
 ```
 
-See [`examples/api-scripts/.env.example`](examples/api-scripts/.env.example) for variables per script.
+**Database versioning (snapshots + restore):** end-to-end flow — baseline snapshot → child branch → optional mutation → second snapshot → **restore** baseline onto the branch ([docs](https://neon.com/docs/ai/ai-database-versioning)):
+
+```bash
+cd neon-for-agent-platforms/examples/api-scripts
+npm install
+# NEON_API_KEY + NEON_PROJECT_ID in .env
+node --env-file=.env versioning-flow.mjs
+# Optional: DEMO_MUTATE=1 inserts a row so restore visibly rewinds the demo branch
+```
+
+One-off restore: `node --env-file=.env restore-snapshot.mjs` with `NEON_SNAPSHOT_ID` and `NEON_TARGET_BRANCH_ID`.
+
+See [`examples/api-scripts/.env.example`](examples/api-scripts/.env.example) for variables per script. **Full reference:** [`examples/api-scripts/README.md`](examples/api-scripts/README.md).
 
 ### 4. Install Neon’s AI skills
 
@@ -130,6 +145,7 @@ Use **both** together for agent-platform work. Teams using Neon only for generic
 
 | Resource | Description |
 |----------|-------------|
+| [Examples hub](examples/README.md) | **`minimal-node`** vs **`api-scripts`**, links to per-folder READMEs |
 | [Link index (this repo)](docs/AGENT_PROGRAM_REFERENCE.md) | In-repo docs and external entry points |
 | [REST API meta](docs/REST_API_META.md) | Neon Auth users vs Postgres roles vs consumption `v2` |
 | [Partner note](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) | Short post-call addendum (HIPAA row, extra links)—**program model and repo map are above** |

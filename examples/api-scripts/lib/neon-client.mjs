@@ -277,17 +277,22 @@ export class NeonApi {
   }
 
   /**
-   * Point-in-time snapshot on the production branch (main, or production).
+   * Point-in-time snapshot. Defaults to production branch (`main` / `production`);
+   * pass `branchId` to snapshot another branch (e.g. a dev branch after edits).
    * @param {string} projectId
-   * @param {{ name?: string, timestamp?: string }} [options]
+   * @param {{ name?: string, timestamp?: string, branchId?: string }} [options]
    */
   async createSnapshot(projectId, options = {}) {
-    const prod = await this.getProductionBranch(projectId);
-    if (!prod?.id) {
-      throw new Error("No production branch (expected name main or production)");
+    let branchId = options.branchId;
+    if (!branchId) {
+      const prod = await this.getProductionBranch(projectId);
+      if (!prod?.id) {
+        throw new Error("No production branch (expected name main or production)");
+      }
+      branchId = prod.id;
     }
     const res = await fetch(
-      `${this.baseUrl}/projects/${projectId}/branches/${prod.id}/snapshot`,
+      `${this.baseUrl}/projects/${projectId}/branches/${branchId}/snapshot`,
       {
         method: "POST",
         headers: this._headers(),
@@ -310,6 +315,84 @@ export class NeonApi {
       throw new Error("Create snapshot: missing snapshot id in response");
     }
     return snapshotId;
+  }
+
+  /**
+   * Restore a snapshot onto a branch (rewind / undo flow). Waits for async operations.
+   * @see https://neon.com/docs/ai/ai-database-versioning
+   * @see https://api-docs.neon.tech (POST .../snapshots/{snapshot_id}/restore)
+   */
+  async applySnapshot(projectId, snapshotId, targetBranchId, options = {}) {
+    const res = await fetch(
+      `${this.baseUrl}/projects/${projectId}/snapshots/${snapshotId}/restore`,
+      {
+        method: "POST",
+        headers: this._headers(),
+        body: JSON.stringify({
+          name: options.restoreBranchName ?? `before_restore_${Date.now()}`,
+          finalize_restore: options.finalizeRestore !== false,
+          target_branch_id: targetBranchId,
+        }),
+        cache: "no-store",
+      },
+    );
+    if (!res.ok) {
+      const err = await this._readError(res);
+      throw new Error(
+        `Apply snapshot failed: ${res.status} ${typeof err === "string" ? err : JSON.stringify(err)}`,
+      );
+    }
+    const json = await res.json();
+    const operationIds = (json.operations ?? [])
+      .map((op) => op.id)
+      .filter((id) => typeof id === "string" && id.length > 0);
+    if (operationIds.length > 0) {
+      await this.waitForOperationsToSettle(projectId, operationIds);
+    }
+  }
+
+  /**
+   * Connection string for a branch (for optional SQL steps in demos).
+   */
+  async getConnectionUri({
+    projectId,
+    branchId,
+    databaseName = "neondb",
+    roleName = "neondb_owner",
+    endpointId,
+    pooled,
+  }) {
+    const queryParams = new URLSearchParams();
+    if (branchId) {
+      queryParams.append("branch_id", branchId);
+    }
+    queryParams.append("database_name", databaseName);
+    queryParams.append("role_name", roleName);
+    if (endpointId) {
+      queryParams.append("endpoint_id", endpointId);
+    }
+    if (pooled !== undefined) {
+      queryParams.append("pooled", String(pooled));
+    }
+    const qs = queryParams.toString();
+    const url = `${this.baseUrl}/projects/${projectId}/connection_uri${qs ? `?${qs}` : ""}`;
+    const res = await fetch(url, {
+      method: "GET",
+      headers: this._headers(false),
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      const err = await this._readError(res);
+      throw new Error(
+        `getConnectionUri failed: ${res.status} ${typeof err === "string" ? err : JSON.stringify(err)}`,
+      );
+    }
+    const json = await res.json();
+    const uri = json.uri;
+    if (!uri) {
+      throw new Error("getConnectionUri: missing uri in response");
+    }
+    return uri;
   }
 
   /**

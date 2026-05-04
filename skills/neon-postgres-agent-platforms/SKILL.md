@@ -1,6 +1,7 @@
 ---
 
 ## name: neon-postgres-agent-platforms
+
 description: >-
   Neon AI Agent Program for platforms that provision Postgres per customer: two
   organizations (sponsored free + paid), project transfer and API keys,
@@ -189,7 +190,7 @@ Key points — cost optimization levers:
 
 Key points — consumption tracking:
 
-- On **usage-based plans** (Launch, Scale, Agent, Enterprise), use **`GET /api/v2/consumption_history/v2/projects`** for metrics that match billing (`compute_unit_seconds`, branch storage byte-hours, transfer bytes, etc.). Legacy endpoints return different fields — see Neon’s consumption docs.
+- On **usage-based plans** (Launch, Scale, Agent, Enterprise), use `**GET /api/v2/consumption_history/v2/projects`** for metrics that match billing (`compute_unit_seconds`, branch storage byte-hours, transfer bytes, etc.). Legacy endpoints return different fields — see Neon’s consumption docs.
 - Poll about every **15 minutes** (Neon’s update cadence). Polling does **not** wake suspended computes.
 - Alert users at **80%** and **95%** of their quota to prevent unexpected suspension.
 - Routing index (Auth `/users` vs Postgres roles vs consumption): [REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md) in this repo.
@@ -276,13 +277,13 @@ Contact: mailto:[agents@neon.tech](mailto:agents@neon.tech)
 
 ## neon-for-agent-platforms repository samples
 
-Use this when the user wants runnable code from **`neondatabase/neon-for-agent-platforms`**. There is **no** separate “mini reference” doc—the **[repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** is the single entry point for clone, install, and quick start.
+Use this when the user wants runnable code from `**neondatabase/neon-for-agent-platforms`**. There is **no** separate “mini reference” doc—the **[repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** is the single entry point for clone, install, and quick start.
 
-**Smallest query (`examples/minimal-node`):** `**DATABASE_URL**`, `**npm install**`, `**npm run start**` — **`pg`** + one query after the user has a connection string.
+**Smallest query (`examples/minimal-node`):** `**DATABASE_URL`**, `**npm install**`, `**npm run start**` — `**pg**` + one query after the user has a connection string.
 
 Link: [https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/minimal-node/src/query.mjs](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/minimal-node/src/query.mjs)
 
-**REST automation (`examples/api-scripts`):** Neon Console API v2 via `**fetch**`, shared [`neon-client.mjs`](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/lib/neon-client.mjs). Patterns are **adapted and simplified** from the open-source app [Aileen](https://github.com/andrelandgraf/aileen) (`**src/lib/neon.ts**` — project/branch/snapshot/delete flows). This repo adds fleet-oriented scripts (create/delete project, branches, snapshots, org transfer, consumption `**v2**`, Neon Auth users; run `**auth-users.mjs meta**` for REST vs Postgres roles). Routing index: [`REST_API_META.md`](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md).
+**REST automation (`examples/api-scripts`):** Full script list, env vars, and flows: `[examples/api-scripts/README.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/README.md)`. Neon Console API v2 via `**fetch`**, shared `[neon-client.mjs](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/lib/neon-client.mjs)`. Patterns are **adapted and simplified** from the open-source app [Aileen](https://github.com/andrelandgraf/aileen) (`**src/lib/neon.ts`** — project/branch/snapshot/delete flows). This repo adds fleet-oriented scripts (create/delete project, branches, snapshots + `**versioning-flow.mjs**` [restore](https://neon.com/docs/ai/ai-database-versioning), org transfer, consumption `**v2**`, Neon Auth users; run `**auth-users.mjs meta**` for REST vs Postgres roles). Routing index: `[REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md)`.
 
 For full product guidance on provisioning fleets and org layout, use the **AI Agent integration guide** on neon.com alongside these samples.
 
@@ -305,9 +306,10 @@ try {
 }
 ```
 
-For drivers (serverless, HTTP, pooling), use `**neon-postgres**` from **agent-skills** and neon.com docs.
+For connection patterns beyond this repo’s `**pg**` example (pooling, HTTP, framework adapters), use `**neon-postgres**` from **agent-skills** and neon.com docs.
 
 ## Partner-facing docs in this repo
 
 - **Program model + how to run the samples:** [README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md) (authoritative for this repository).
 - **Post-call addendum** (link table, HIPAA, optional Aileen): [NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)
+
