@@ -2,14 +2,19 @@
   "name": "neon-agent-platform-api-scripts",
   "private": true,
   "type": "module",
-  "description": "Small Neon Console REST examples (provision, branch, snapshot, org transfer, consumption)",
+  "description": "Small Neon Console REST examples (provision, branch, snapshot, versioning, org transfer, consumption)",
   "scripts": {
     "create-project": "node create-project.mjs",
     "delete-project": "node delete-project.mjs",
     "branch": "node branch.mjs",
     "snapshot": "node snapshot.mjs",
+    "versioning-flow": "node versioning-flow.mjs",
+    "restore-snapshot": "node restore-snapshot.mjs",
     "transfer": "node transfer-project.mjs",
     "consumption": "node consumption-query.mjs",
     "auth-users": "node auth-users.mjs"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
   }
 }
