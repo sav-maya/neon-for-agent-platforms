@@ -9,6 +9,7 @@ Runnable samples for the **[Neon AI Agent Program](https://neon.com/use-cases/ai
 
 **Cross-cutting docs**
 
+- [Which use case am I?](../docs/AGENT_USE_CASES.md) — Route 1 (embedded / ephemeral Postgres) vs Route 2 (codegen); maps needs to scripts.
 - [Database versioning](https://neon.com/docs/ai/ai-database-versioning) (snapshots, restore, checkpoints)—implemented end-to-end in **`api-scripts/versioning-flow.mjs`**.
 - [REST routing](https://neon.com/docs/reference/api-reference) for Auth users vs Postgres roles vs consumption—see [`../docs/REST_API_META.md`](../docs/REST_API_META.md).
 

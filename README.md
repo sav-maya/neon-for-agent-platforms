@@ -4,6 +4,8 @@ Sample code and an AI skill topic for the **[Neon AI Agent Program](https://neon
 
 **Official product docs:** [neon.com](https://neon.com) — start with [**Agent Plan**](https://neon.com/docs/introduction/agent-plan) and [**AI Agent integration**](https://neon.com/docs/guides/ai-agent-integration).
 
+**Map use cases to examples:** [docs/AGENT_USE_CASES.md](docs/AGENT_USE_CASES.md) — *embedded / ephemeral Postgres* (Route 1) vs *full-stack codegen* (Route 2), with checklists and links to scripts.
+
 ---
 
 ## How this repo relates to the Agent Program
@@ -52,7 +54,7 @@ flowchart LR
 | [`examples/minimal-node/`](examples/minimal-node/) | Smallest path: **provision** a project (optional) and run a **query** with `pg` + `DATABASE_URL`. |
 | [`examples/api-scripts/`](examples/api-scripts/) | **REST** (`fetch` to `console.neon.tech/api/v2`): create/delete project, branches, **snapshot + restore** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org **transfer**, **consumption** history, Neon **Auth** users; shared [`lib/neon-client.mjs`](examples/api-scripts/lib/neon-client.mjs). Run **`npm run versioning-flow`** for the full demo. For “Auth REST vs Postgres roles vs billing metrics”, see [`docs/REST_API_META.md`](docs/REST_API_META.md). |
 | [`skills/neon-postgres-agent-platforms/`](skills/neon-postgres-agent-platforms/) | Companion **Cursor/agent skill** topic—Agent Program context (orgs, transfers, fleet patterns, costs). Use **with** [`neon-postgres`](https://github.com/neondatabase/agent-skills), not instead of it. |
-| [`docs/`](docs/) | [`AGENT_PROGRAM_REFERENCE.md`](docs/AGENT_PROGRAM_REFERENCE.md) (link index), [`REST_API_META.md`](docs/REST_API_META.md), [`NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md`](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) (short partner note + extra links). |
+| [`docs/`](docs/) | [`AGENT_USE_CASES.md`](docs/AGENT_USE_CASES.md) (Route 1 & 2 checklists), [`AGENT_PROGRAM_REFERENCE.md`](docs/AGENT_PROGRAM_REFERENCE.md) (link index), [`REST_API_META.md`](docs/REST_API_META.md), [`NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md`](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) (partner note). |
 
 ### First steps after you join the program
 
@@ -146,6 +148,7 @@ Use **both** together for agent-platform work. Teams using Neon only for generic
 | Resource | Description |
 |----------|-------------|
 | [Examples hub](examples/README.md) | **`minimal-node`** vs **`api-scripts`**, links to per-folder READMEs |
+| [Agent use cases](docs/AGENT_USE_CASES.md) | Embedded / ephemeral Postgres vs codegen — what’s covered, script map |
 | [Link index (this repo)](docs/AGENT_PROGRAM_REFERENCE.md) | In-repo docs and external entry points |
 | [REST API meta](docs/REST_API_META.md) | Neon Auth users vs Postgres roles vs consumption `v2` |
 | [Partner note](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) | Short post-call addendum (HIPAA row, extra links)—**program model and repo map are above** |
