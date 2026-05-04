@@ -7,6 +7,6 @@
     "provision": "node src/provision.mjs"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.4"
+    "pg": "^8.13.1"
   }
 }
