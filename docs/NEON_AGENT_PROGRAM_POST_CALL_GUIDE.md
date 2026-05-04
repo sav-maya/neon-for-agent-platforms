@@ -20,9 +20,9 @@ Or bootstrap skills + MCP in one step: **`npx neonctl@latest init`** — see [**
 
 ---
 
-## Mini reference implementation (smallest code sample)
+## Smallest code sample ([repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md))
 
-[**github.com/neondatabase/neon-for-agent-platforms**](https://github.com/neondatabase/neon-for-agent-platforms) → [`examples/minimal-node`](https://github.com/neondatabase/neon-for-agent-platforms/tree/main/examples/minimal-node): `DATABASE_URL`, `@neondatabase/serverless`, one query. Install this **program-specific** skill if you want that snippet + org Q&A in the assistant:
+[**github.com/neondatabase/neon-for-agent-platforms**](https://github.com/neondatabase/neon-for-agent-platforms) → [`examples/minimal-node`](https://github.com/neondatabase/neon-for-agent-platforms/tree/main/examples/minimal-node): `DATABASE_URL`, Node `pg`, one query. Install this **program-specific** skill if you want that snippet + org Q&A in the assistant:
 
 ```bash
 npx skills add neondatabase/agent-skill -s neon-postgres-agent-platforms

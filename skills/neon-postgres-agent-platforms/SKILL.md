@@ -1,5 +1,6 @@
 ---
-name: neon-postgres-agent-platforms
+
+## name: neon-postgres-agent-platforms
 description: >-
   Neon AI Agent Program for platforms that provision Postgres per customer: two
   organizations (sponsored free + paid), project transfer and API keys,
@@ -16,11 +17,10 @@ description: >-
   Neon org, project transfer, fleet provisioning, snapshots, checkpoints,
   database versioning, agent plan pricing, co-marketing, org project limit
   increases, HIPAA and Agent Plan, or neon-for-agent-platforms.
----
 
 # Neon AI Agent Program
 
-Neon’s **Agent Program** is for products where **you provision Neon Postgres for end users** (agent platforms, codegen tools, multi-tenant SaaS). Your Neon contact and [**neon.com**](https://neon.com) define pricing, limits, and eligibility.
+Neon’s **Agent Program** is for products where **you provision Neon Postgres for end users** (agent platforms, codegen tools, multi-tenant SaaS). Your Neon contact and **[neon.com](https://neon.com)** define pricing, limits, and eligibility.
 
 ## Start here: install Neon's agent skills
 
@@ -30,7 +30,7 @@ Neon’s **Agent Program** is for products where **you provision Neon Postgres f
 npx skills add neondatabase/agent-skills -s neon-postgres
 ```
 
-Or bootstrap skills + MCP together: **`npx neonctl@latest init`** — see [Agent Skills docs](https://neon.com/docs/ai/agent-skills).
+Or bootstrap skills + MCP together: `**npx neonctl@latest init**` — see [Agent Skills docs](https://neon.com/docs/ai/agent-skills).
 
 **Step 2** (optional) — Add this companion skill for **Agent Program**-specific context (org layout, transfers, fleet patterns, cost guidance):
 
@@ -46,7 +46,7 @@ The Neon documentation is the source of truth. Always verify limits and pricing 
 
 ### Fetching docs as Markdown
 
-1. Append **`.md`** to the URL: `https://neon.com/docs/introduction/agent-plan.md`
+1. Append `**.md`** to the URL: `https://neon.com/docs/introduction/agent-plan.md`
 2. Or request `Accept: text/markdown` on the standard URL.
 
 ### Finding the right page
@@ -66,12 +66,12 @@ Use this when the user is on (or applying to) the **Agent Program** and needs th
 Key points:
 
 - Two **Neon organizations**: one **sponsored** for your free-tier customers (within program rules on the site), one **paid** for customers you bill (metered per plan).
-- **Dollar rates, credits, project caps** — only from live [**Agent Plan**](https://neon.com/docs/introduction/agent-plan) and [**neon.com/agents**](https://neon.com/agents)—do not invent numbers.
+- **Dollar rates, credits, project caps** — only from live **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** and **[neon.com/agents](https://neon.com/agents)**—do not invent numbers.
 - **HIPAA** — the **Agent Plan includes HIPAA** without an additional charge. To **obtain access** or complete enablement, the customer should contact their **main Neon account contact** (not a substitute for reading Neon’s requirements). Process and obligations are documented on Neon’s HIPAA page.
 
-Link: https://neon.com/docs/introduction/agent-plan.md
+Link: [https://neon.com/docs/introduction/agent-plan.md](https://neon.com/docs/introduction/agent-plan.md)
 
-Link: https://neon.com/use-cases/ai-agents.md
+Link: [https://neon.com/use-cases/ai-agents.md](https://neon.com/use-cases/ai-agents.md)
 
 ## HIPAA (Agent Plan)
 
@@ -81,9 +81,9 @@ Key points:
 
 - **Agent Plan includes HIPAA** with **no extra fee** for that inclusion—still follow Neon’s published HIPAA program (workflows, agreements, configuration) on the site; do not treat this skill as legal advice.
 - To **get access** or start the process, they should reach out to their **primary Neon contact** (the main relationship owner for their org).
-- Technical and program requirements: [**HIPAA on Neon**](https://neon.com/docs/security/hipaa).
+- Technical and program requirements: **[HIPAA on Neon](https://neon.com/docs/security/hipaa)**.
 
-Link: https://neon.com/docs/security/hipaa.md
+Link: [https://neon.com/docs/security/hipaa.md](https://neon.com/docs/security/hipaa.md)
 
 ## Organization & Project Limit Increases
 
@@ -91,10 +91,10 @@ Use this when an **Agent Program** partner hits **organization-level limits** (f
 
 Key points:
 
-- Current defaults and ceilings are defined on [**neon.com**](https://neon.com) ([**Agent Plan**](https://neon.com/docs/introduction/agent-plan), [**AI Agent integration guide**](https://neon.com/docs/guides/ai-agent-integration))—do not invent new limits or promise approval.
-- For **project increase requests** (or related org capacity changes), email **`agents@neon.tech`**. Ask the partner to include **organization ID(s)** (free + paid if both), brief **growth / usage context**, and any **timeline**—and to continue using **shared Slack** if they already have a channel with Neon.
+- Current defaults and ceilings are defined on **[neon.com](https://neon.com)** (**[Agent Plan](https://neon.com/docs/introduction/agent-plan)**, **[AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration)**)—do not invent new limits or promise approval.
+- For **project increase requests** (or related org capacity changes), email `**agents@neon.tech`**. Ask the partner to include **organization ID(s)** (free + paid if both), brief **growth / usage context**, and any **timeline**—and to continue using **shared Slack** if they already have a channel with Neon.
 
-Contact: mailto:agents@neon.tech
+Contact: mailto:[agents@neon.tech](mailto:agents@neon.tech)
 
 ## Fleet Shape: Project-per-Tenant
 
@@ -105,7 +105,7 @@ Key points:
 - Neon’s documented integration pattern is **one Neon project per tenant app** (project-per-tenant): isolation and quotas line up with Agent Plan metering.
 - Sharing one project across tenants is an exception—higher complexity (RLS, migrations, fairness).
 
-Link: https://neon.com/docs/guides/ai-agent-integration.md
+Link: [https://neon.com/docs/guides/ai-agent-integration.md](https://neon.com/docs/guides/ai-agent-integration.md)
 
 ## API Keys & Cross-Org Transfer
 
@@ -116,9 +116,9 @@ Key points:
 - **Organization API key** — automation **inside one org** (create project, set quotas).
 - **Personal API key** — required to **transfer a project** between organizations when a customer changes tier; then **PATCH quotas** to match the new tier.
 
-Link: https://neon.com/docs/manage/orgs-project-transfer.md
+Link: [https://neon.com/docs/manage/orgs-project-transfer.md](https://neon.com/docs/manage/orgs-project-transfer.md)
 
-Link: https://neon.com/docs/guides/ai-agent-integration.md
+Link: [https://neon.com/docs/guides/ai-agent-integration.md](https://neon.com/docs/guides/ai-agent-integration.md)
 
 ## Snapshots & Database Versioning
 
@@ -136,16 +136,17 @@ Key points:
 - For recent history within the restore window, use **PITR** (point-in-time recovery): 1-day window in free org, up to 7-day window in paid org.
 
 When to create snapshots:
+
 - Before schema migrations
 - Start of each agent session
 - After successful operations (user-initiated save points)
 - Before promoting changes to production
 
-Link: https://neon.com/docs/ai/ai-database-versioning.md
+Link: [https://neon.com/docs/ai/ai-database-versioning.md](https://neon.com/docs/ai/ai-database-versioning.md)
 
-Link: https://neon.com/docs/guides/backup-restore.md
+Link: [https://neon.com/docs/guides/backup-restore.md](https://neon.com/docs/guides/backup-restore.md)
 
-Demo repo: https://github.com/neondatabase-labs/snapshots-as-checkpoints-demo
+Demo repo: [https://github.com/neondatabase-labs/snapshots-as-checkpoints-demo](https://github.com/neondatabase-labs/snapshots-as-checkpoints-demo)
 
 ## Dev vs. Prod Environments
 
@@ -160,7 +161,7 @@ Key points:
 - Dev branches can be **reset** to match production at any time, or deleted after testing.
 - Combine with snapshots: create a snapshot before promoting dev → prod, so you have a rollback point.
 
-Link: https://neon.com/docs/guides/ai-agent-integration.md
+Link: [https://neon.com/docs/guides/ai-agent-integration.md](https://neon.com/docs/guides/ai-agent-integration.md)
 
 ## Cost Implications & Tracking
 
@@ -186,18 +187,18 @@ Key points — cost optimization levers:
 
 Key points — consumption tracking:
 
-- Use the **consumption metrics API** to poll per-project usage: `active_time_seconds`, `compute_time_seconds`, `written_data_bytes`, `synthetic_storage_size_bytes`.
-- Poll every ~15 minutes. Polling does **not** wake suspended computes.
+- On **usage-based plans** (Launch, Scale, Agent, Enterprise), use **`GET /api/v2/consumption_history/v2/projects`** for metrics that match billing (`compute_unit_seconds`, branch storage byte-hours, transfer bytes, etc.). Legacy endpoints return different fields — see Neon’s consumption docs.
+- Poll about every **15 minutes** (Neon’s update cadence). Polling does **not** wake suspended computes.
 - Alert users at **80%** and **95%** of their quota to prevent unexpected suspension.
-- Use consumption data to build **usage-based billing** into your platform.
+- Routing index (Auth `/users` vs Postgres roles vs consumption): [REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md) in this repo.
 
-Link: https://neon.com/docs/introduction/agent-plan.md
+Link: [https://neon.com/docs/introduction/agent-plan.md](https://neon.com/docs/introduction/agent-plan.md)
 
-Link: https://neon.com/docs/guides/consumption-metrics.md
+Link: [https://neon.com/docs/guides/consumption-metrics.md](https://neon.com/docs/guides/consumption-metrics.md)
 
-Link: https://neon.com/docs/guides/consumption-limits.md
+Link: [https://neon.com/docs/guides/consumption-limits.md](https://neon.com/docs/guides/consumption-limits.md)
 
-Link: https://neon.com/docs/introduction/cost-optimization.md
+Link: [https://neon.com/docs/introduction/cost-optimization.md](https://neon.com/docs/introduction/cost-optimization.md)
 
 ## Agent Plan Features Summary
 
@@ -239,9 +240,9 @@ Key points — what's NOT included:
 
 - **Automated backup schedules** are not available on the Agent Plan (build your own via API)
 
-Link: https://neon.com/docs/introduction/plans.md
+Link: [https://neon.com/docs/introduction/plans.md](https://neon.com/docs/introduction/plans.md)
 
-Link: https://neon.com/docs/introduction/agent-plan.md
+Link: [https://neon.com/docs/introduction/agent-plan.md](https://neon.com/docs/introduction/agent-plan.md)
 
 ## Co-Marketing
 
@@ -254,7 +255,7 @@ Key points:
 - To get started, the partner should reach out via their **shared Slack channel** with Neon or contact their **Neon representative** directly.
 - Provide context on what they're building, user/growth numbers, and the type of co-marketing they're interested in.
 
-Link: https://neon.com/docs/introduction/agent-plan.md
+Link: [https://neon.com/docs/introduction/agent-plan.md](https://neon.com/docs/introduction/agent-plan.md)
 
 ## Support
 
@@ -264,47 +265,50 @@ Key points:
 
 - **Shared Slack channel**: Every Agent Plan participant gets a dedicated Slack channel with direct access to the Neon team. This is the fastest path for technical questions and urgent issues.
 - **Neon representative**: Each partner has a primary contact at Neon for account-level requests, custom configuration, and escalations.
-- **Limit increases** (project caps, rate limits, etc.): Email **`agents@neon.tech`** with org ID(s), growth context, and timeline. Also flag in the shared Slack channel.
+- **Limit increases** (project caps, rate limits, etc.): Email `**agents@neon.tech`** with org ID(s), growth context, and timeline. Also flag in the shared Slack channel.
 - **Billing questions**: Raise via the shared Slack channel or through the Neon representative. Credit balances and invoices are visible in the Neon Console under Billing for each org.
 - **Priority support**: Agent Plan participants receive faster response times for platform-critical issues.
 - **Community resources**: [Neon Discord](https://discord.gg/92vNTzKDGp), [Neon documentation](https://neon.com/docs), [API reference](https://api-docs.neon.tech).
 
-Contact: mailto:agents@neon.tech
+Contact: mailto:[agents@neon.tech](mailto:agents@neon.tech)
 
 ## Mini Reference Implementation
 
-Use this after the user already has a **connection string** and wants the smallest runnable **`@neondatabase/serverless`** sample shipped by Neon for Agent Program builders.
+Use this after the user already has a **connection string** and wants the smallest runnable Node sample in this repo ( **`pg`** + one query).
 
 Key points:
 
-- Repo: **`neondatabase/neon-for-agent-platforms`** — folder **`examples/minimal-node`** on `main`.
-- **`DATABASE_URL`** (pooler hostname preferred for serverless), **`npm install`**, **`npm run start`**.
+- Repo: `**neondatabase/neon-for-agent-platforms**` — folder `**examples/minimal-node**` on `main`.
+- `**DATABASE_URL**`, `**npm install**`, `**npm run start**`.
 - Provisioning projects and org wiring are **not** in this repo—use the **AI Agent integration guide**.
 
-Link: https://github.com/neondatabase/neon-for-agent-platforms
+Link: [https://github.com/neondatabase/neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms)
 
-Link: https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/minimal-node/src/query.mjs
+Link: [https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/minimal-node/src/query.mjs](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/minimal-node/src/query.mjs)
 
 ```javascript
-import { neon } from "@neondatabase/serverless";
+import pg from "pg";
 
 const url = process.env.DATABASE_URL;
 if (!url) {
-  console.error("Set DATABASE_URL to your Neon connection string (pooler recommended for serverless).");
+  console.error("Set DATABASE_URL to your Neon connection string.");
   process.exit(1);
 }
 
-const sql = neon(url);
-const rows = await sql`SELECT 1 AS ok`;
-console.log(rows);
+const client = new pg.Client({ connectionString: url });
+await client.connect();
+try {
+  const result = await client.query("SELECT 1 AS ok");
+  console.log(result.rows);
+} finally {
+  await client.end();
+}
 ```
 
-For deeper **`@neondatabase/serverless`** guidance, use **`neon-postgres`** → serverless driver reference on neon.com.
-
-Link: https://neon.com/docs/ai/skills/neon-postgres/references/neon-serverless.md
+For drivers (serverless, HTTP, pooling), use `**neon-postgres**` from **agent-skills** and neon.com docs.
 
 ## Partner-Facing Summary Doc
 
 Human-readable orientation (same scope as this skill—not a duplicate of `neon-postgres`):
 
-Link: https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md
+Link: [https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)
