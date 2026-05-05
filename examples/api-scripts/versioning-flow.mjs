@@ -31,8 +31,7 @@ if (!prod?.id) {
 }
 
 const runId = Date.now();
-const baselineName =
-  process.env.VERSION_BASELINE_NAME ?? `flow-baseline-${runId}`;
+const baselineName = process.env.VERSION_BASELINE_NAME ?? `flow-baseline-${runId}`;
 const demoBranchName =
   process.env.VERSION_DEMO_BRANCH_NAME ?? `versioning-demo-${runId}`;
 

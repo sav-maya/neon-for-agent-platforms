@@ -8,10 +8,7 @@ import { NeonApi } from "./lib/neon-client.mjs";
 const key = process.env.NEON_API_KEY;
 const sourceOrgId = process.env.NEON_SOURCE_ORG_ID;
 const destinationOrgId = process.env.NEON_DESTINATION_ORG_ID;
-const rawIds =
-  process.env.NEON_PROJECT_IDS ||
-  process.env.NEON_PROJECT_ID ||
-  "";
+const rawIds = process.env.NEON_PROJECT_IDS || process.env.NEON_PROJECT_ID || "";
 
 if (!sourceOrgId || !destinationOrgId || !rawIds.trim()) {
   console.error(

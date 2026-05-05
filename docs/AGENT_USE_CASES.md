@@ -54,6 +54,7 @@ Each **generated app** gets its own database; your generator wires env vars and 
 
 | Topic | Doc / script |
 |-------|----------------|
+| **Fleet provisioning & two-org layout** (create per tier, transfer, consume, delete) | [examples/FLEET_AND_ORG_LAYOUT.md](../examples/FLEET_AND_ORG_LAYOUT.md) |
 | Runnable overview of **`minimal-node`** vs **`api-scripts`** | [examples/README.md](../examples/README.md) |
 | Every REST script, env var, and command | [examples/api-scripts/README.md](../examples/api-scripts/README.md) |
 | REST vs Auth users vs Postgres roles vs consumption API | [REST_API_META.md](REST_API_META.md) |

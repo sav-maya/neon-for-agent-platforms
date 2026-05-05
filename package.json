@@ -1,0 +1,21 @@
+{
+  "name": "neon-for-agent-platforms",
+  "private": true,
+  "type": "module",
+  "description": "Agent Program examples; devDependencies are for maintainers (lint/format).",
+  "scripts": {
+    "lint": "eslint examples",
+    "lint:fix": "eslint examples --fix",
+    "format": "prettier --write \"examples/**/*.mjs\"",
+    "format:check": "prettier --check \"examples/**/*.mjs\"",
+    "fmt": "npm run format",
+    "fmt:check": "npm run format:check"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.16.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^10.0.1",
+    "globals": "^15.13.0",
+    "prettier": "^3.4.2"
+  }
+}

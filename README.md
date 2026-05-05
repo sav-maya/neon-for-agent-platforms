@@ -47,7 +47,7 @@ flowchart LR
 
 ### What’s in this repository
 
-**Start here for runnable samples:** [`examples/README.md`](examples/README.md) (hub) · **[`examples/minimal-node/README.md`](examples/minimal-node/README.md)** · **[`examples/api-scripts/README.md`](examples/api-scripts/README.md)** (every script, env vars, flows).
+**Start here for runnable samples:** [`examples/README.md`](examples/README.md) (hub) · **[fleets & org layout](examples/FLEET_AND_ORG_LAYOUT.md)** · **[`examples/minimal-node/README.md`](examples/minimal-node/README.md)** · **[`examples/api-scripts/README.md`](examples/api-scripts/README.md)** (every script, env vars, flows).
 
 | Path | Purpose |
 |------|--------|
@@ -148,6 +148,7 @@ Use **both** together for agent-platform work. Teams using Neon only for generic
 | Resource | Description |
 |----------|-------------|
 | [Examples hub](examples/README.md) | **`minimal-node`** vs **`api-scripts`**, links to per-folder READMEs |
+| [Fleet & org layout](examples/FLEET_AND_ORG_LAYOUT.md) | Two-org model, keys, create → transfer → consumption → delete |
 | [Agent use cases](docs/AGENT_USE_CASES.md) | Embedded / ephemeral Postgres vs codegen — what’s covered, script map |
 | [Link index (this repo)](docs/AGENT_PROGRAM_REFERENCE.md) | In-repo docs and external entry points |
 | [REST API meta](docs/REST_API_META.md) | Neon Auth users vs Postgres roles vs consumption `v2` |
@@ -156,6 +157,12 @@ Use **both** together for agent-platform work. Teams using Neon only for generic
 | [Integration guide](https://neon.com/docs/guides/ai-agent-integration) | Provisioning, quotas, transfers, versioning |
 | [Database versioning](https://neon.com/docs/ai/ai-database-versioning) | Snapshots and checkpoints |
 | [Agent Skills](https://github.com/neondatabase/agent-skills) | `neon-postgres` skill bundle |
+
+---
+
+## Contributing
+
+Lint and format for `examples/**/*.mjs` live at the repo root (`npm install`, `npm run lint`, `npm run format:check`; aliases **`npm run fmt`** / **`npm run fmt:check`**). Expectations and layout: **[CONTRIBUTING.md](CONTRIBUTING.md)** · guidance for AI agents: **[AGENTS.md](AGENTS.md)**.
 
 ---
 
