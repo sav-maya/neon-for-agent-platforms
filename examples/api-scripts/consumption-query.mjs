@@ -9,8 +9,7 @@ const key = process.env.NEON_API_KEY;
 const orgId = process.env.NEON_ORG_ID;
 const from = process.env.CONSUMPTION_FROM;
 const to = process.env.CONSUMPTION_TO;
-const granularity =
-  process.env.CONSUMPTION_GRANULARITY || "daily";
+const granularity = process.env.CONSUMPTION_GRANULARITY || "daily";
 
 const DEFAULT_METRICS = [
   "compute_unit_seconds",
@@ -25,12 +24,18 @@ const DEFAULT_METRICS = [
 
 const metricsRaw = process.env.CONSUMPTION_METRICS;
 const metrics = metricsRaw
-  ? metricsRaw.split(",").map((s) => s.trim()).filter(Boolean)
+  ? metricsRaw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
   : DEFAULT_METRICS;
 
 const projectIdsRaw = process.env.CONSUMPTION_PROJECT_IDS;
 const projectIds = projectIdsRaw
-  ? projectIdsRaw.split(",").map((s) => s.trim()).filter(Boolean)
+  ? projectIdsRaw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
   : undefined;
 
 if (!orgId || !from || !to) {

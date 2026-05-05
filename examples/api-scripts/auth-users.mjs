@@ -33,12 +33,10 @@ function printMeta() {
             "DELETE /api/v2/projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}",
           updateRole:
             "PUT /api/v2/projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}/role",
-          enableAuth:
-            "POST /api/v2/projects/{project_id}/branches/{branch_id}/auth",
+          enableAuth: "POST /api/v2/projects/{project_id}/branches/{branch_id}/auth",
         },
         postgres: {
-          note:
-            "Neon Auth syncs user data into the branch database (default schema `neon_auth`, e.g. table `users_sync`).",
+          note: "Neon Auth syncs user data into the branch database (default schema `neon_auth`, e.g. table `users_sync`).",
           listUsersExampleSql: "SELECT * FROM neon_auth.users_sync LIMIT 50;",
           rolesNote:
             "Database roles (connection users, privileges) are separate — use SQL or Console (Manage roles), not this REST API.",
@@ -57,12 +55,7 @@ function printMeta() {
             "USER_EMAIL",
             "USER_NAME (optional)",
           ],
-          delete: [
-            "NEON_API_KEY",
-            "NEON_PROJECT_ID",
-            "NEON_BRANCH_ID",
-            "AUTH_USER_ID",
-          ],
+          delete: ["NEON_API_KEY", "NEON_PROJECT_ID", "NEON_BRANCH_ID", "AUTH_USER_ID"],
         },
       },
       null,

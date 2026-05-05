@@ -6,8 +6,7 @@ import { NeonApi } from "./lib/neon-client.mjs";
 
 const key = process.env.NEON_API_KEY;
 const orgId = process.env.NEON_ORG_ID;
-const name =
-  process.env.NEON_PROJECT_NAME?.trim() || `tenant-${Date.now()}`;
+const name = process.env.NEON_PROJECT_NAME?.trim() || `tenant-${Date.now()}`;
 
 const api = new NeonApi(key);
 

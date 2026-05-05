@@ -27,7 +27,7 @@ if (cmd === "list") {
 
 if (cmd === "create") {
   if (!branchName) {
-    console.error('Usage: node branch.mjs create <branch-name>');
+    console.error("Usage: node branch.mjs create <branch-name>");
     process.exit(1);
   }
   const parent = await api.getProductionBranch(projectId);
@@ -45,5 +45,5 @@ if (cmd === "create") {
   process.exit(0);
 }
 
-console.error('Usage: node branch.mjs list | create <branch-name>');
+console.error("Usage: node branch.mjs list | create <branch-name>");
 process.exit(1);

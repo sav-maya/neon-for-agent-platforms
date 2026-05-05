@@ -6,11 +6,7 @@
 const DEFAULT_API = "https://console.neon.tech/api/v2";
 
 function isTerminalOperationStatus(status) {
-  return (
-    status === "finished" ||
-    status === "skipped" ||
-    status === "cancelled"
-  );
+  return status === "finished" || status === "skipped" || status === "cancelled";
 }
 
 function isRecord(value) {
@@ -214,14 +210,11 @@ export class NeonApi {
    * @returns {Promise<Array<{ id: string, name?: string, parent_id?: string }>>}
    */
   async listBranches(projectId) {
-    const res = await fetch(
-      `${this.baseUrl}/projects/${projectId}/branches`,
-      {
-        method: "GET",
-        headers: this._headers(false),
-        cache: "no-store",
-      },
-    );
+    const res = await fetch(`${this.baseUrl}/projects/${projectId}/branches`, {
+      method: "GET",
+      headers: this._headers(false),
+      cache: "no-store",
+    });
     if (!res.ok) {
       const err = await this._readError(res);
       throw new Error(
@@ -253,15 +246,12 @@ export class NeonApi {
     if (parentId) {
       branch.parent_id = parentId;
     }
-    const res = await fetch(
-      `${this.baseUrl}/projects/${projectId}/branches`,
-      {
-        method: "POST",
-        headers: this._headers(),
-        body: JSON.stringify({ branch }),
-        cache: "no-store",
-      },
-    );
+    const res = await fetch(`${this.baseUrl}/projects/${projectId}/branches`, {
+      method: "POST",
+      headers: this._headers(),
+      body: JSON.stringify({ branch }),
+      cache: "no-store",
+    });
     if (!res.ok) {
       const err = await this._readError(res);
       throw new Error(

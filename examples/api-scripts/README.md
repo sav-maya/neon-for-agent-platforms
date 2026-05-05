@@ -4,6 +4,12 @@ Small **Node.js** scripts that call the **[Neon Console REST API](https://consol
 
 Use these to prototype **per-tenant provisioning**, **branching**, **database versioning** (snapshots + restore), **org transfer** (free ↔ paid org), **consumption** polling, and **Neon Auth** user APIs.
 
+### Fleet provisioning and org layout
+
+Agent Program teams usually maintain **two Neon orgs** (sponsored free vs paid) and route **`NEON_ORG_ID`** per customer tier when calling **`create-project.mjs`**. Upgrades use **`transfer-project.mjs`** with a **personal** API key; fleet-wide usage uses **`consumption-query.mjs`** with **`NEON_ORG_ID`**.
+
+Read **[`../FLEET_AND_ORG_LAYOUT.md`](../FLEET_AND_ORG_LAYOUT.md)** for the full mapping (keys, patterns, which script covers which fleet operation).
+
 ---
 
 ## Prerequisites
@@ -113,7 +119,18 @@ Enable Auth on the branch once: `POST .../projects/{id}/branches/{id}/auth` with
 
 ## Typical flows
 
-### Spin up a tenant project
+### Provision fleet tenants (free vs paid org)
+
+1. Store **`NEON_ORG_ID`** for each Neon org (free pool vs paid pool) and choose an **API key** that can create projects there ([details](../FLEET_AND_ORG_LAYOUT.md)).
+2. For each new customer, set **`NEON_ORG_ID`** (and optionally **`NEON_PROJECT_NAME`**) and run:
+
+```bash
+node --env-file=.env create-project.mjs
+```
+
+3. Persist **`projectId`** and **`DATABASE_URL`** from the JSON output in your control-plane database.
+
+### Spin up a single tenant project
 
 ```bash
 node --env-file=.env create-project.mjs
