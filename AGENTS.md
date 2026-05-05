@@ -36,7 +36,7 @@ npm run format:check
 
 Convenience aliases (same script names some Neon repos use, e.g. postgres-skills): **`npm run fmt`** and **`npm run fmt:check`** (same as `format` / `format:check`).
 
-Expectations: ES modules, fail-fast env checks, no committed secrets—see **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+Expectations: ES modules; validate required env at startup; prefer structured JSON for machine-readable CLI output; propagate `fetch` errors with useful bodies; never commit `.env`, keys, or connection strings.
 
 ## Docs and README
 

@@ -8,7 +8,7 @@ Use this as a **short addendum** after a Neon intro call. **How the Agent Progra
 
 ## Assistants: skills install
 
-For editors/agents, install `**neon-postgres`** first, then `**neon-postgres-agent-platforms**` for Agent Program–specific context. Exact commands: see **[README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** (section **Install Neon’s AI skills**).
+For editors/agents, install `**neon-postgres`** first, then `**neon-postgres-agent-platforms`** for Agent Program–specific context. Exact commands: see **[README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** (section **Install Neon’s AI skills**).
 
 ---
 

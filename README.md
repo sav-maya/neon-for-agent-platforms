@@ -2,7 +2,7 @@
 
 Sample code and an AI skill topic for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)**—when **your product** provisions Neon Postgres **for each customer** (agent platforms, codegen tools, multi-tenant SaaS).
 
-**Official product docs:** [neon.com](https://neon.com) — start with [**Agent Plan**](https://neon.com/docs/introduction/agent-plan) and [**AI Agent integration**](https://neon.com/docs/guides/ai-agent-integration).
+**Official product docs:** [neon.com](https://neon.com) — start with **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** and **[AI Agent integration](https://neon.com/docs/guides/ai-agent-integration)**.
 
 **Map use cases to examples:** [docs/AGENT_USE_CASES.md](docs/AGENT_USE_CASES.md) — *embedded / ephemeral Postgres* (Route 1) vs *full-stack codegen* (Route 2), with checklists and links to scripts.
 
@@ -14,12 +14,14 @@ Sample code and an AI skill topic for the **[Neon AI Agent Program](https://neon
 
 Partner programs typically use **two orgs** so free-tier users and paying customers land in the right billing context:
 
-| Org | Who it serves |
-|-----|----------------|
-| **Sponsored free org** | Your free-tier users (within program rules on neon.com) |
-| **Paid org** | Paying customers (metered per Agent Plan) |
 
-Your control plane chooses **which org** when creating a tenant project. Upgrades often mean [**transferring**](https://neon.com/docs/manage/orgs-project-transfer) the project into the paid org and **raising quotas**; downgrades reverse that within free-tier caps.
+| Org                    | Who it serves                                           |
+| ---------------------- | ------------------------------------------------------- |
+| **Sponsored free org** | Your free-tier users (within program rules on neon.com) |
+| **Paid org**           | Paying customers (metered per Agent Plan)               |
+
+
+Your control plane chooses **which org** when creating a tenant project. Upgrades often mean **[transferring](https://neon.com/docs/manage/orgs-project-transfer)** the project into the paid org and **raising quotas**; downgrades reverse that within free-tier caps.
 
 ### API keys (two kinds)
 
@@ -28,7 +30,7 @@ Your control plane chooses **which org** when creating a tenant project. Upgrade
 
 ### One project per tenant
 
-Neon’s recommended pattern is **one Neon project per customer app** so isolation and metering line up with Agent Plan quotas. Details: [**AI Agent integration guide**](https://neon.com/docs/guides/ai-agent-integration).
+Neon’s recommended pattern is **one Neon project per customer app** so isolation and metering line up with Agent Plan quotas. Details: **[AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration)**.
 
 ```mermaid
 flowchart LR
@@ -45,23 +47,27 @@ flowchart LR
   CP -->|"Org API key"| P
 ```
 
+
+
 ### What’s in this repository
 
-**Start here for runnable samples:** [`examples/README.md`](examples/README.md) (hub) · **[fleets & org layout](examples/FLEET_AND_ORG_LAYOUT.md)** · **[`examples/minimal-node/README.md`](examples/minimal-node/README.md)** · **[`examples/api-scripts/README.md`](examples/api-scripts/README.md)** (every script, env vars, flows).
+**Start here for runnable samples:** `[examples/README.md](examples/README.md)` (hub) · **[fleets & org layout](examples/FLEET_AND_ORG_LAYOUT.md)** · `**[examples/minimal-node/README.md](examples/minimal-node/README.md)`** · `**[examples/api-scripts/README.md](examples/api-scripts/README.md)**` (every script, env vars, flows).
 
-| Path | Purpose |
-|------|--------|
-| [`examples/minimal-node/`](examples/minimal-node/) | Smallest path: **provision** a project (optional) and run a **query** with `pg` + `DATABASE_URL`. |
-| [`examples/api-scripts/`](examples/api-scripts/) | **REST** (`fetch` to `console.neon.tech/api/v2`): create/delete project, branches, **snapshot + restore** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org **transfer**, **consumption** history, Neon **Auth** users; shared [`lib/neon-client.mjs`](examples/api-scripts/lib/neon-client.mjs). Run **`npm run versioning-flow`** for the full demo. For “Auth REST vs Postgres roles vs billing metrics”, see [`docs/REST_API_META.md`](docs/REST_API_META.md). |
-| [`skills/neon-postgres-agent-platforms/`](skills/neon-postgres-agent-platforms/) | Companion **Cursor/agent skill** topic—Agent Program context (orgs, transfers, fleet patterns, costs). Use **with** [`neon-postgres`](https://github.com/neondatabase/agent-skills), not instead of it. |
-| [`docs/`](docs/) | [`AGENT_USE_CASES.md`](docs/AGENT_USE_CASES.md) (Route 1 & 2 checklists), [`AGENT_PROGRAM_REFERENCE.md`](docs/AGENT_PROGRAM_REFERENCE.md) (link index), [`REST_API_META.md`](docs/REST_API_META.md), [`NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md`](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) (partner note). |
+
+| Path                                                                             | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `[examples/minimal-node/](examples/minimal-node/)`                               | Smallest path: **provision** a project (optional) and run a **query** with `pg` + `DATABASE_URL`.                                                                                                                                                                                                                                                                                                                                                                                              |
+| `[examples/api-scripts/](examples/api-scripts/)`                                 | **REST** (`fetch` to `console.neon.tech/api/v2`): create/delete project, branches, **snapshot + restore** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org **transfer**, **consumption** history, Neon **Auth** users; shared `[lib/neon-client.mjs](examples/api-scripts/lib/neon-client.mjs)`. Run `**npm run versioning-flow`** for the full demo. For “Auth REST vs Postgres roles vs billing metrics”, see `[docs/REST_API_META.md](docs/REST_API_META.md)`. |
+| `[skills/neon-postgres-agent-platforms/](skills/neon-postgres-agent-platforms/)` | Companion **Cursor/agent skill** topic—Agent Program context (orgs, transfers, fleet patterns, costs). Use **with** `[neon-postgres](https://github.com/neondatabase/agent-skills)`, not instead of it.                                                                                                                                                                                                                                                                                        |
+| `[docs/](docs/)`                                                                 | `[AGENT_USE_CASES.md](docs/AGENT_USE_CASES.md)` (Route 1 & 2 checklists), `[AGENT_PROGRAM_REFERENCE.md](docs/AGENT_PROGRAM_REFERENCE.md)` (link index), `[REST_API_META.md](docs/REST_API_META.md)`, `[NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)` (partner note).                                                                                                                                                                                     |
+
 
 ### First steps after you join the program
 
 1. Store **both org IDs**, **org API keys**, and a **personal API key** where your automation needs them ([Before you begin](https://neon.com/docs/guides/ai-agent-integration) in the integration guide).
 2. Ship **create project** + connection string for one tier; route **free org vs paid org** from your control plane.
 3. Test **transfer** + quota update on a customer upgrade path.
-4. Install **`neon-postgres`** (and this repo’s companion skill—see below) so assistants answer day-to-day Neon questions accurately.
+4. Install `**neon-postgres`** (and this repo’s companion skill—see below) so assistants answer day-to-day Neon questions accurately.
 
 ---
 
@@ -121,7 +127,7 @@ node --env-file=.env versioning-flow.mjs
 
 One-off restore: `node --env-file=.env restore-snapshot.mjs` with `NEON_SNAPSHOT_ID` and `NEON_TARGET_BRANCH_ID`.
 
-See [`examples/api-scripts/.env.example`](examples/api-scripts/.env.example) for variables per script. **Full reference:** [`examples/api-scripts/README.md`](examples/api-scripts/README.md).
+See `[examples/api-scripts/.env.example](examples/api-scripts/.env.example)` for variables per script. **Full reference:** `[examples/api-scripts/README.md](examples/api-scripts/README.md)`.
 
 ### 4. Install Neon’s AI skills
 
@@ -145,24 +151,26 @@ Use **both** together for agent-platform work. Teams using Neon only for generic
 
 ## Key docs
 
-| Resource | Description |
-|----------|-------------|
-| [Examples hub](examples/README.md) | **`minimal-node`** vs **`api-scripts`**, links to per-folder READMEs |
-| [Fleet & org layout](examples/FLEET_AND_ORG_LAYOUT.md) | Two-org model, keys, create → transfer → consumption → delete |
-| [Agent use cases](docs/AGENT_USE_CASES.md) | Embedded / ephemeral Postgres vs codegen — what’s covered, script map |
-| [Link index (this repo)](docs/AGENT_PROGRAM_REFERENCE.md) | In-repo docs and external entry points |
-| [REST API meta](docs/REST_API_META.md) | Neon Auth users vs Postgres roles vs consumption `v2` |
-| [Partner note](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) | Short post-call addendum (HIPAA row, extra links)—**program model and repo map are above** |
-| [Agent Plan](https://neon.com/docs/introduction/agent-plan) | Pricing, credits, two-org model |
-| [Integration guide](https://neon.com/docs/guides/ai-agent-integration) | Provisioning, quotas, transfers, versioning |
-| [Database versioning](https://neon.com/docs/ai/ai-database-versioning) | Snapshots and checkpoints |
-| [Agent Skills](https://github.com/neondatabase/agent-skills) | `neon-postgres` skill bundle |
+
+| Resource                                                               | Description                                                                                |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [Examples hub](examples/README.md)                                     | `**minimal-node`** vs `**api-scripts**`, links to per-folder READMEs                       |
+| [Fleet & org layout](examples/FLEET_AND_ORG_LAYOUT.md)                 | Two-org model, keys, create → transfer → consumption → delete                              |
+| [Agent use cases](docs/AGENT_USE_CASES.md)                             | Embedded / ephemeral Postgres vs codegen — what’s covered, script map                      |
+| [Link index (this repo)](docs/AGENT_PROGRAM_REFERENCE.md)              | In-repo docs and external entry points                                                     |
+| [REST API meta](docs/REST_API_META.md)                                 | Neon Auth users vs Postgres roles vs consumption `v2`                                      |
+| [Partner note](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)             | Short post-call addendum (HIPAA row, extra links)—**program model and repo map are above** |
+| [Agent Plan](https://neon.com/docs/introduction/agent-plan)            | Pricing, credits, two-org model                                                            |
+| [Integration guide](https://neon.com/docs/guides/ai-agent-integration) | Provisioning, quotas, transfers, versioning                                                |
+| [Database versioning](https://neon.com/docs/ai/ai-database-versioning) | Snapshots and checkpoints                                                                  |
+| [Agent Skills](https://github.com/neondatabase/agent-skills)           | `neon-postgres` skill bundle                                                               |
+
 
 ---
 
 ## Contributing
 
-Lint and format for `examples/**/*.mjs` live at the repo root (`npm install`, `npm run lint`, `npm run format:check`; aliases **`npm run fmt`** / **`npm run fmt:check`**). Expectations and layout: **[CONTRIBUTING.md](CONTRIBUTING.md)** · guidance for AI agents: **[AGENTS.md](AGENTS.md)**.
+Lint and format for `examples/**/*.mjs` live at the repo root (`npm install`, `npm run lint`, `npm run format:check`; aliases `**npm run fmt`** / `**npm run fmt:check**`). Guidance for AI agents: **[AGENTS.md](AGENTS.md)**.
 
 ---
 
