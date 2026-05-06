@@ -22,6 +22,7 @@ Unlike skill-only repos, **example JavaScript is first-class**. Prefer small, ex
 ## Editing the companion skill
 
 - Directory **`skills/neon-postgres-agent-platforms/`** must stay aligned with the skill **`name`** in YAML frontmatter (see Agent Skills spec).
+- Follow [**Skill creation best practices**](https://agentskills.io/skill-creation/best-practices): valid frontmatter, **Gotchas** for non-obvious corrections, **defaults** over long option menus, **progressive disclosure** (detailed tables in `references/` with explicit *when to read* hints in `SKILL.md`).
 - For tone and depth on the companion skill only, you may borrow patterns from [postgres-skills `CONTRIBUTING`](https://github.com/neondatabase/postgres-skills/blob/main/CONTRIBUTING.md) (concrete tradeoffs, imperative guidance, `references/` for long material)—that repo remains authoritative for Postgres-wide skills; this skill stays narrowly about Agent Program provisioning and org patterns.
 
 ## Editing examples (`examples/**/*.mjs`)
