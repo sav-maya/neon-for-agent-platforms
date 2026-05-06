@@ -71,10 +71,10 @@ The **[Agent Skills directory model](https://agentskills.io/home#what-are-agent-
 ```
 neon-for-agent-platforms/
 ├── examples/
-│   └── api-scripts/          # Runnable TypeScript samples (Management API) — partner engineering
+│   └── api-scripts/          # Runnable TypeScript samples (Management API) 
 ├── skills/
 │   ├── README.md
-│   └── neon-postgres-agent-platforms/   # Agent Skills–shaped companion topic
+│   └── neon-postgres-agent-platforms/  
 │       ├── SKILL.md
 │       ├── references/
 │       ├── scripts/          # See scripts/README (automation lives in examples/)
