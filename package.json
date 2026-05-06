@@ -13,20 +13,13 @@
   "scripts": {
     "fmt": "prettier --write \"examples/**/*.ts\"",
     "fmt:check": "prettier --check \"examples/**/*.ts\"",
-    "lint": "eslint examples",
-    "lint:fix": "eslint examples --fix",
     "typecheck": "tsc --project examples/tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
     "@neondatabase/api-client": "^2.7.1",
     "@types/node": "^25.6.0",
     "@types/pg": "^8.20.0",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^10.0.1",
-    "globals": "^15.13.0",
     "prettier": "^3.4.2",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.2-alpha.2"
+    "typescript": "^6.0.3"
   }
 }

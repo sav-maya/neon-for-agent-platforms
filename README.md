@@ -149,7 +149,7 @@ flowchart LR
 
 ## Contributing
 
-Lint, format, and typecheck for `examples/**/*.ts`: repo root — `npm install`, `npm run lint`, `npm run fmt:check`, `npm run typecheck`. Format: **`npm run fmt`**. Agent guidance: **[AGENTS.md](AGENTS.md)**.
+Format and typecheck for `examples/**/*.ts`: repo root — `npm install`, `npm run fmt:check`, `npm run typecheck`. Format: **`npm run fmt`**. Agent guidance: **[AGENTS.md](AGENTS.md)**.
 
 ---
 

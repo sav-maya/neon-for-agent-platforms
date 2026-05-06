@@ -32,8 +32,7 @@ Unlike skill-only repos, **example TypeScript is first-class**. Prefer small, ex
 Before opening a PR that touches example scripts:
 
 ```bash
-npm install          # repo root — lint/format/typecheck devDependencies
-npm run lint
+npm install          # repo root — format/typecheck devDependencies
 npm run fmt:check
 npm run typecheck
 ```
