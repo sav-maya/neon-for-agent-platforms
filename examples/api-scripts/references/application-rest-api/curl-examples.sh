@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Reference-only curls for Aileen-style app routes (see README.md).
+# Reference-only curls for sample product REST routes (see README.md — not Neon Management API).
 # Safe defaults: localhost, no destructive verbs. Expect 401 without STACK_SESSION_COOKIE.
 
 APP_BASE_URL="${APP_BASE_URL:-http://localhost:3000}"

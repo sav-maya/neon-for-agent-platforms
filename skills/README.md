@@ -15,7 +15,7 @@ skills/
 
 | Piece | Location |
 | ----- | -------- |
-| **Companion skill** (Agent Program context for assistants) | [`neon-postgres-agent-platforms/`](neon-postgres-agent-platforms/) |
-| **Runnable Management API samples** (Node, `fetch`) | [`../examples/api-scripts/`](../examples/api-scripts/) at repo root |
+| **Companion skill** (fleet / Agent Program control plane — *not* generic Neon tutorials) | [`neon-postgres-agent-platforms/`](neon-postgres-agent-platforms/) |
+| **Runnable Management API samples** (Node + `@neondatabase/api-client`) | [`../examples/api-scripts/`](../examples/api-scripts/) at repo root |
 
-Partner onboarding and clone/run flows use **[`../README.md`](../README.md)** (*Start here*). Install the published skill with Neon’s bundle (**[`neon-postgres`](https://github.com/neondatabase/agent-skills)** + **`neon-postgres-agent-platforms`**); this repo is the **source** for the companion skill text and the **examples** beside it.
+Partner onboarding and clone/run flows use **[`../README.md`](../README.md)** (*Start here*). Install **`neon-postgres`** first, then this companion (**[`neon-postgres`](https://github.com/neondatabase/agent-skills)** + **`neon-postgres-agent-platforms`** from the same bundle commands); this repo is the **source** for the companion skill text and the **examples** beside it.

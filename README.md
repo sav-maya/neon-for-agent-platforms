@@ -2,6 +2,8 @@
 
 Sample code and a companion skill for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)**—when **your product** provisions Neon Postgres **for each customer** (agent platforms, codegen tools, multi-tenant SaaS). The companion topic follows the open **[Agent Skills](https://agentskills.io/home)** format ([specification](https://agentskills.io/specification)); this repo adds **runnable `examples/`** beside the skill for partners.
 
+**What this repository is for:** answering *how you build a multi-tenant AI agent platform that safely provisions, mutates, versions, and manages many Neon-backed applications or databases on behalf of users*—control-plane patterns (orgs, fleets, transfers, consumption, orchestration hooks), not introductory Neon usage. **Connection strings, drivers, Drizzle/ORM setup, generic branching tutorials, and everyday Neon Auth app integration** belong in the **`neon-postgres`** skill and **[Neon docs](https://neon.com/docs)**; install that skill first, then use this repo for Agent Program–specific fleet logic.
+
 **Official Neon docs (pricing, limits, product behavior):** [neon.com](https://neon.com) — **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** · **[AI Agent integration](https://neon.com/docs/guides/ai-agent-integration)** · **[Database versioning](https://neon.com/docs/ai/ai-database-versioning)**.
 
 ---
@@ -71,10 +73,10 @@ The **[Agent Skills directory model](https://agentskills.io/home#what-are-agent-
 ```
 neon-for-agent-platforms/
 ├── examples/
-│   └── api-scripts/          # Runnable TypeScript samples (Management API) 
+│   └── api-scripts/          # Runnable TypeScript samples (Management API) — partner engineering
 ├── skills/
 │   ├── README.md
-│   └── neon-postgres-agent-platforms/  
+│   └── neon-postgres-agent-platforms/   # Agent Skills–shaped companion topic
 │       ├── SKILL.md
 │       ├── references/
 │       ├── scripts/          # See scripts/README (automation lives in examples/)
@@ -139,7 +141,7 @@ flowchart LR
 | Resource                                                          | Use when                                            |
 | ----------------------------------------------------------------- | --------------------------------------------------- |
 | [Examples hub](examples/README.md)                                | Short map of `api-scripts` + cross-links            |
-| [Fleet & org layout](examples/README.md#fleet-provisioning-and-org-layout) | Two-org flows: create → transfer → consume → delete |
+| [Examples hub — Fleet & org layout](examples/README.md#fleet-provisioning-and-org-layout) | Two-org flows: create → transfer → consume → delete |
 | [Agent Plan](https://neon.com/docs/introduction/agent-plan)       | Pricing, credits, program details                   |
 | [Agent Skills repo](https://github.com/neondatabase/agent-skills) | `neon-postgres` bundle                              |
 | [AI Agent Platforms](https://neon.com/use-cases/ai-agents)        | Apply / program overview on neon.com                |

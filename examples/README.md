@@ -1,6 +1,6 @@
 # Examples
 
-Follow **[README § Start here](../README.md#start-here-agent-program-partners)** first. Runnable code for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)** lives only in **`api-scripts/`** — **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** (`@neondatabase/api-client`).
+Follow **[README § Start here](../README.md#start-here-agent-program-partners)** first. Runnable code for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)** lives only in **`api-scripts/`** — **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** (`@neondatabase/api-client`). These samples target **control-plane automation** (provision fleets, transfer between orgs, snapshot/restore in tenant projects). For **generic** Neon app development—drivers, connection URIs, Drizzle, everyday branching how-tos—use the **`neon-postgres`** skill from **[neondatabase/agent-skills](https://github.com/neondatabase/agent-skills)** first.
 
 ## Fleet provisioning and org layout
 
@@ -36,7 +36,7 @@ These scripts are the **building blocks** for a fleet; your product wraps them i
 | **Offboard** / destroy tenant | [`delete-project.ts`](api-scripts/delete-project.ts) | **`NEON_PROJECT_ID`** |
 | **Upgrade tier** (free org → paid org) | [`transfer-project.ts`](api-scripts/transfer-project.ts) | **`NEON_SOURCE_ORG_ID`**, **`NEON_DESTINATION_ORG_ID`**, **`NEON_PROJECT_ID`** (or **`NEON_PROJECT_IDS`**). Uses **personal** API key with transfer permissions. After transfer, **raise quotas** per Neon docs (PATCH project / integration guide). |
 | **Observe usage** across projects | [`consumption-query.ts`](api-scripts/consumption-query.ts) | **`NEON_ORG_ID`** + time range; optional **`CONSUMPTION_PROJECT_IDS`** to slice the fleet. |
-| **Branches / versioning** per tenant | [`branch.ts`](api-scripts/branch.ts), [`versioning-flow.ts`](api-scripts/versioning-flow.ts), [`snapshot.ts`](api-scripts/snapshot.ts) | Same APIs as single-tenant; scale by storing **`NEON_PROJECT_ID`** per tenant. |
+| **Branches / versioning** per tenant | [`branch.ts`](api-scripts/branch.ts), [`versioning-flow.ts`](api-scripts/versioning-flow.ts), [`snapshot.ts`](api-scripts/snapshot.ts) | Orchestrate **per-tenant** sandbox/preview DBs and restores; keep `project_id` / branch ids in your ledger. Conceptual branching tutorials → **`neon-postgres`** + [branching docs](https://neon.com/docs/guides/branching); this repo focuses on **fleet-scale** Management API calls. |
 
 Full env reference: [`api-scripts/README.md`](api-scripts/README.md).
 
@@ -62,7 +62,9 @@ For **Route 1 vs Route 2** product framing, see **[README § Product routes](../
 **Cross-links**
 
 - [README — § Product routes](../README.md#2-product-routes) — Route 1 vs Route 2 (scripts live in **api-scripts** README).
-- [Database versioning](https://neon.com/docs/ai/ai-database-versioning) — walkthrough aligns with **`api-scripts/versioning-flow.ts`**.
+- [Compound checkpoints](api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md) — version records for agent platforms (DB + code + secrets + deploy), not “branch alone”.
+- [Database versioning](https://neon.com/docs/ai/ai-database-versioning) — Neon snapshot semantics; **`versioning-flow.ts`** exercises the Management API slice.
+- **`neon-postgres`** ([agent-skills](https://github.com/neondatabase/agent-skills)) — baseline Neon guidance for assistants.
 - **Routing:** [Neon Auth API](https://neon.com/docs/neon-auth/api) · [Postgres roles](https://neon.com/docs/manage/users) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics) · [API reference](https://api-docs.neon.tech).
 
 **Requirements**

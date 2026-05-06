@@ -10,6 +10,8 @@ For the Agent Skills file layout and frontmatter rules, see the [Agent Skills sp
 
 Sample **Node** examples and documentation for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)** (platforms that provision Neon Postgres per customer), plus a **companion skill** that complements the upstream `[neon-postgres](https://github.com/neondatabase/agent-skills)` bundle.
 
+**Differentiation:** `**neon-postgres`** covers general Neon usage (drivers, connection patterns, ORMs, branching tutorials, Auth in apps). **This repo** focuses on **multi-tenant agent-platform control planes**—orgs/fleets, transfers, tenant lifecycle, compound checkpoints, Management API orchestration—without duplicating those generic guides.
+
 This repo uses the **[Agent Skills directory shape](https://agentskills.io/specification)** under `**skills/neon-postgres-agent-platforms/`** (`SKILL.md`, `references/`, `scripts/`, `assets/`) and keeps **executable samples** in `**examples/api-scripts/`** at the root — see `**[skills/README.md](skills/README.md)`**.
 
 
