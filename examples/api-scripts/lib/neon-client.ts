@@ -5,6 +5,7 @@
 import {
   ConsumptionHistoryGranularity,
   createApiClient,
+  NeonAuthSupportedAuthProvider,
   OperationStatus,
   type Api,
   type Branch,
@@ -41,12 +42,25 @@ export interface CreateBranchParams {
 
 export interface CreateSnapshotOptions {
   name?: string;
+  /** RFC 3339; defaults to now. Omit when using `lsn`. */
   timestamp?: string;
+  /** Mutually exclusive with `timestamp` in the Neon API. */
+  lsn?: string;
+  /** RFC 3339 auto-deletion time ([snapshot lifecycle](https://neon.com/docs/ai/ai-database-versioning#cleanup-strategy)). */
+  expiresAt?: string;
   branchId?: string;
 }
 
 export interface ApplySnapshotOptions {
   restoreBranchName?: string;
+  finalizeRestore?: boolean;
+}
+
+/** Restore a snapshot into a **new** branch (no `target_branch_id`) — e.g. bootstrap `dev` from a prod snapshot. */
+export interface RestoreSnapshotAsNewBranchOptions {
+  /** Name for the newly created branch. */
+  newBranchName: string;
+  /** Preview branch when `false` (default); rarely `true` for immediate finalize. */
   finalizeRestore?: boolean;
 }
 
@@ -86,6 +100,13 @@ export interface ConsumptionHistoryParams {
   cursor?: string;
 }
 
+export interface EnableBranchNeonAuthParams {
+  /** Defaults to Better Auth (`better_auth`). */
+  authProvider?: NeonAuthSupportedAuthProvider;
+  /** Optional non-default database on the branch. */
+  databaseName?: string;
+}
+
 function branchToSummary(b: Branch): BranchWithId {
   return {
     id: b.id,
@@ -105,6 +126,22 @@ function isTerminalSuccess(status: string): boolean {
 
 function isTerminalFailure(status: string): boolean {
   return status === OperationStatus.Failed || status === OperationStatus.Error;
+}
+
+/**
+ * Prefer Neon JSON `{ message, code }` over a raw Axios stack trace (clearer + avoids noisy dumps).
+ */
+export function formatNeonManagementError(err: unknown): Error {
+  if (err && typeof err === "object" && "response" in err) {
+    const data = (err as { response?: { data?: { message?: string; code?: string } } }).response
+      ?.data;
+    if (data?.message) {
+      const text = data.code ? `${data.code}: ${data.message}` : data.message;
+      return new Error(text);
+    }
+  }
+  if (err instanceof Error) return err;
+  return new Error(String(err));
 }
 
 export class NeonApi {
@@ -219,6 +256,12 @@ export class NeonApi {
     if (!id) {
       throw new Error("Create branch: missing id in response");
     }
+    const branchOpIds = (data.operations ?? [])
+      .map((op: Operation) => op.id)
+      .filter((oid): oid is string => typeof oid === "string" && oid.length > 0);
+    if (branchOpIds.length > 0) {
+      await this.waitForOperationsToSettle(projectId, branchOpIds);
+    }
     return { id };
   }
 
@@ -234,15 +277,29 @@ export class NeonApi {
       }
       branchId = prod.id;
     }
-    const { data } = await this.api.createSnapshot({
+    const base = {
       projectId,
       branchId,
-      timestamp: options.timestamp ?? new Date().toISOString(),
-      name: options.name,
-    });
+      ...(options.name ? { name: options.name } : {}),
+      ...(options.expiresAt ? { expires_at: options.expiresAt } : {}),
+    };
+    const { data } = await this.api.createSnapshot(
+      options.lsn
+        ? { ...base, lsn: options.lsn }
+        : {
+            ...base,
+            timestamp: options.timestamp ?? new Date().toISOString(),
+          },
+    );
     const snapshotId = data.snapshot?.id;
     if (!snapshotId) {
       throw new Error("Create snapshot: missing snapshot id in response");
+    }
+    const snapshotOpIds = (data.operations ?? [])
+      .map((op: Operation) => op.id)
+      .filter((oid): oid is string => typeof oid === "string" && oid.length > 0);
+    if (snapshotOpIds.length > 0) {
+      await this.waitForOperationsToSettle(projectId, snapshotOpIds);
     }
     return snapshotId;
   }
@@ -253,14 +310,85 @@ export class NeonApi {
     targetBranchId: string,
     options: ApplySnapshotOptions = {},
   ): Promise<void> {
-    const { data } = await this.api.restoreSnapshot(
-      { projectId, snapshotId },
-      {
-        name: options.restoreBranchName ?? `before_restore_${Date.now()}`,
-        finalize_restore: options.finalizeRestore !== false,
-        target_branch_id: targetBranchId,
-      },
-    );
+    try {
+      const { data } = await this.api.restoreSnapshot(
+        { projectId, snapshotId },
+        {
+          name: options.restoreBranchName ?? `before_restore_${Date.now()}`,
+          finalize_restore: options.finalizeRestore !== false,
+          target_branch_id: targetBranchId,
+        },
+      );
+      const operationIds = (data.operations ?? [])
+        .map((op: Operation) => op.id)
+        .filter((id): id is string => typeof id === "string" && id.length > 0);
+      if (operationIds.length > 0) {
+        await this.waitForOperationsToSettle(projectId, operationIds);
+      }
+    } catch (e) {
+      throw formatNeonManagementError(e);
+    }
+  }
+
+  /**
+   * Restore snapshot without `target_branch_id` — Neon creates a **new** branch (see promotion blog Phase 1).
+   */
+  async restoreSnapshotAsNewBranch(
+    projectId: string,
+    snapshotId: string,
+    options: RestoreSnapshotAsNewBranchOptions,
+  ): Promise<{ branchId: string }> {
+    try {
+      const { data } = await this.api.restoreSnapshot(
+        { projectId, snapshotId },
+        {
+          name: options.newBranchName,
+          finalize_restore: options.finalizeRestore ?? false,
+        },
+      );
+      const operationIds = (data.operations ?? [])
+        .map((op: Operation) => op.id)
+        .filter((id): id is string => typeof id === "string" && id.length > 0);
+      if (operationIds.length > 0) {
+        await this.waitForOperationsToSettle(projectId, operationIds);
+      }
+      const branchId = data.branch?.id;
+      if (!branchId) {
+        throw new Error("restoreSnapshotAsNewBranch: missing branch id in response");
+      }
+      return { branchId };
+    } catch (e) {
+      throw formatNeonManagementError(e);
+    }
+  }
+
+  async listSnapshots(projectId: string): Promise<unknown[]> {
+    const { data } = await this.api.listSnapshots(projectId);
+    return data.snapshots ?? [];
+  }
+
+  async deleteSnapshot(projectId: string, snapshotId: string): Promise<void> {
+    const { data } = await this.api.deleteSnapshot(projectId, snapshotId);
+    const operationIds = (data.operations ?? [])
+      .map((op: Operation) => op.id)
+      .filter((id): id is string => typeof id === "string" && id.length > 0);
+    if (operationIds.length > 0) {
+      await this.waitForOperationsToSettle(projectId, operationIds);
+    }
+  }
+
+  async updateSnapshotName(
+    projectId: string,
+    snapshotId: string,
+    name: string,
+  ): Promise<void> {
+    await this.api.updateSnapshot(projectId, snapshotId, {
+      snapshot: { name },
+    });
+  }
+
+  async deleteBranch(projectId: string, branchId: string): Promise<void> {
+    const { data } = await this.api.deleteProjectBranch(projectId, branchId);
     const operationIds = (data.operations ?? [])
       .map((op: Operation) => op.id)
       .filter((id): id is string => typeof id === "string" && id.length > 0);
@@ -313,6 +441,18 @@ export class NeonApi {
       project_ids: p.projectIds,
       limit: p.limit,
       cursor: p.cursor,
+    });
+    return data;
+  }
+
+  async enableBranchNeonAuth(
+    projectId: string,
+    branchId: string,
+    params: EnableBranchNeonAuthParams = {},
+  ): Promise<unknown> {
+    const { data } = await this.api.createNeonAuth(projectId, branchId, {
+      auth_provider: params.authProvider ?? NeonAuthSupportedAuthProvider.BetterAuth,
+      ...(params.databaseName ? { database_name: params.databaseName } : {}),
     });
     return data;
   }
