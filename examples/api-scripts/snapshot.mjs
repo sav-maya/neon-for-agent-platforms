@@ -8,6 +8,11 @@ const key = process.env.NEON_API_KEY;
 const projectId = process.env.NEON_PROJECT_ID;
 const snapshotName = process.env.NEON_SNAPSHOT_NAME;
 
+if (!key) {
+  console.error("Set NEON_API_KEY.");
+  process.exit(1);
+}
+
 if (!projectId) {
   console.error("Set NEON_PROJECT_ID.");
   process.exit(1);

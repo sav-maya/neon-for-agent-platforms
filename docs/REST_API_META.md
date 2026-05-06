@@ -34,4 +34,4 @@ Legacy metrics (`GET /consumption_history/projects`, older fields such as `activ
 
 Full script catalog, env vars, and command examples: [examples/api-scripts/README.md](../examples/api-scripts/README.md). Examples hub: [examples/README.md](../examples/README.md).
 
-Install **`neon-postgres`** from [agent-skills](https://github.com/neondatabase/agent-skills) for deeper coverage (Auth details, drivers, quotas, etc.); this file is only a **routing index**.
+Install `**neon-postgres`** from [agent-skills](https://github.com/neondatabase/agent-skills) for deeper coverage (Auth details, drivers, quotas, etc.); this file is only a **routing index**.
