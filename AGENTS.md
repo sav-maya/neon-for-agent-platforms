@@ -12,7 +12,6 @@ Sample **Node** examples and documentation for the **[Neon AI Agent Program](htt
 
 | Area | Your focus |
 |------|------------|
-| `examples/minimal-node/` | Minimal provision + SQL via `pg`; env via `.env` |
 | `examples/api-scripts/` | Neon Console REST (`fetch`); shared [`lib/neon-client.mjs`](examples/api-scripts/lib/neon-client.mjs) |
 | `skills/neon-postgres-agent-platforms/` | Companion skill—Agent Program context (orgs, transfers, fleets). Ship with `neon-postgres`, not instead of it |
 | `docs/` | Narrative guides and indexes—keep accurate relative to scripts |

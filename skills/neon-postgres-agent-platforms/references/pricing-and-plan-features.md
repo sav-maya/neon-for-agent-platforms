@@ -45,7 +45,7 @@ Use when a partner asks **what's included** in the Agent Plan. Do not invent num
 
 ### Database and compute
 
-- Up to **30,000 projects per org** (can request increases via agents@neon.tech)
+- Up to **30,000 projects per org** (can request increases via [agents@neon.tech](mailto:agents@neon.tech))
 - **25 branches per project** (paid), 10 (free)
 - Autoscaling up to **16 CU** (paid) or **2 CU** (free); fixed computes up to 56 CU on paid
 - **Scale to zero**: configurable 1 min to always-on (paid); 5 min fixed (free)
