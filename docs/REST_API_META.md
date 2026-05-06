@@ -32,6 +32,6 @@ Legacy metrics (`GET /consumption_history/projects`, older fields such as `activ
 - `**examples/api-scripts/consumption-query.mjs`** — minimal `GET consumption_history/v2/projects` using env vars.
 - `**examples/api-scripts/auth-users.mjs`** — **[meta]** (`auth-users.mjs meta`): explains REST vs Postgres roles, lists doc links and example SQL for `neon_auth.users_sync`; `**create`** / `**delete`** call Neon Auth branch endpoints (`POST` / `DELETE .../auth/users`). Requires Neon Auth enabled on the branch (`POST .../auth` with `better_auth`). Agent platforms typically combine this with per-tenant projects from `create-project.mjs`.
 
-Full script catalog, env vars, and command examples: `[examples/api-scripts/README.md](../examples/api-scripts/README.md)`. Hub for `**minimal-node`** vs `**api-scripts`**: `[examples/README.md](../examples/README.md)`.
+Full script catalog, env vars, and command examples: [examples/api-scripts/README.md](../examples/api-scripts/README.md). Examples hub: [examples/README.md](../examples/README.md).
 
-Install `**neon-postgres`** from [agent-skills](https://github.com/neondatabase/agent-skills) for deeper coverage (Auth details, drivers, quotas, etc.); this file is only a **routing index**.
+Install **`neon-postgres`** from [agent-skills](https://github.com/neondatabase/agent-skills) for deeper coverage (Auth details, drivers, quotas, etc.); this file is only a **routing index**.

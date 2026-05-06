@@ -51,15 +51,14 @@ flowchart LR
 
 ### What’s in this repository
 
-**Start here for runnable samples:** `[examples/README.md](examples/README.md)` (hub) · **[fleets & org layout](examples/FLEET_AND_ORG_LAYOUT.md)** · `**[examples/minimal-node/README.md](examples/minimal-node/README.md)`** · `**[examples/api-scripts/README.md](examples/api-scripts/README.md)**` (every script, env vars, flows).
+**Start here for runnable samples:** [examples/README.md](examples/README.md) (hub) · [Fleet & org layout](examples/FLEET_AND_ORG_LAYOUT.md) · **[api-scripts](examples/api-scripts/README.md)** (Console Management API).
 
 
-| Path                                                                             | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `[examples/minimal-node/](examples/minimal-node/)`                               | Smallest path: **provision** a project (optional) and run a **query** with `pg` + `DATABASE_URL`.                                                                                                                                                                                                                                                                                                                                                                                              |
-| `[examples/api-scripts/](examples/api-scripts/)`                                 | **REST** (`fetch` to `console.neon.tech/api/v2`): create/delete project, branches, **snapshot + restore** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org **transfer**, **consumption** history, Neon **Auth** users; shared `[lib/neon-client.mjs](examples/api-scripts/lib/neon-client.mjs)`. Run `**npm run versioning-flow`** for the full demo. For “Auth REST vs Postgres roles vs billing metrics”, see `[docs/REST_API_META.md](docs/REST_API_META.md)`. |
-| `[skills/neon-postgres-agent-platforms/](skills/neon-postgres-agent-platforms/)` | Companion **Cursor/agent skill** topic—Agent Program context (orgs, transfers, fleet patterns, costs). Use **with** `[neon-postgres](https://github.com/neondatabase/agent-skills)`, not instead of it.                                                                                                                                                                                                                                                                                        |
-| `[docs/](docs/)`                                                                 | `[AGENT_USE_CASES.md](docs/AGENT_USE_CASES.md)` (Route 1 & 2 checklists), `[AGENT_PROGRAM_REFERENCE.md](docs/AGENT_PROGRAM_REFERENCE.md)` (link index), `[REST_API_META.md](docs/REST_API_META.md)`, `[NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)` (partner note).                                                                                                                                                                                     |
+| Path                                                                             | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`examples/api-scripts/`](examples/api-scripts/)                                 | **REST** (`fetch` to `console.neon.tech/api/v2`): create/delete project, branches, **snapshot + restore** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org **transfer**, **consumption** history, Neon **Auth** users; shared [`lib/neon-client.mjs`](examples/api-scripts/lib/neon-client.mjs). Run **`npm run versioning-flow`** for the full demo. For “Auth REST vs Postgres roles vs billing metrics”, see [docs/REST_API_META.md](docs/REST_API_META.md). |
+| [`skills/neon-postgres-agent-platforms/`](skills/neon-postgres-agent-platforms/) | Companion **Cursor/agent skill** topic—Agent Program context (orgs, transfers, fleet patterns, costs). Use **with** [**neon-postgres**](https://github.com/neondatabase/agent-skills) from **agent-skills**, not instead of it.                                                                                                                                                                                                                                                                            |
+| `[docs/](docs/)`                                                                 | `[AGENT_USE_CASES.md](docs/AGENT_USE_CASES.md)` (Route 1 & 2 checklists), `[AGENT_PROGRAM_REFERENCE.md](docs/AGENT_PROGRAM_REFERENCE.md)` (link index), `[REST_API_META.md](docs/REST_API_META.md)`, `[NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)` (partner note).                                                                                                                                                                                                 |
 
 
 ### First steps after you join the program
@@ -67,44 +66,20 @@ flowchart LR
 1. Store **both org IDs**, **org API keys**, and a **personal API key** where your automation needs them ([Before you begin](https://neon.com/docs/guides/ai-agent-integration) in the integration guide).
 2. Ship **create project** + connection string for one tier; route **free org vs paid org** from your control plane.
 3. Test **transfer** + quota update on a customer upgrade path.
-4. Install `**neon-postgres`** (and this repo’s companion skill—see below) so assistants answer day-to-day Neon questions accurately.
+4. Install **`neon-postgres`** (and this repo’s companion skill—see below) so assistants answer day-to-day Neon questions accurately.
 
 ---
 
 ## Quick start (clone and run)
 
-### 1. Provision a project
+Runnable sample code lives under **`examples/api-scripts/`** only (Neon Console Management API).
 
-```bash
-git clone https://github.com/neondatabase/neon-for-agent-platforms.git
-cd neon-for-agent-platforms/examples/minimal-node
-npm install
-cp .env.example .env
-```
-
-Add your `NEON_API_KEY` to `.env`, then:
-
-```bash
-npm run provision
-```
-
-This creates a Neon project and returns a connection string.
-
-### 2. Connect and query
-
-Add the `DATABASE_URL` from step 1 to `.env`, then:
-
-```bash
-npm run start
-```
-
-If you already have a database, skip step 1 and set `DATABASE_URL` in `.env` (from the Neon Console), then `npm run start`.
-
-### 3. REST scripts (create / delete / branch / snapshot / transfer)
+### 1. REST scripts (create / delete / branch / snapshot / transfer)
 
 Uses `fetch` against `console.neon.tech/api/v2`. Install once in this folder (`pg` is used only for the optional SQL step in the versioning demo):
 
 ```bash
+git clone https://github.com/neondatabase/neon-for-agent-platforms.git
 cd neon-for-agent-platforms/examples/api-scripts
 npm install
 cp .env.example .env
@@ -127,9 +102,9 @@ node --env-file=.env versioning-flow.mjs
 
 One-off restore: `node --env-file=.env restore-snapshot.mjs` with `NEON_SNAPSHOT_ID` and `NEON_TARGET_BRANCH_ID`.
 
-See `[examples/api-scripts/.env.example](examples/api-scripts/.env.example)` for variables per script. **Full reference:** `[examples/api-scripts/README.md](examples/api-scripts/README.md)`.
+See [examples/api-scripts/.env.example](examples/api-scripts/.env.example) for variables per script. **Full reference:** [examples/api-scripts/README.md](examples/api-scripts/README.md).
 
-### 4. Install Neon’s AI skills
+### 2. Install Neon’s AI skills
 
 **Baseline:** full Neon platform coverage for assistants — **[github.com/neondatabase/agent-skills](https://github.com/neondatabase/agent-skills)**:
 
@@ -154,7 +129,7 @@ Use **both** together for agent-platform work. Teams using Neon only for generic
 
 | Resource                                                               | Description                                                                                |
 | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [Examples hub](examples/README.md)                                     | `**minimal-node`** vs `**api-scripts**`, links to per-folder READMEs                       |
+| [Examples hub](examples/README.md)                                     | **`api-scripts`** — scripts, env vars, flows                                             |
 | [Fleet & org layout](examples/FLEET_AND_ORG_LAYOUT.md)                 | Two-org model, keys, create → transfer → consumption → delete                              |
 | [Agent use cases](docs/AGENT_USE_CASES.md)                             | Embedded / ephemeral Postgres vs codegen — what’s covered, script map                      |
 | [Link index (this repo)](docs/AGENT_PROGRAM_REFERENCE.md)              | In-repo docs and external entry points                                                     |
@@ -170,7 +145,7 @@ Use **both** together for agent-platform work. Teams using Neon only for generic
 
 ## Contributing
 
-Lint and format for `examples/**/*.mjs` live at the repo root (`npm install`, `npm run lint`, `npm run format:check`; aliases `**npm run fmt`** / `**npm run fmt:check**`). Guidance for AI agents: **[AGENTS.md](AGENTS.md)**.
+Lint and format for `examples/**/*.mjs` live at the repo root (`npm install`, `npm run lint`, `npm run format:check`; aliases **`npm run fmt`** / **`npm run fmt:check`**). Guidance for AI agents: **[AGENTS.md](AGENTS.md)**.
 
 ---
 
