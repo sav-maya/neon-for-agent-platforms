@@ -23,7 +23,7 @@ Two common product shapes; **script names and env vars** are in **[examples/api-
 
 **Which API?** [Neon Auth](https://neon.com/docs/neon-auth/api) (app users under `…/auth/users`) is not [Postgres roles](https://neon.com/docs/manage/users) (connection users) or [consumption / billing metrics](https://neon.com/docs/guides/consumption-metrics). Run **`auth-users.ts meta`** for a short routing summary.
 
-For fleet **two-org** patterns (create → transfer → consume → delete), read **[examples/FLEET_AND_ORG_LAYOUT.md](examples/FLEET_AND_ORG_LAYOUT.md)**.
+For fleet **two-org** patterns (create → transfer → consume → delete), read **[examples/README.md § Fleet provisioning and org layout](examples/README.md#fleet-provisioning-and-org-layout)**.
 
 ### 3. Clone and run the examples
 
@@ -139,7 +139,7 @@ flowchart LR
 | Resource                                                          | Use when                                            |
 | ----------------------------------------------------------------- | --------------------------------------------------- |
 | [Examples hub](examples/README.md)                                | Short map of `api-scripts` + cross-links            |
-| [Fleet & org layout](examples/FLEET_AND_ORG_LAYOUT.md)            | Two-org flows: create → transfer → consume → delete |
+| [Fleet & org layout](examples/README.md#fleet-provisioning-and-org-layout) | Two-org flows: create → transfer → consume → delete |
 | [Agent Plan](https://neon.com/docs/introduction/agent-plan)       | Pricing, credits, program details                   |
 | [Agent Skills repo](https://github.com/neondatabase/agent-skills) | `neon-postgres` bundle                              |
 | [AI Agent Platforms](https://neon.com/use-cases/ai-agents)        | Apply / program overview on neon.com                |

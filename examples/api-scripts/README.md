@@ -8,7 +8,7 @@ Use these to prototype **per-tenant provisioning**, **branching**, **database ve
 
 Agent Program teams usually maintain **two Neon orgs** (sponsored free vs paid) and route **`NEON_ORG_ID`** per customer tier when calling **`create-project.ts`**. Upgrades use **`transfer-project.ts`** with a **personal** API key; fleet-wide usage uses **`consumption-query.ts`** with **`NEON_ORG_ID`**.
 
-Read **[`../FLEET_AND_ORG_LAYOUT.md`](../FLEET_AND_ORG_LAYOUT.md)** for the full mapping (keys, patterns, which script covers which fleet operation).
+For the full mapping (keys, patterns, which script covers which fleet operation), see **[`../README.md` § Fleet provisioning and org layout](../README.md#fleet-provisioning-and-org-layout)**.
 
 ### Application REST API vs Neon Management API
 
@@ -150,7 +150,7 @@ Enable Auth on the branch once: `POST .../projects/{id}/branches/{id}/auth` with
 
 ### Provision fleet tenants (free vs paid org)
 
-1. Store **`NEON_ORG_ID`** for each Neon org (free pool vs paid pool) and choose an **API key** that can create projects there ([details](../FLEET_AND_ORG_LAYOUT.md)).
+1. Store **`NEON_ORG_ID`** for each Neon org (free pool vs paid pool) and choose an **API key** that can create projects there ([details](../README.md#fleet-provisioning-and-org-layout)).
 2. For each new customer, set **`NEON_ORG_ID`** (and optionally **`NEON_PROJECT_NAME`**) and run:
 
 ```bash
