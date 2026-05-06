@@ -4,7 +4,7 @@
  * 1. Snapshot the production branch (baseline).
  * 2. Create a child branch from production (sandbox).
  * 3. Optionally run SQL on the child branch (set DEMO_MUTATE=1; requires `npm install` in this folder for `pg`).
- * 4. Snapshot the child branch (after state).
+ * 4. (Skipped) Second snapshot on child branch — Neon API allows snapshots on the root branch only.
  * 5. Restore the baseline snapshot onto the child branch (undo / rewind).
  *
  * @see https://neon.com/docs/ai/ai-database-versioning
@@ -84,11 +84,12 @@ if (demoMutate) {
   console.error("[versioning-flow] 3/5 Skipping SQL (DEMO_MUTATE unset).");
 }
 
-console.error("[versioning-flow] 4/5 Snapshot demo branch (after state)...");
-const afterSnapshotId = await api.createSnapshot(projectId, {
-  branchId: demoBranchId,
-  name: process.env.VERSION_AFTER_NAME ?? `flow-after-${runId}`,
-});
+// Neon Management API only allows Create Snapshot on the **root** branch.
+// Snapshotting a child branch returns 400: "not allowed to snapshot non-root branch".
+console.error(
+  "[versioning-flow] 4/5 Skip second snapshot on demo branch (API: snapshots are root-only).",
+);
+const afterSnapshotId: string | null = null;
 
 console.error(
   "[versioning-flow] 5/5 Restore baseline snapshot onto demo branch (rewind)...",
@@ -104,6 +105,8 @@ console.log(
       demoBranchId,
       demoBranchName,
       afterSnapshotId,
+      afterSnapshotNote:
+        "Neon API does not create logical snapshots on non-root branches; see versioning-flow.ts.",
       demoMutation: sqlNote,
       restoredBaselineToDemoBranch: true,
     },
