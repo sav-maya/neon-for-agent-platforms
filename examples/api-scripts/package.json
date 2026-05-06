@@ -4,17 +4,21 @@
   "type": "module",
   "description": "Small Neon Console REST examples (provision, branch, snapshot, versioning, org transfer, consumption)",
   "scripts": {
-    "create-project": "node create-project.mjs",
-    "delete-project": "node delete-project.mjs",
-    "branch": "node branch.mjs",
-    "snapshot": "node snapshot.mjs",
-    "versioning-flow": "node versioning-flow.mjs",
-    "restore-snapshot": "node restore-snapshot.mjs",
-    "transfer": "node transfer-project.mjs",
-    "consumption": "node consumption-query.mjs",
-    "auth-users": "node auth-users.mjs"
+    "create-project": "tsx create-project.ts",
+    "delete-project": "tsx delete-project.ts",
+    "branch": "tsx branch.ts",
+    "snapshot": "tsx snapshot.ts",
+    "versioning-flow": "tsx versioning-flow.ts",
+    "restore-snapshot": "tsx restore-snapshot.ts",
+    "transfer": "tsx transfer-project.ts",
+    "consumption": "tsx consumption-query.ts",
+    "auth-users": "tsx auth-users.ts"
   },
   "dependencies": {
+    "@neondatabase/api-client": "^2.7.1",
     "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
   }
 }

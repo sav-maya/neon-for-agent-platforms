@@ -1,10 +1,9 @@
-#!/usr/bin/env node
 /**
  * Restore an existing snapshot onto a branch (single REST step after versioning-flow or Console).
  *
  * @see https://neon.com/docs/ai/ai-database-versioning
  */
-import { NeonApi } from "./lib/neon-client.mjs";
+import { NeonApi } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
 const projectId = process.env.NEON_PROJECT_ID;

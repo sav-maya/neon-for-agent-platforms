@@ -1,15 +1,14 @@
-#!/usr/bin/env node
 /**
  * GET /consumption_history/v2/projects — usage-based metrics aligned with billing.
  * @see https://neon.com/docs/guides/consumption-metrics
  */
-import { NeonApi } from "./lib/neon-client.mjs";
+import { NeonApi, type ConsumptionGranularity } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
 const orgId = process.env.NEON_ORG_ID;
 const from = process.env.CONSUMPTION_FROM;
 const to = process.env.CONSUMPTION_TO;
-const granularity = process.env.CONSUMPTION_GRANULARITY || "daily";
+const granularityRaw = process.env.CONSUMPTION_GRANULARITY || "daily";
 
 const DEFAULT_METRICS = [
   "compute_unit_seconds",
@@ -38,6 +37,10 @@ const projectIds = projectIdsRaw
       .filter(Boolean)
   : undefined;
 
+function isConsumptionGranularity(s: string): s is ConsumptionGranularity {
+  return s === "hourly" || s === "daily" || s === "monthly";
+}
+
 if (!key || !orgId || !from || !to) {
   console.error(
     "Set NEON_API_KEY, NEON_ORG_ID, CONSUMPTION_FROM, CONSUMPTION_TO (RFC 3339). Optional: CONSUMPTION_GRANULARITY, CONSUMPTION_METRICS (comma list), CONSUMPTION_PROJECT_IDS.",
@@ -45,10 +48,12 @@ if (!key || !orgId || !from || !to) {
   process.exit(1);
 }
 
-if (!["hourly", "daily", "monthly"].includes(granularity)) {
+if (!isConsumptionGranularity(granularityRaw)) {
   console.error("CONSUMPTION_GRANULARITY must be hourly, daily, or monthly.");
   process.exit(1);
 }
+
+const granularity = granularityRaw;
 
 const api = new NeonApi(key);
 const json = await api.getConsumptionHistoryV2({

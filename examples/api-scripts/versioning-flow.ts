@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Full snapshot → branch → (optional SQL) → snapshot → restore flow for AI database versioning.
  *
@@ -10,7 +9,7 @@
  *
  * @see https://neon.com/docs/ai/ai-database-versioning
  */
-import { NeonApi } from "./lib/neon-client.mjs";
+import { NeonApi } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
 const projectId = process.env.NEON_PROJECT_ID;

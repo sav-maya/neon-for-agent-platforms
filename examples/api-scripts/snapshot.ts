@@ -1,8 +1,7 @@
-#!/usr/bin/env node
 /**
  * Create a logical snapshot on the default branch (same pattern as many agent hosts).
  */
-import { NeonApi } from "./lib/neon-client.mjs";
+import { NeonApi } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
 const projectId = process.env.NEON_PROJECT_ID;

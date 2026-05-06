@@ -1,9 +1,8 @@
-#!/usr/bin/env node
 /**
  * Neon Auth — application users (REST) and how they show up in Postgres.
  *
  * This is the “manage users” path for app accounts (login, sessions), not
- * database roles (`CREATE ROLE`) — see `meta` output and docs/REST_API_META.md.
+ * database roles (`CREATE ROLE`) — see `meta` output and README § Product routes.
  *
  * Prerequisites: Neon Auth enabled on the branch
  *   POST /projects/{project_id}/branches/{branch_id}/auth
@@ -14,14 +13,14 @@
  *   create   — POST .../auth/users (needs USER_EMAIL, optional USER_NAME)
  *   delete   — DELETE .../auth/users/{id} (needs AUTH_USER_ID)
  */
-import { NeonApi } from "./lib/neon-client.mjs";
+import { NeonApi } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
 const projectId = process.env.NEON_PROJECT_ID;
 const branchId = process.env.NEON_BRANCH_ID;
 const [, , cmd] = process.argv;
 
-function printMeta() {
+function printMeta(): void {
   console.log(
     JSON.stringify(
       {
@@ -69,9 +68,9 @@ if (cmd === "meta") {
   process.exit(0);
 }
 
-if (!["create", "delete"].includes(cmd)) {
+if (!["create", "delete"].includes(cmd ?? "")) {
   console.error(
-    "Usage: node auth-users.mjs meta | create | delete\n" +
+    "Usage: npx tsx auth-users.ts meta | create | delete\n" +
       "  meta   — [meta] REST vs Postgres, links, example SQL\n" +
       "  create — requires USER_EMAIL (and project/branch)\n" +
       "  delete — requires AUTH_USER_ID",

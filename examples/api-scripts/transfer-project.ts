@@ -1,9 +1,8 @@
-#!/usr/bin/env node
 /**
  * Transfer one or more projects from a source org to a destination org (e.g. free / sponsored → paid).
  * Personal API key with access to both orgs; see Neon docs on org project transfer.
  */
-import { NeonApi } from "./lib/neon-client.mjs";
+import { NeonApi } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
 const sourceOrgId = process.env.NEON_SOURCE_ORG_ID;
