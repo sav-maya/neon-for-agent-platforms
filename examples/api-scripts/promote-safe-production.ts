@@ -18,7 +18,7 @@
 import { NeonApi } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
-const projectId = process.env.NEON_PROJECT_ID;
+const projectIdEnv = process.env.NEON_PROJECT_ID;
 const [, , sub] = process.argv;
 
 function usage(): void {
@@ -28,11 +28,13 @@ See https://neon.com/blog/promoting-postgres-changes-safely-production
 `);
 }
 
-if (!key || !projectId) {
+if (!key || !projectIdEnv) {
   console.error("Set NEON_API_KEY and NEON_PROJECT_ID.");
   usage();
   process.exit(1);
 }
+
+const projectId: string = projectIdEnv;
 
 if (!sub) {
   usage();
@@ -46,7 +48,9 @@ async function prodBranchId(): Promise<string> {
   if (id) return id;
   const prod = await api.getProductionBranch(projectId);
   if (!prod?.id) {
-    throw new Error("No production branch (main/production) and NEON_PROD_BRANCH_ID unset");
+    throw new Error(
+      "No production branch (main/production) and NEON_PROD_BRANCH_ID unset",
+    );
   }
   return prod.id;
 }
@@ -56,10 +60,14 @@ const runId = Date.now();
 if (sub === "bootstrap-dev") {
   const newName = process.env.NEON_BOOTSTRAP_DEV_BRANCH_NAME?.trim() || "dev";
   const pre = await prodBranchId();
-  console.error(`[bootstrap-dev] Snapshot production branch, restore as new branch "${newName}"...`);
+  console.error(
+    `[bootstrap-dev] Snapshot production branch, restore as new branch "${newName}"...`,
+  );
   const snapId = await api.createSnapshot(projectId, {
     branchId: pre,
-    name: process.env.NEON_SNAPSHOT_BOOTSTRAP_NAME?.trim() ?? `bootstrap-from-prod-${runId}`,
+    name:
+      process.env.NEON_SNAPSHOT_BOOTSTRAP_NAME?.trim() ??
+      `bootstrap-from-prod-${runId}`,
   });
   const { branchId } = await api.restoreSnapshotAsNewBranch(projectId, snapId, {
     newBranchName: newName,
@@ -85,7 +93,9 @@ if (sub === "bootstrap-dev") {
 if (sub === "promote") {
   const devBranchId = process.env.NEON_DEV_BRANCH_ID?.trim();
   if (!devBranchId) {
-    console.error("Set NEON_DEV_BRANCH_ID (branch whose state you promote to production).");
+    console.error(
+      "Set NEON_DEV_BRANCH_ID (branch whose state you promote to production).",
+    );
     process.exit(1);
   }
   const prodId = await prodBranchId();
@@ -113,7 +123,8 @@ if (sub === "promote") {
   );
   await api.applySnapshot(projectId, candidateSnapId, prodId, {
     finalizeRestore: true,
-    restoreBranchName: process.env.NEON_RESTORE_BACKUP_BRANCH_NAME ?? `before_promote_${runId}`,
+    restoreBranchName:
+      process.env.NEON_RESTORE_BACKUP_BRANCH_NAME ?? `before_promote_${runId}`,
   });
 
   console.error(
@@ -139,12 +150,15 @@ if (sub === "promote") {
 if (sub === "refresh-dev") {
   const devBranchId = process.env.NEON_DEV_BRANCH_ID?.trim();
   if (!devBranchId) {
-    console.error("Set NEON_DEV_BRANCH_ID (branch to refresh from current prod).");
+    console.error(
+      "Set NEON_DEV_BRANCH_ID (branch to refresh from current prod).",
+    );
     process.exit(1);
   }
   const prodId = await prodBranchId();
   const snapName =
-    process.env.NEON_SNAPSHOT_REFRESH_NAME?.trim() ?? `prod_snap_${runId}_refresh_dev`;
+    process.env.NEON_SNAPSHOT_REFRESH_NAME?.trim() ??
+    `prod_snap_${runId}_refresh_dev`;
 
   console.error("[refresh-dev] 1/2 Snapshot prod...");
   const prodSnapId = await api.createSnapshot(projectId, {
@@ -155,7 +169,9 @@ if (sub === "refresh-dev") {
   console.error("[refresh-dev] 2/2 Restore prod snapshot onto dev...");
   await api.applySnapshot(projectId, prodSnapId, devBranchId, {
     finalizeRestore: true,
-    restoreBranchName: process.env.NEON_RESTORE_BACKUP_BRANCH_NAME ?? `before_refresh_dev_${runId}`,
+    restoreBranchName:
+      process.env.NEON_RESTORE_BACKUP_BRANCH_NAME ??
+      `before_refresh_dev_${runId}`,
   });
 
   console.log(
@@ -176,7 +192,9 @@ if (sub === "refresh-dev") {
 if (sub === "rollback-prod") {
   const snap = process.env.NEON_SNAPSHOT_ID?.trim();
   if (!snap) {
-    console.error("Set NEON_SNAPSHOT_ID (e.g. pre-promotion rollback snapshot id).");
+    console.error(
+      "Set NEON_SNAPSHOT_ID (e.g. pre-promotion rollback snapshot id).",
+    );
     process.exit(1);
   }
   const prodId = await prodBranchId();
@@ -184,7 +202,8 @@ if (sub === "rollback-prod") {
   console.error("[rollback-prod] Restore snapshot onto prod...");
   await api.applySnapshot(projectId, snap, prodId, {
     finalizeRestore: true,
-    restoreBranchName: process.env.NEON_RESTORE_BACKUP_BRANCH_NAME ?? `before_rollback_${runId}`,
+    restoreBranchName:
+      process.env.NEON_RESTORE_BACKUP_BRANCH_NAME ?? `before_rollback_${runId}`,
   });
 
   console.log(

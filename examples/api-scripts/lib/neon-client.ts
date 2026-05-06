@@ -9,9 +9,24 @@ import {
   OperationStatus,
   type Api,
   type Branch,
+  type ConnectionURIResponse,
   type DefaultEndpointSettings,
+  type NeonAuthCreateIntegrationResponse,
+  type NeonAuthCreateNewUserResponse,
   type Operation,
+  type Snapshot,
 } from "@neondatabase/api-client";
+
+import type {
+  ManagementApiConsumptionHistoryPerProjectV2ResponseBody,
+  NeonApiCreateBranchResult,
+  NeonApiCreateProjectResult,
+  NeonApiCreateSnapshotResult,
+  NeonApiRestoreSnapshotAsNewBranchResult,
+  NeonApiSettledOperationStatus,
+  NeonApiWaitForOperationsResult,
+  NeonManagementApiErrorBody,
+} from "./neon-api-response-types.js";
 
 export type ConsumptionGranularity = ConsumptionHistoryGranularity;
 
@@ -133,8 +148,8 @@ function isTerminalFailure(status: string): boolean {
  */
 export function formatNeonManagementError(err: unknown): Error {
   if (err && typeof err === "object" && "response" in err) {
-    const data = (err as { response?: { data?: { message?: string; code?: string } } }).response
-      ?.data;
+    const data = (err as { response?: { data?: NeonManagementApiErrorBody } })
+      .response?.data;
     if (data?.message) {
       const text = data.code ? `${data.code}: ${data.message}` : data.message;
       return new Error(text);
@@ -157,7 +172,10 @@ export class NeonApi {
     });
   }
 
-  async fetchOperationStatus(projectId: string, operationId: string): Promise<string> {
+  async fetchOperationStatus(
+    projectId: string,
+    operationId: string,
+  ): Promise<OperationStatus> {
     const { data } = await this.api.getProjectOperation(projectId, operationId);
     const status = data.operation?.status;
     if (!status) {
@@ -170,10 +188,10 @@ export class NeonApi {
     projectId: string,
     operationIds: string[],
     options: WaitOpsOptions = {},
-  ): Promise<Record<string, string>> {
+  ): Promise<NeonApiWaitForOperationsResult> {
     const pollIntervalMs = options.pollIntervalMs ?? 2000;
     const timeoutMs = options.timeoutMs ?? 5 * 60 * 1000;
-    const results: Record<string, string> = {};
+    const results: NeonApiWaitForOperationsResult = {};
     for (const opId of operationIds) {
       const startedAt = Date.now();
       for (;;) {
@@ -182,7 +200,7 @@ export class NeonApi {
           throw new Error(`Operation ${opId} ended with status ${status}`);
         }
         if (isTerminalSuccess(status)) {
-          results[opId] = status;
+          results[opId] = status as NeonApiSettledOperationStatus;
           break;
         }
         if (Date.now() - startedAt > timeoutMs) {
@@ -200,12 +218,14 @@ export class NeonApi {
     name,
     orgId,
     endpointSettings,
-  }: CreateProjectParams): Promise<{ projectId: string; databaseUrl: string }> {
+  }: CreateProjectParams): Promise<NeonApiCreateProjectResult> {
     const { data } = await this.api.createProject({
       project: {
         name,
         ...(orgId ? { org_id: orgId } : {}),
-        ...(endpointSettings ? { default_endpoint_settings: endpointSettings } : {}),
+        ...(endpointSettings
+          ? { default_endpoint_settings: endpointSettings }
+          : {}),
       },
     });
     const projectId = data.project?.id;
@@ -234,7 +254,9 @@ export class NeonApi {
     return (data.branches ?? []).map(branchToSummary);
   }
 
-  async getProductionBranch(projectId: string): Promise<BranchWithId | undefined> {
+  async getProductionBranch(
+    projectId: string,
+  ): Promise<BranchWithId | undefined> {
     const branches = await this.listBranches(projectId);
     return (
       branches.find((b) => b.name === "main") ??
@@ -245,7 +267,7 @@ export class NeonApi {
   async createBranch(
     projectId: string,
     { name, parentId }: CreateBranchParams,
-  ): Promise<{ id: string }> {
+  ): Promise<NeonApiCreateBranchResult> {
     const { data } = await this.api.createProjectBranch(projectId, {
       branch: {
         name,
@@ -258,7 +280,9 @@ export class NeonApi {
     }
     const branchOpIds = (data.operations ?? [])
       .map((op: Operation) => op.id)
-      .filter((oid): oid is string => typeof oid === "string" && oid.length > 0);
+      .filter(
+        (oid): oid is string => typeof oid === "string" && oid.length > 0,
+      );
     if (branchOpIds.length > 0) {
       await this.waitForOperationsToSettle(projectId, branchOpIds);
     }
@@ -268,12 +292,14 @@ export class NeonApi {
   async createSnapshot(
     projectId: string,
     options: CreateSnapshotOptions = {},
-  ): Promise<string> {
+  ): Promise<NeonApiCreateSnapshotResult> {
     let branchId = options.branchId;
     if (!branchId) {
       const prod = await this.getProductionBranch(projectId);
       if (!prod?.id) {
-        throw new Error("No production branch (expected name main or production)");
+        throw new Error(
+          "No production branch (expected name main or production)",
+        );
       }
       branchId = prod.id;
     }
@@ -297,7 +323,9 @@ export class NeonApi {
     }
     const snapshotOpIds = (data.operations ?? [])
       .map((op: Operation) => op.id)
-      .filter((oid): oid is string => typeof oid === "string" && oid.length > 0);
+      .filter(
+        (oid): oid is string => typeof oid === "string" && oid.length > 0,
+      );
     if (snapshotOpIds.length > 0) {
       await this.waitForOperationsToSettle(projectId, snapshotOpIds);
     }
@@ -337,7 +365,7 @@ export class NeonApi {
     projectId: string,
     snapshotId: string,
     options: RestoreSnapshotAsNewBranchOptions,
-  ): Promise<{ branchId: string }> {
+  ): Promise<NeonApiRestoreSnapshotAsNewBranchResult> {
     try {
       const { data } = await this.api.restoreSnapshot(
         { projectId, snapshotId },
@@ -354,7 +382,9 @@ export class NeonApi {
       }
       const branchId = data.branch?.id;
       if (!branchId) {
-        throw new Error("restoreSnapshotAsNewBranch: missing branch id in response");
+        throw new Error(
+          "restoreSnapshotAsNewBranch: missing branch id in response",
+        );
       }
       return { branchId };
     } catch (e) {
@@ -362,7 +392,7 @@ export class NeonApi {
     }
   }
 
-  async listSnapshots(projectId: string): Promise<unknown[]> {
+  async listSnapshots(projectId: string): Promise<Snapshot[]> {
     const { data } = await this.api.listSnapshots(projectId);
     return data.snapshots ?? [];
   }
@@ -404,7 +434,7 @@ export class NeonApi {
     roleName = "neondb_owner",
     endpointId,
     pooled,
-  }: GetConnectionUriParams): Promise<string> {
+  }: GetConnectionUriParams): Promise<ConnectionURIResponse["uri"]> {
     const { data } = await this.api.getConnectionUri({
       projectId,
       branch_id: branchId,
@@ -431,7 +461,9 @@ export class NeonApi {
     });
   }
 
-  async getConsumptionHistoryV2(p: ConsumptionHistoryParams): Promise<unknown> {
+  async getConsumptionHistoryV2(
+    p: ConsumptionHistoryParams,
+  ): Promise<ManagementApiConsumptionHistoryPerProjectV2ResponseBody> {
     const { data } = await this.api.getConsumptionHistoryPerProjectV2({
       org_id: p.orgId,
       from: p.from,
@@ -449,9 +481,10 @@ export class NeonApi {
     projectId: string,
     branchId: string,
     params: EnableBranchNeonAuthParams = {},
-  ): Promise<unknown> {
+  ): Promise<NeonAuthCreateIntegrationResponse> {
     const { data } = await this.api.createNeonAuth(projectId, branchId, {
-      auth_provider: params.authProvider ?? NeonAuthSupportedAuthProvider.BetterAuth,
+      auth_provider:
+        params.authProvider ?? NeonAuthSupportedAuthProvider.BetterAuth,
       ...(params.databaseName ? { database_name: params.databaseName } : {}),
     });
     return data;
@@ -461,11 +494,15 @@ export class NeonApi {
     projectId: string,
     branchId: string,
     body: CreateBranchAuthUserBody,
-  ): Promise<unknown> {
-    const { data } = await this.api.createBranchNeonAuthNewUser(projectId, branchId, {
-      email: body.email,
-      ...(body.name ? { name: body.name } : {}),
-    });
+  ): Promise<NeonAuthCreateNewUserResponse> {
+    const { data } = await this.api.createBranchNeonAuthNewUser(
+      projectId,
+      branchId,
+      {
+        email: body.email,
+        ...(body.name ? { name: body.name } : {}),
+      },
+    );
     return data;
   }
 
@@ -477,3 +514,21 @@ export class NeonApi {
     await this.api.deleteBranchNeonAuthUser(projectId, branchId, authUserId);
   }
 }
+
+export type {
+  ManagementApiConsumptionHistoryPerProjectV2ResponseBody,
+  ManagementApiCreateBranchResponseBody,
+  ManagementApiCreateProjectResponseBody,
+  ManagementApiCreateSnapshotResponseBody,
+  ManagementApiGetConnectionUriResponseBody,
+  ManagementApiGetProjectOperationResponseBody,
+  ManagementApiListSnapshotsResponseBody,
+  ManagementApiRestoreSnapshotResponseBody,
+  NeonApiCreateBranchResult,
+  NeonApiCreateProjectResult,
+  NeonApiCreateSnapshotResult,
+  NeonApiRestoreSnapshotAsNewBranchResult,
+  NeonApiSettledOperationStatus,
+  NeonApiWaitForOperationsResult,
+  NeonManagementApiErrorBody,
+} from "./neon-api-response-types.js";
