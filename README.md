@@ -1,6 +1,6 @@
-# Neon for Agent Platforms
+# Neon for Agent Platform Guide
 
-Sample code and a companion skill for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)**—when **your product** provisions Neon Postgres **for each customer** (agent platforms, codegen tools, multi-tenant SaaS). The companion topic follows the open **[Agent Skills](https://agentskills.io/home)** format ([specification](https://agentskills.io/specification)); this repo adds **runnable `examples/`** beside the skill for partners.
+Sample code and a companion Agent Skill for the [Neon AI Agent Program](https://neon.com/ai/agent-program), aimed at products that provision [Neon Postgres](https://neon.com/) per customer, such as agent platforms, codegen tools, and multi-tenant SaaS. The skill follows the open [Agent Skills](https://agent-skill.github.io/) format; this repo adds runnable partner examples alongside it.
 
 **What this repository is for:** This repository covers control-plane patterns for building a multi-tenant AI agent platform on Neon: safely provisioning, mutating, versioning, transferring, metering, and managing many Neon-backed apps or databases on behalf of users. It is not an intro to Neon. For connection strings, drivers, ORMs, branching basics, or Neon Auth app integration, use the neon-postgres skill and the Neon docs first; use this repo for Agent Program–specific fleet orchestration.
 
