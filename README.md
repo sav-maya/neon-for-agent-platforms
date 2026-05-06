@@ -2,7 +2,7 @@
 
 Sample code and a companion skill for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)**—when **your product** provisions Neon Postgres **for each customer** (agent platforms, codegen tools, multi-tenant SaaS). The companion topic follows the open **[Agent Skills](https://agentskills.io/home)** format ([specification](https://agentskills.io/specification)); this repo adds **runnable `examples/`** beside the skill for partners.
 
-**What this repository is for:** answering *how you build a multi-tenant AI agent platform that safely provisions, mutates, versions, and manages many Neon-backed applications or databases on behalf of users*—control-plane patterns (orgs, fleets, transfers, consumption, orchestration hooks), not introductory Neon usage. **Connection strings, drivers, Drizzle/ORM setup, generic branching tutorials, and everyday Neon Auth app integration** belong in the **`neon-postgres`** skill and **[Neon docs](https://neon.com/docs)**; install that skill first, then use this repo for Agent Program–specific fleet logic.
+**What this repository is for:** This repository covers control-plane patterns for building a multi-tenant AI agent platform on Neon: safely provisioning, mutating, versioning, transferring, metering, and managing many Neon-backed apps or databases on behalf of users. It is not an intro to Neon. For connection strings, drivers, ORMs, branching basics, or Neon Auth app integration, use the neon-postgres skill and the Neon docs first; use this repo for Agent Program–specific fleet orchestration.
 
 **Official Neon docs (pricing, limits, product behavior):** [neon.com](https://neon.com) — **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** · **[AI Agent integration](https://neon.com/docs/guides/ai-agent-integration)** · **[Database versioning](https://neon.com/docs/ai/ai-database-versioning)**.
 
@@ -73,7 +73,7 @@ This repo follows the **[Agent Skills directory model](https://agentskills.io/ho
 ```
 neon-for-agent-platforms/
 ├── examples/
-│   └── api-scripts/          # Runnable TypeScript samples (Management API) — partner engineering
+│   └── api-scripts/          # Runnable TypeScript samples (Management API) 
 ├── skills/
 │   └── neon-postgres-agent-platforms/   # Agent Skills–shaped companion topic
 │       ├── SKILL.md
