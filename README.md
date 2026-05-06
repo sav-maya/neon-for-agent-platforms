@@ -14,18 +14,16 @@ Use this section as the **single entry point** for this repository after Neon ha
 
 Agent Program partners typically use **two Neon organizations** (free-tier users vs paying customers). Store **both org IDs**, **organization API keys** for automation inside each org, and a **personal API key** for **[project transfer](https://neon.com/docs/manage/orgs-project-transfer)** between orgs. Follow **[Before you begin](https://neon.com/docs/guides/ai-agent-integration)** in the integration guide.
 
-### 2. Match your product to scripts
+### 2. Product routes
 
-Pick the route that fits your product, then use the checklists and script names in **[docs/AGENT_USE_CASES.md](docs/AGENT_USE_CASES.md)**:
+Two common product shapes; **script names and env vars** are in **[examples/api-scripts/README.md](examples/api-scripts/README.md)**.
 
+- **Route 1** — Postgres *inside* your product (embedded, sandboxes, previews): provision with **create-project**, branch with **branch**, undo/time-travel with **versioning-flow** / **snapshot** / **restore-snapshot**, delete with **delete-project** (npm scripts — see [examples/api-scripts README](examples/api-scripts/README.md)).
+- **Route 2** — Each **generated app** gets its own DB: same scripts; aim for **one Neon project per customer app**. See Neon’s **[AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration)**.
 
-| Route       | Product shape                                                     | Start in                                                                                           |
-| ----------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Route 1** | Postgres **inside your product** (embedded, ephemeral, sandboxes) | [§ Route 1](docs/AGENT_USE_CASES.md#route-1--your-product-deploys-embedded-postgres)               |
-| **Route 2** | **Generated apps** each get their own DB (codegen, starter kits)  | [§ Route 2](docs/AGENT_USE_CASES.md#route-2--full-stack-codegen-every-generated-app-gets-postgres) |
+**Which API?** [Neon Auth](https://neon.com/docs/neon-auth/api) (app users under `…/auth/users`) is not [Postgres roles](https://neon.com/docs/manage/users) (connection users) or [consumption / billing metrics](https://neon.com/docs/guides/consumption-metrics). Run **`auth-users.ts meta`** for a short routing summary.
 
-
-All runnable samples live under `**examples/api-scripts/`** (Neon Console Management API). For fleet-wide **two-org** mental model and which script to run when, read **[examples/FLEET_AND_ORG_LAYOUT.md](examples/FLEET_AND_ORG_LAYOUT.md)**.
+For fleet **two-org** patterns (create → transfer → consume → delete), read **[examples/FLEET_AND_ORG_LAYOUT.md](examples/FLEET_AND_ORG_LAYOUT.md)**.
 
 ### 3. Clone and run the examples
 
@@ -35,21 +33,21 @@ cd neon-for-agent-platforms/examples/api-scripts
 npm install
 cp .env.example .env
 # Node 20+: load vars from .env — see .env.example for each script
-node --env-file=.env create-project.mjs
-node --env-file=.env branch.mjs list
-node --env-file=.env consumption-query.mjs
-node --env-file=.env auth-users.mjs meta
+node --env-file=.env --import tsx/esm create-project.ts
+node --env-file=.env --import tsx/esm branch.ts list
+node --env-file=.env --import tsx/esm consumption-query.ts
+node --env-file=.env --import tsx/esm auth-users.ts meta
 ```
 
 **Snapshots + restore (database versioning):**
 
 ```bash
 # NEON_API_KEY + NEON_PROJECT_ID in .env
-node --env-file=.env versioning-flow.mjs
+node --env-file=.env --import tsx/esm versioning-flow.ts
 # Optional: DEMO_MUTATE=1 for a visible restore demo
 ```
 
-**Full script list, env vars, and commands:** [examples/api-scripts/README.md](examples/api-scripts/README.md) · **Routing** (Auth users vs Postgres roles vs consumption): [docs/REST_API_META.md](docs/REST_API_META.md).
+**Full script list, env vars, and commands:** [examples/api-scripts/README.md](examples/api-scripts/README.md).
 
 ### 4. AI assistants in your editor (recommended)
 
@@ -68,12 +66,12 @@ Or bootstrap skills + MCP: `npx neonctl@latest init` — [Agent Skills on Neon](
 
 ### Layout (Agent Skills + examples)
 
-The **[Agent Skills directory model](https://agentskills.io/home#what-are-agent-skills)** is: `SKILL.md` + optional `scripts/`, `references/`, `assets/`. This repo implements that under `**skills/neon-postgres-agent-platforms/`** and also ships **Management API sample code** at the root for the Agent Program (not duplicated inside the skill folder). Details: `**[skills/README.md](skills/README.md)`**.
+The **[Agent Skills directory model](https://agentskills.io/home#what-are-agent-skills)** is: `SKILL.md` + optional `scripts/`, `references/`, `assets/`. This repo implements that under **`skills/neon-postgres-agent-platforms/`** and also ships **Management API sample code** at the root for the Agent Program (not duplicated inside the skill folder). Details: **[skills/README.md](skills/README.md)**.
 
 ```
 neon-for-agent-platforms/
 ├── examples/
-│   └── api-scripts/          # Runnable Node samples (Console API) — partner engineering
+│   └── api-scripts/          # Runnable TypeScript samples (Management API) — partner engineering
 ├── skills/
 │   ├── README.md
 │   └── neon-postgres-agent-platforms/   # Agent Skills–shaped companion topic
@@ -81,15 +79,13 @@ neon-for-agent-platforms/
 │       ├── references/
 │       ├── scripts/          # See scripts/README (automation lives in examples/)
 │       └── assets/           # See assets/README (optional; env patterns in examples)
-└── docs/
 ```
 
 
-| Path                                             | Purpose                                                                                                                                                                                                                                                                         |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `[examples/api-scripts/](examples/api-scripts/)` | **Runnable samples** — `fetch` to `console.neon.tech/api/v2`; shared `[lib/neon-client.mjs](examples/api-scripts/lib/neon-client.mjs)`.                                                                                                                                         |
-| `[skills/](skills/README.md)`                    | **Agent Skills layout** — companion `[neon-postgres-agent-platforms](skills/neon-postgres-agent-platforms/)` (`**[SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md)`** + `references/`). Use **with** **[neon-postgres](https://github.com/neondatabase/agent-skills)**. |
-| `[docs/](docs/)`                                 | [Agent use cases](docs/AGENT_USE_CASES.md) · [REST API meta](docs/REST_API_META.md) · [In-repo link index](docs/AGENT_PROGRAM_REFERENCE.md) · [Partner post-call note](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)                                                              |
+| Path                                             | Purpose                                                                                                                                                                                                                                                                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `[examples/api-scripts/](examples/api-scripts/)` | **Runnable samples** — [@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client); thin [lib/neon-client.ts](examples/api-scripts/lib/neon-client.ts) wrapper (TypeScript + `tsx` — [examples/api-scripts/README.md](examples/api-scripts/README.md)). |
+| `[skills/](skills/README.md)`                    | **Agent Skills layout** — companion [neon-postgres-agent-platforms](skills/neon-postgres-agent-platforms/) ([SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md) + `references/`). Use with **[neon-postgres](https://github.com/neondatabase/agent-skills)**.                               |
 
 
 Hub for `examples/`: [examples/README.md](examples/README.md).
@@ -140,21 +136,20 @@ flowchart LR
 ## Further reference
 
 
-| Resource                                                             | Use when                                                   |
-| -------------------------------------------------------------------- | ---------------------------------------------------------- |
-| [Examples hub](examples/README.md)                                   | Short map of `api-scripts` + cross-links                   |
-| [Fleet & org layout](examples/FLEET_AND_ORG_LAYOUT.md)               | Two-org flows: create → transfer → consume → delete        |
-| [REST API meta](docs/REST_API_META.md)                               | Neon Auth `/users` vs DB roles vs `consumption_history/v2` |
-| [Partner post-call note](docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md) | Condensed links; program model is above                    |
-| [Agent Plan](https://neon.com/docs/introduction/agent-plan)          | Pricing, credits, two-org model                            |
-| [Agent Skills repo](https://github.com/neondatabase/agent-skills)    | `neon-postgres` bundle                                     |
+| Resource                                                          | Use when                                            |
+| ----------------------------------------------------------------- | --------------------------------------------------- |
+| [Examples hub](examples/README.md)                                | Short map of `api-scripts` + cross-links            |
+| [Fleet & org layout](examples/FLEET_AND_ORG_LAYOUT.md)            | Two-org flows: create → transfer → consume → delete |
+| [Agent Plan](https://neon.com/docs/introduction/agent-plan)       | Pricing, credits, program details                   |
+| [Agent Skills repo](https://github.com/neondatabase/agent-skills) | `neon-postgres` bundle                              |
+| [AI Agent Platforms](https://neon.com/use-cases/ai-agents)        | Apply / program overview on neon.com                |
 
 
 ---
 
 ## Contributing
 
-Lint and format for `examples/**/*.mjs`: repo root — `npm install`, `npm run lint`, `npm run format:check` (aliases `**npm run fmt**` / `**npm run fmt:check**`). Agent guidance: **[AGENTS.md](AGENTS.md)**.
+Lint, format, and typecheck for `examples/**/*.ts`: repo root — `npm install`, `npm run lint`, `npm run fmt:check`, `npm run typecheck`. Format: **`npm run fmt`**. Agent guidance: **[AGENTS.md](AGENTS.md)**.
 
 ---
 
@@ -162,6 +157,7 @@ Lint and format for `examples/**/*.mjs`: repo root — `npm install`, `npm run l
 
 - **Shared Slack channel** — Agent Program participants get direct access to the Neon team
 - **Email** — [agents@neon.tech](mailto:agents@neon.tech) for limit increases and account requests (include org IDs and context)
+- **HIPAA (Agent Plan)** — Requirements and enablement: [HIPAA on Neon](https://neon.com/docs/security/hipaa) (contact your Neon representative)
 - **Docs** — [neon.com/docs](https://neon.com/docs) · [API reference](https://api-docs.neon.tech)
 
 ## License

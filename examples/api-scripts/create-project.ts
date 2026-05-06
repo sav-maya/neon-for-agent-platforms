@@ -1,8 +1,7 @@
-#!/usr/bin/env node
 /**
  * Create a Neon project (REST API). Optional org + autoscaling match multi-tenant / Agent Program flows.
  */
-import { NeonApi } from "./lib/neon-client.mjs";
+import { NeonApi } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
 const orgId = process.env.NEON_ORG_ID;

@@ -1,12 +1,11 @@
-#!/usr/bin/env node
 /**
  * List branches or create a dev branch from production (main / production).
  *
  * Usage:
- *   NEON_API_KEY=... NEON_PROJECT_ID=... node branch.mjs list
- *   NEON_API_KEY=... NEON_PROJECT_ID=... node branch.mjs create <branch-name>
+ *   NEON_API_KEY=... NEON_PROJECT_ID=... npx tsx branch.ts list
+ *   NEON_API_KEY=... NEON_PROJECT_ID=... npx tsx branch.ts create <branch-name>
  */
-import { NeonApi } from "./lib/neon-client.mjs";
+import { NeonApi } from "./lib/neon-client.js";
 
 const key = process.env.NEON_API_KEY;
 const projectId = process.env.NEON_PROJECT_ID;
@@ -32,7 +31,7 @@ if (cmd === "list") {
 
 if (cmd === "create") {
   if (!branchName) {
-    console.error("Usage: node branch.mjs create <branch-name>");
+    console.error("Usage: npx tsx branch.ts create <branch-name>");
     process.exit(1);
   }
   const parent = await api.getProductionBranch(projectId);
@@ -50,5 +49,5 @@ if (cmd === "create") {
   process.exit(0);
 }
 
-console.error("Usage: node branch.mjs list | create <branch-name>");
+console.error("Usage: npx tsx branch.ts list | create <branch-name>");
 process.exit(1);

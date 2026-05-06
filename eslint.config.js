@@ -1,26 +1,27 @@
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 
 /**
- * Root lint config for examples .mjs files (ESM, Node).
+ * Lint config for examples TypeScript (ESM, Node).
  * Run: npm run lint from the repository root (after npm install).
  */
-export default [
+export default tseslint.config(
   {
     ignores: [
       "**/node_modules/**",
       "**/package-lock.json",
       ".cursor/**",
       "skills/**",
-      "docs/**",
       "**/.git/**",
     ],
   },
   js.configs.recommended,
   eslintConfigPrettier,
+  ...tseslint.configs.recommended,
   {
-    files: ["examples/**/*.mjs"],
+    files: ["examples/**/*.ts"],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "module",
@@ -29,16 +30,15 @@ export default [
       },
     },
     rules: {
-      "no-unused-vars": [
+      "@typescript-eslint/no-unused-vars": [
         "error",
         {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
-          caughtErrors: "none",
         },
       ],
       "no-console": "off",
       eqeqeq: ["error", "smart"],
     },
   },
-];
+);
