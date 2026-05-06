@@ -10,7 +10,9 @@ For the Agent Skills file layout and frontmatter rules, see the [Agent Skills sp
 
 Sample **Node** examples and documentation for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)** (platforms that provision Neon Postgres per customer), plus a **companion skill** that complements the upstream `[neon-postgres](https://github.com/neondatabase/agent-skills)` bundle.
 
-This repo uses the **[Agent Skills directory shape](https://agentskills.io/specification)** under `**skills/neon-postgres-agent-platforms/`** (`SKILL.md`, `references/`, `scripts/`, `assets/`) and keeps **executable samples** in `**examples/api-scripts/`** at the root — see `**[skills/README.md](skills/README.md)`**.
+**Differentiation:** `**neon-postgres`** covers general Neon usage (drivers, connection patterns, ORMs, branching tutorials, Auth in apps). **This repo** focuses on **multi-tenant agent-platform control planes**—orgs/fleets, transfers, tenant lifecycle, compound checkpoints, Management API orchestration—without duplicating those generic guides.
+
+This repo uses the **[Agent Skills directory shape](https://agentskills.io/specification)** under **`skills/neon-postgres-agent-platforms/`** (`SKILL.md`, `references/`, `scripts/`, `assets/`) and keeps **executable samples** in **`examples/api-scripts/`** at the root — see **[README — What’s in this repository](README.md#whats-in-this-repository)**.
 
 
 | Area                                    | Your focus                                                                                                                                                                                             |
@@ -45,4 +47,4 @@ Expectations: ES modules (TypeScript via `tsx`); validate required env at startu
 
 **Human onboarding** uses **[README § Start here](README.md#start-here-agent-program-partners)** only—do not introduce a second “getting started” story in other files without linking back there.
 
-Keep cross-links between `README.md` and `examples/README.md` consistent when you add or rename scripts.
+Keep cross-links between **[README.md](README.md)** (single doc entry point), **[examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)**, and **[skills/neon-postgres-agent-platforms/SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md)** consistent when you add or rename scripts.

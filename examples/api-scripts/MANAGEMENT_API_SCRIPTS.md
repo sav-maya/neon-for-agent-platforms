@@ -1,20 +1,20 @@
-# api-scripts
+# Management API scripts (`examples/api-scripts`)
 
-Small **Node.js + TypeScript** scripts that use Neon's official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)), wrapped by [`lib/neon-client.ts`](lib/neon-client.ts) for stable CLI shapes. Scripts run with **[tsx](https://github.com/privatenumber/tsx)** (no separate build step).
+Small **Node.js + TypeScript** scripts that use Neon’s official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)), wrapped by [`lib/neon-client.ts`](lib/neon-client.ts) for stable CLI shapes. Scripts run with **[tsx](https://github.com/privatenumber/tsx)** (no separate build step).
 
-Use these to prototype **per-tenant provisioning**, **branching**, **database versioning** (snapshots + restore), **org transfer** (free ↔ paid org), **consumption** polling, and **Neon Auth** user APIs.
+Use these to prototype **per-tenant provisioning**, **fleet branching/snapshot orchestration**, **database versioning** (snapshots + restore), **org transfer** (free ↔ paid org), **consumption** polling, and **Neon Auth management** endpoints—not introductory app connectivity (that is **`neon-postgres`** + app docs).
 
 ### Fleet provisioning and org layout
 
 Agent Program teams usually maintain **two Neon orgs** (sponsored free vs paid) and route **`NEON_ORG_ID`** per customer tier when calling **`create-project.ts`**. Upgrades use **`transfer-project.ts`** with a **personal** API key; fleet-wide usage uses **`consumption-query.ts`** with **`NEON_ORG_ID`**.
 
-For the full mapping (keys, patterns, which script covers which fleet operation), see **[`../README.md` § Fleet provisioning and org layout](../README.md#fleet-provisioning-and-org-layout)**.
+For the full mapping (keys, patterns, which script covers which fleet operation), see **[README § Fleet provisioning and org layout](../../README.md#fleet-provisioning-and-org-layout)**.
 
 ### Application REST API vs Neon Management API
 
 Scripts in **this folder** call Neon’s **Management API** (`console.neon.tech`, `@neondatabase/api-client`) — provisioning, branches, snapshots, org transfer, consumption, Neon Auth management endpoints.
 
-For **`curl` examples** aimed at **your product’s own REST API** (the HTTP surface your users or agents hit — checkpoints, versions, etc.), see **[`references/application-rest-api/`](references/application-rest-api/)**. Those examples track **[Aileen](https://github.com/andrelandgraf/aileen)** routes referenced in **[`references/AILEEN_CHECKPOINT_PATTERN.md`](references/AILEEN_CHECKPOINT_PATTERN.md)**; they are **not** Neon control-plane calls.
+For **`curl`** examples aimed at **your product’s own REST API** (checkpoints, versions, etc.), see **[references/application-rest-api/CURL_REFERENCE.md](references/application-rest-api/CURL_REFERENCE.md)**. Those examples mirror one **reference full-stack app**’s routes; they are **not** Neon control-plane calls. **Compound checkpoints** are described in **[references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**.
 
 ---
 
@@ -50,26 +50,26 @@ node --env-file=.env --import tsx/esm create-project.ts
 | Script | npm shortcut | What it does |
 |--------|----------------|----------------|
 | [`create-project.ts`](create-project.ts) | `npm run create-project` | Creates a Neon **project**; prints `projectId` and `DATABASE_URL`. Waits for initial operations to finish. |
-| [`create-project-with-auth.ts`](create-project-with-auth.ts) | `npm run create-project-with-auth` | Same as **`create-project`**, then **`POST .../branches/{id}/auth`** with **`better_auth`** so Neon Auth is enabled on the default branch. Saves Auth keys once—see stderr note. |
+| [`create-project-with-auth.ts`](create-project-with-auth.ts) | `npm run create-project-with-auth` | Same as **create-project**, then **`POST .../branches/{id}/auth`** with **`better_auth`** so Neon Auth is enabled on the default branch. Saves Auth keys once—see stderr note. |
 | [`delete-project.ts`](delete-project.ts) | `npm run delete-project` | **Deletes** a project by id (destructive). |
 | [`branch.ts`](branch.ts) | `npm run branch` | **`list`** — JSON list of branches. **`create <name>`** — new branch from **main** / **production** (or `NEON_PARENT_BRANCH_ID`). |
-| [`snapshot.ts`](snapshot.ts) | `npm run snapshot` | Creates a **logical snapshot** on the default branch (same pattern as many hosts). Optional **`NEON_SNAPSHOT_EXPIRES_AT`** (RFC 3339) for auto-deletion per [cleanup strategy](https://neon.com/docs/ai/ai-database-versioning#cleanup-strategy). |
+| [`snapshot.ts`](snapshot.ts) | `npm run snapshot` | Creates a **logical snapshot** on the default branch. Optional **`NEON_SNAPSHOT_EXPIRES_AT`** (RFC 3339) for auto-deletion per [cleanup strategy](https://neon.com/docs/ai/ai-database-versioning#cleanup-strategy). |
 | [`list-snapshots.ts`](list-snapshots.ts) | `npm run list-snapshots` | **Lists** all snapshots for **`NEON_PROJECT_ID`**. |
 | [`delete-snapshot.ts`](delete-snapshot.ts) | `npm run delete-snapshot` | **Deletes** one snapshot by **`NEON_SNAPSHOT_ID`** (polls operations). |
 | [`rename-snapshot.ts`](rename-snapshot.ts) | `npm run rename-snapshot` | **PATCH** rename — **`NEON_SNAPSHOT_NEW_NAME`**. |
 | [`delete-branch.ts`](delete-branch.ts) | `npm run delete-branch` | **Deletes** a branch by **`NEON_BRANCH_ID`** (e.g. orphaned **`main (old)`** after restore); destructive. |
-| [`versioning-flow.ts`](versioning-flow.ts) | `npm run versioning-flow` | **Versioning demo**: snapshot **root** branch → child branch → optional SQL → **restore** baseline snapshot onto child (logical snapshots are root-only; child “after” snapshot is skipped). See [AI database versioning](https://neon.com/docs/ai/ai-database-versioning). |
+| [`versioning-flow.ts`](versioning-flow.ts) | `npm run versioning-flow` | **Versioning demo**: snapshot **root** branch → child branch → optional SQL → **restore** baseline snapshot onto child. See [AI database versioning](https://neon.com/docs/ai/ai-database-versioning). |
 | [`restore-snapshot.ts`](restore-snapshot.ts) | `npm run restore-snapshot` | **One-shot restore**: applies an existing snapshot id to a target branch id. |
-| [`promote-safe-production.ts`](promote-safe-production.ts) | `npm run promote-safe -- <subcommand>` | **[Promoting Postgres safely](https://neon.com/blog/promoting-postgres-changes-safely-production)** — `bootstrap-dev`, `promote`, `refresh-dev`, `rollback-prod`. Set **`NEON_DEV_BRANCH_ID`** / branch ids as needed. |
+| [`promote-safe-production.ts`](promote-safe-production.ts) | `npm run promote-safe -- <subcommand>` | **[Promoting Postgres safely](https://neon.com/blog/promoting-postgres-changes-safely-production)** — `bootstrap-dev`, `promote`, `refresh-dev`, `rollback-prod`. |
 | [`transfer-project.ts`](transfer-project.ts) | `npm run transfer` | Moves project(s) between orgs (e.g. sponsored → paid). Needs **personal** API key + permissions. |
 | [`consumption-query.ts`](consumption-query.ts) | `npm run consumption` | **`GET /consumption_history/v2/projects`** — usage-based metrics aligned with billing. |
 | [`auth-users.ts`](auth-users.ts) | `npm run auth-users` | Neon **Auth** REST: **`meta`** (no API call—prints routing + SQL hint), **`create`**, **`delete`**. Requires Auth enabled on the branch first. |
 
 **Restore / bootstrap:** If the API returns **`ROOT_BRANCHES_LIMIT_EXCEEDED`**, the project has hit Neon’s **root-branch** limit for your plan. Delete old branches (preview restores, `bootstrap-*`, `before_restore_*`, orphaned **`main (old)`**) using **`delete-branch.ts`** or the Console, or point **`NEON_PROJECT_ID`** at an emptier project.
 
-### Checkpointing like a full-stack agent (Aileen reference)
+### Compound checkpoints (agent platforms)
 
-These scripts cover **Neon snapshot + restore** only. A production agent stack also stores **Git commit** (or deploy id) **with** each **`neon_snapshot_id`** in your **meta database**, then restores **code + DB** together—see **[references/AILEEN_CHECKPOINT_PATTERN.md](references/AILEEN_CHECKPOINT_PATTERN.md)** for a map of **[andrelandgraf/aileen](https://github.com/andrelandgraf/aileen)** and **[How to Build a Full-Stack AI Agent](https://neon.com/blog/how-to-build-a-full-stack-ai-agent)** to the same APIs.
+These scripts cover **Neon snapshot + restore + branch ops** only—the **database slice** of a version. For agent platforms, a checkpoint usually binds **source revision**, **Neon snapshot/branch ids**, **secrets/env**, **deployment or preview URL**, **agent run metadata**, and **rollback/promotion state**. See **[COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**. Generic Neon branching guidance stays in **`neon-postgres`**.
 
 ---
 
@@ -150,7 +150,7 @@ Enable Auth on the branch once: `POST .../projects/{id}/branches/{id}/auth` with
 
 ### Provision fleet tenants (free vs paid org)
 
-1. Store **`NEON_ORG_ID`** for each Neon org (free pool vs paid pool) and choose an **API key** that can create projects there ([details](../README.md#fleet-provisioning-and-org-layout)).
+1. Store **`NEON_ORG_ID`** for each Neon org (free pool vs paid pool) and choose an **API key** that can create projects there ([details](../../README.md#fleet-provisioning-and-org-layout)).
 2. For each new customer, set **`NEON_ORG_ID`** (and optionally **`NEON_PROJECT_NAME`**) and run:
 
 ```bash
@@ -165,12 +165,14 @@ node --env-file=.env --import tsx/esm create-project.ts
 node --env-file=.env --import tsx/esm create-project.ts
 ```
 
-### List branches, then create a dev branch
+### List branches, then create a branch (tenant sandbox / preview)
 
 ```bash
 node --env-file=.env --import tsx/esm branch.ts list
 node --env-file=.env --import tsx/esm branch.ts create my-feature
 ```
+
+Use this pattern to script **per-tenant** sandboxes from your control plane. Tutorials on branching concepts for a single app belong in **`neon-postgres`** and Neon’s branching guides—not duplicated here.
 
 ### Database versioning (snapshots + restore)
 
@@ -203,8 +205,6 @@ node --env-file=.env --import tsx/esm consumption-query.ts
 
 ### Neon Auth app users (REST)
 
-Print the **[meta]** map (REST vs Postgres `neon_auth`, doc links)—no credentials required beyond habit:
-
 ```bash
 node --env-file=.env --import tsx/esm auth-users.ts meta
 ```
@@ -217,7 +217,7 @@ node --env-file=.env --import tsx/esm auth-users.ts meta
 
 ---
 
-## Related docs in this repo
+## Related docs
 
 - [README — § Product routes / routing](../../README.md#2-product-routes) · [Neon Auth API](https://neon.com/docs/neon-auth/api) · [Postgres roles](https://neon.com/docs/manage/users) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics).
-- [`../../README.md`](../../README.md) — Agent Program model (two orgs, keys, skills).
+- [README](../../README.md) — Agent Program model (two orgs, keys, skills).

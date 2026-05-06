@@ -1,28 +1,37 @@
 ---
 name: neon-postgres-agent-platforms
 description: >-
-  Agent Program and agent-platform context: dual Neon orgs (sponsored free + paid),
-  org vs personal API keys, project transfer, fleet provisioning, snapshots and
-  database versioning, branching, consumption v2, Agent Plan rates and entitlements,
-  co-marketing, support, and neondatabase/neon-for-agent-platforms sample code.
-  Required companion to neon-postgres (install that first from neondatabase/agent-skills).
-  Does not replace neon-postgres. Use when users mention Neon Agent Program, Agent Plan,
-  dual org, free vs paid Neon org, transfer, fleet, snapshots, checkpoints, database
-  versioning, pricing, org project limits, HIPAA, or neon-for-agent-platforms.
+  Multi-tenant AI agent platforms on Neon: provisioning many projects/databases per user,
+  dual orgs (sponsored free + paid), org vs personal API keys, project transfer, fleet
+  provisioning, compound checkpoints (DB + revision + secrets + deploy metadata),
+  snapshot/restore orchestration for tenants, consumption v2, cost isolation, Agent Plan
+  rates, co-marketing, support, and neondatabase/neon-for-agent-platforms examples.
+  Required companion to neon-postgres (install that first). Does not cover generic Neon
+  tutorials (drivers, Drizzle, basic branching how-tos). Use when users mention Neon Agent
+  Program, Agent Plan, fleet, transfer, provisioned databases per agent run, checkpoints,
+  database versioning at platform scale, pricing, org limits, HIPAA, or neon-for-agent-platforms.
 license: Apache-2.0
 ---
 
 # Neon AI Agent Program (companion skill)
 
-**Partners cloning the repo:** follow **[README — Start here (Agent Program partners)](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#start-here-agent-program-partners)**, then **[Agent use cases](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/AGENT_USE_CASES.md)** to map product shape → scripts. This file is for **assistants** (after **`neon-postgres`**); it does not replace that skill.
+**Partners cloning the repo:** follow **[README — Start here (Agent Program partners)](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#start-here-agent-program-partners)** and **[examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)** for scripts and env vars. This file is for **assistants** (after **`neon-postgres`**); it does not replace that skill.
 
-This directory follows the **[Agent Skills](https://agentskills.io/specification)** layout (`SKILL.md`, `references/`, `scripts/`, `assets/`). Runnable Console API samples live in **`examples/api-scripts/`** at the repository root — see **`scripts/README.md`** here.
+This directory follows the **[Agent Skills](https://agentskills.io/specification)** layout (`SKILL.md`, optional `references/`, `scripts/`, `assets/`). Runnable Management API samples live under **`examples/api-scripts/`** at the **[repository root](https://github.com/neondatabase/neon-for-agent-platforms)** (not inside this skill folder).
 
 Neon’s **Agent Program** is for products where **you provision Neon Postgres for end users** (agent platforms, codegen tools, multi-tenant SaaS). Your Neon contact and **[neon.com](https://neon.com)** define pricing, limits, and eligibility.
 
+### Scope: agent platforms vs generic Neon
+
+Use **`neon-postgres`** for **general** Neon usage (everything listed in that skill—drivers, connections, ORMs, branching tutorials, Auth in apps, Data API, MCP, etc.). Do not repeat those topics here.
+
+Use **this skill** when the question is **fleet-scale control plane**: separate platform infrastructure vs generated-app databases, **two Neon orgs**, **project transfer**, **per-tenant lifecycle**, coordinating Neon Management API calls from backend workflows, **consumption and isolation**, and **what to persist beyond a branch id** (compound checkpoints—see **[compound checkpoints reference](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** in the repo).
+
+**This skill’s scope (agent platforms):** dual-org economics and keys · project-per-tenant provisioning and transfer · fleet-wide snapshot/restore orchestration and housekeeping · compound checkpoints · consumption polling for metered fleets · Agent Plan commercial terms (with links, not invented numbers) · partner support paths. Everything else → **`neon-postgres`**.
+
 ## Install Neon agent skills (order matters)
 
-**Step 1** — Install Neon's primary skill from **[github.com/neondatabase/agent-skills](https://github.com/neondatabase/agent-skills)**. This gives your AI assistant full Neon platform knowledge (Auth, Data API, `@neondatabase/toolkit`, MCP, drivers, branching, consumption APIs, and more):
+**Step 1** — Install Neon’s primary skill from **[github.com/neondatabase/agent-skills](https://github.com/neondatabase/agent-skills)**—that bundle is the baseline for **all** generic Neon guidance:
 
 ```bash
 npx skills add neondatabase/agent-skills -s neon-postgres
@@ -36,37 +45,23 @@ Or bootstrap skills + MCP together: `npx neonctl@latest init` — see [Agent Ski
 npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms
 ```
 
-Teams using Neon **without** the Agent Program / per-customer provisioning model may rely on Step 1 alone. Everyone else should use **both** steps. **Do not** rely on this skill alone for full Neon guidance—`neon-postgres` stays mandatory as the platform baseline.
+Teams using Neon **without** the Agent Program / per-customer provisioning model may rely on Step 1 alone. Everyone else should use **both** steps. **Do not** rely on this skill alone for full Neon guidance—**`neon-postgres`** stays mandatory as the platform baseline.
 
 ## Gotchas
 
 Non-obvious facts agents often get wrong without this skill:
 
-- **Install `neon-postgres` first** — This skill is a *companion*; it does not cover Auth, Data API, drivers, or general Neon how-tos.
+- **Install `neon-postgres` first** — This skill is a *companion*; it does not cover Auth for app code, Data API, drivers, Drizzle setup, generic branching tutorials, or other everyday Neon how-tos (those stay in **`neon-postgres`**).
+- **Checkpoints on platforms** — A tenant checkpoint is usually a **compound record** (source revision + Neon snapshot/branch + secrets/env version + deploy URL + agent metadata). Do not equate “checkpoint” with “Neon branch” alone—see the **[compound checkpoints doc](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**.
 - **Cross-org transfer** needs a **personal** API key (org keys only automate inside one org).
 - **After a finalized snapshot restore**, the active **branch ID changes**; poll operations to completion before reconnecting; delete orphaned `(old)` branches to avoid storage cost.
 - **Billing-aligned usage** — Prefer `GET /api/v2/consumption_history/v2/projects` over legacy consumption endpoints (fields differ).
 - **Snapshot schedules** — Not provided on Agent Plan; partners implement via snapshot API + their own scheduler.
 - **Rates and caps** — Never invent dollar amounts or limits; confirm on live neon.com docs for the question at hand.
 
-## Neon Documentation
+## Neon documentation (generic)
 
-The Neon documentation is the source of truth. Always verify limits and pricing on official pages before responding.
-
-### Fetching docs as Markdown
-
-1. Append the `.md` suffix to the docs URL when you want raw Markdown (example: `https://neon.com/docs/introduction/agent-plan.md`).
-2. Or request `Accept: text/markdown` on the standard URL.
-
-### Finding the right page
-
-Docs index (every page + short description):
-
-```
-https://neon.com/docs/llms.txt
-```
-
-Search the index instead of guessing URLs.
+How to browse Neon docs (Markdown URLs, `llms.txt`, etc.) is covered in **`neon-postgres`**—reuse that rather than duplicating here. For **Agent Plan pricing, limits, and program rules**, still verify on live **[neon.com](https://neon.com)** before quoting numbers.
 
 ## Agent Plan & Two Organizations
 
@@ -101,7 +96,7 @@ Use this when an **Agent Program** partner hits **organization-level limits** (f
 Key points:
 
 - Current defaults and ceilings are defined on **[neon.com](https://neon.com)** (**[Agent Plan](https://neon.com/docs/introduction/agent-plan)**, **[AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration)**)—do not invent new limits or promise approval.
-- For **project increase requests** (or related org capacity changes), email `**agents@neon.tech`**. Ask the partner to include **organization ID(s)** (free + paid if both), brief **growth / usage context**, and any **timeline**—and to continue using **shared Slack** if they already have a channel with Neon.
+- For **project increase requests** (or related org capacity changes), email **agents@neon.tech**. Ask the partner to include **organization ID(s)** (free + paid if both), brief **growth / usage context**, and any **timeline**—and to continue using **shared Slack** if they already have a channel with Neon.
 
 Contact: mailto:[agents@neon.tech](mailto:agents@neon.tech)
 
@@ -131,57 +126,45 @@ Link: [https://neon.com/docs/guides/ai-agent-integration.md](https://neon.com/do
 
 ## Snapshots & Database Versioning
 
-Use this when an Agent Program partner needs **undo/redo**, **checkpoints**, or **version control** for tenant databases.
+Use this when an Agent Program partner needs **undo/redo**, **tenant-level versioning**, or **Neon snapshot/restore orchestration** across many projects.
+
+For **snapshot semantics, active-branch patterns, PITR windows, and restore tutorials**, defer to **`neon-postgres`** and Neon’s **[AI database versioning](https://neon.com/docs/ai/ai-database-versioning)**. Here, emphasize **tenant fleets**:
+
+- Persist **snapshot and branch ids per tenant** in your ledger; tie each to **non-Neon state** (**[compound checkpoints](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**).
+- After finalized restores, **branch ids change** and orphaned **`(old)`** branches can multiply across projects—automate cleanup and update stored ids (**cost + correctness** at fleet scale).
+- **Poll operations** to completion before reconnecting tenants’ apps.
+- **Snapshot scheduling** is **not** a built-in Agent Plan feature—partners implement via API + **per-tenant** schedulers when needed.
+- Product semantics (manual snapshot counts per tier, Beta pricing dates, etc.) change—confirm on **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** / versioning docs, not from memory.
+
+Typical **platform-level** triggers (still persist a **compound** row in your meta DB—not Neon alone):
+
+- Before promoting generated schema changes for a tenant
+- Start or end of an **agent run** that mutates that tenant’s database
+- Before destructive migrations or customer-visible “restore” actions in your product UI
+
+Links (generic Neon): [AI database versioning](https://neon.com/docs/ai/ai-database-versioning.md) · [Backup & restore](https://neon.com/docs/guides/backup-restore.md) · [snapshots-as-checkpoints demo](https://github.com/neondatabase-labs/snapshots-as-checkpoints-demo) — use with **`neon-postgres`**, not as a second tutorial here.
+
+## Sandbox / preview databases for generated apps
+
+Use this when a partner needs **per-tenant preview or sandbox Neon databases** for **generated applications**. (“How do I create a branch?” for a single app → **`neon-postgres`**.)
 
 Key points:
 
-- **Snapshots** capture a point-in-time state of a root branch. Free org projects get **1 manual snapshot**; paid org projects get **10 manual snapshots**.
-- The recommended pattern is the **active branch pattern**: each tenant project has one root branch (production). Snapshots save versions. Restoring with `finalize_restore: true` replaces data in-place while **keeping the connection string stable**.
-- Restoring with `finalize_restore: false` creates a **preview branch** with its own connection string — useful for "what if" exploration without touching production.
-- After a finalized restore, the **branch ID changes** (the old branch becomes orphaned with `(old)` suffix). Update any stored branch IDs and delete orphaned branches to avoid storage costs.
-- **Always poll operations** to completion before reconnecting — connections made before operations finish will hit the old state.
-- Snapshots are **free during Beta**. Billing starts at **$0.09/GB-month** on May 1, 2026.
-- **Snapshot scheduling** (automated backups) is **not available** on the Agent Plan. Partners can build their own via the snapshot creation API + a cron/scheduler.
-- For recent history within the restore window, use **PITR** (point-in-time recovery): 1-day window in free org, up to 7-day window in paid org.
+- Your control plane tracks **`project_id` / `branch_id` ↔ customer / agent run** when you spin previews via the Management API.
+- **Branch and storage counts scale with fleet size**—monitor caps (free vs paid **branch limits** differ; confirm current numbers on neon.com) and garbage-collect idle previews.
+- Short **`suspend_timeout_seconds`** on preview computes reduces cost when agents create sandboxes often.
+- Pair branch/snapshot lifecycle with **secrets rotation** and **deploy URLs** via **[compound checkpoints](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** so previews stay coherent.
 
-When to create snapshots:
-
-- Before schema migrations
-- Start of each agent session
-- After successful operations (user-initiated save points)
-- Before promoting changes to production
-
-Link: [https://neon.com/docs/ai/ai-database-versioning.md](https://neon.com/docs/ai/ai-database-versioning.md)
-
-Link: [https://neon.com/docs/guides/backup-restore.md](https://neon.com/docs/guides/backup-restore.md)
-
-Demo repo: [https://github.com/neondatabase-labs/snapshots-as-checkpoints-demo](https://github.com/neondatabase-labs/snapshots-as-checkpoints-demo)
-
-## Dev vs. Prod Environments
-
-Use this when a partner needs **isolated development or preview environments** alongside production for their tenant projects.
-
-Key points:
-
-- Each tenant project can have a **production branch** (root/main) and **development branches** created from it via the API.
-- Development branches are **instant** (copy-on-write), **fully isolated** (separate compute), and **cost-efficient** (only pay for storage diffs and compute time).
-- Free org projects support up to **10 branches** total (including main). Paid org projects support up to **1,000 branches**.
-- Set `suspend_timeout_seconds: 300` (5 min) on dev branches to keep costs low — they scale to zero when idle.
-- Dev branches can be **reset** to match production at any time, or deleted after testing.
-- Combine with snapshots: create a snapshot before promoting dev → prod, so you have a rollback point.
-
-Link: [https://neon.com/docs/guides/ai-agent-integration.md](https://neon.com/docs/guides/ai-agent-integration.md)
+Link: [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration.md)
 
 ## Cost, consumption, and Agent Plan entitlements
 
 Default: give a **high-level** answer and point to live docs for numbers.
 
 - **Never invent** pricing, quotas, or limits — confirm on **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** and **[consumption metrics](https://neon.com/docs/guides/consumption-metrics)** for the user’s question.
-- On usage-based plans, use `**GET /api/v2/consumption_history/v2/projects`** for billing-aligned fields; legacy endpoints differ.
+- On usage-based plans, use `GET /api/v2/consumption_history/v2/projects` for billing-aligned fields; legacy endpoints differ—endpoint semantics are generic Neon API territory (**`neon-postgres`** + docs).
 - Poll consumption about every **15 minutes**; polling does not wake suspended computes.
-- Routing index (Auth users vs Postgres roles vs consumption): [REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md).
-
-**When the user needs line-item rates, full entitlement matrices, or consumption semantics**, read **[references/pricing-and-plan-features.md](references/pricing-and-plan-features.md)** (progressive disclosure — keeps `SKILL.md` lean).
+- **REST vs Postgres vs billing confusion** — run **`auth-users.ts meta`** from **[examples/api-scripts](https://github.com/neondatabase/neon-for-agent-platforms/tree/main/examples/api-scripts)** for a short routing map (Neon Auth REST vs Postgres roles vs consumption APIs).
 
 Quick links: [Agent Plan](https://neon.com/docs/introduction/agent-plan.md) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics.md) · [Consumption limits](https://neon.com/docs/guides/consumption-limits.md) · [Cost optimization](https://neon.com/docs/introduction/cost-optimization.md) · [Plans](https://neon.com/docs/introduction/plans.md)
 
@@ -206,7 +189,7 @@ Key points:
 
 - **Shared Slack channel**: Every Agent Plan participant gets a dedicated Slack channel with direct access to the Neon team. This is the fastest path for technical questions and urgent issues.
 - **Neon representative**: Each partner has a primary contact at Neon for account-level requests, custom configuration, and escalations.
-- **Limit increases** (project caps, rate limits, etc.): Email `**agents@neon.tech`** with org ID(s), growth context, and timeline. Also flag in the shared Slack channel.
+- **Limit increases** (project caps, rate limits, etc.): Email **agents@neon.tech** with org ID(s), growth context, and timeline. Also flag in the shared Slack channel.
 - **Billing questions**: Raise via the shared Slack channel or through the Neon representative. Credit balances and invoices are visible in the Neon Console under Billing for each org.
 - **Priority support**: Agent Plan participants receive faster response times for platform-critical issues.
 - **Community resources**: [Neon Discord](https://discord.gg/92vNTzKDGp), [Neon documentation](https://neon.com/docs), [API reference](https://api-docs.neon.tech).
@@ -217,13 +200,14 @@ Contact: mailto:[agents@neon.tech](mailto:agents@neon.tech)
 
 Use when the user wants runnable **Management API** automation from **[neondatabase/neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms)**.
 
-There is **no** separate “mini reference” doc—the **[repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** (**Start here** section) is the human entry point. **All** runnable scripts live under `**examples/api-scripts/`**:
+There is **no** separate “mini reference” doc—the **[repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** (**Start here** section) is the human entry point. **All** runnable scripts live under **`examples/api-scripts/`**:
 
-- **[Fleet provisioning & org layout](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/README.md#fleet-provisioning-and-org-layout)** — two-org mental model.
-- **[examples/api-scripts/README.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/README.md)** — full script list, env vars, commands.
-- Shared client: **[neon-client.mjs](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/lib/neon-client.mjs)** (`fetch` to Console API v2). Patterns are **adapted and simplified** from [Aileen](https://github.com/andrelandgraf/aileen) (`src/lib/neon.ts`). Fleet-oriented flows include create/delete project, branches, snapshots + **versioning-flow.mjs** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org transfer, consumption **v2**, Neon Auth users (`auth-users.mjs meta` for REST vs Postgres roles). Routing index: **[REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md)**.
+- **[README — Fleet provisioning & org layout](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#fleet-provisioning-and-org-layout)** — two-org mental model mapped to scripts.
+- **[examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)** — full script list, env vars, commands.
+- **[Compound checkpoints for agent platforms](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** — what to store besides Neon ids (revision, secrets, deploy, metadata).
+- Shared client: **[neon-client.ts](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/lib/neon-client.ts)** (wrapper over `@neondatabase/api-client`). Fleet-oriented flows include create/delete project, branches, snapshots + **`versioning-flow.ts`** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org transfer, consumption **v2**, Neon Auth admin routes (**`auth-users.ts meta`** distinguishes REST Auth vs Postgres roles).
 
-For **SQL access from application code** (drivers, pooling, ORMs), use `**neon-postgres`** from agent-skills and **[neon.com/docs](https://neon.com/docs)**—this repo does not ship a separate minimal query sample.
+For **SQL access from application code** (drivers, pooling, ORMs), use **`neon-postgres`** from agent-skills and **[neon.com/docs](https://neon.com/docs)**—this repo does not ship a separate minimal query sample.
 
 For full product guidance on provisioning fleets and org layout, use the **[AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration)** on neon.com alongside these samples.
 
