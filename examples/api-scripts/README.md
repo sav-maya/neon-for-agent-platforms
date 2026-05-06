@@ -43,10 +43,11 @@ node --env-file=.env --import tsx/esm create-project.ts
 | Script | npm shortcut | What it does |
 |--------|----------------|----------------|
 | [`create-project.ts`](create-project.ts) | `npm run create-project` | Creates a Neon **project**; prints `projectId` and `DATABASE_URL`. Waits for initial operations to finish. |
+| [`create-project-enable-auth.ts`](create-project-enable-auth.ts) | `npm run create-project-enable-auth` | Same as **`create-project`**, then **enables Neon Auth** (Better Auth) on the default branch; prints **`neonAuth`** integration keys and branch ids. |
 | [`delete-project.ts`](delete-project.ts) | `npm run delete-project` | **Deletes** a project by id (destructive). |
 | [`branch.ts`](branch.ts) | `npm run branch` | **`list`** — JSON list of branches. **`create <name>`** — new branch from **main** / **production** (or `NEON_PARENT_BRANCH_ID`). |
 | [`snapshot.ts`](snapshot.ts) | `npm run snapshot` | Creates a **logical snapshot** on the default branch (same pattern as many hosts). |
-| [`versioning-flow.ts`](versioning-flow.ts) | `npm run versioning-flow` | **Full versioning demo**: snapshot prod → child branch → optional SQL mutation → snapshot branch → **restore** baseline onto branch. See [AI database versioning](https://neon.com/docs/ai/ai-database-versioning). |
+| [`versioning-flow.ts`](versioning-flow.ts) | `npm run versioning-flow` | **Versioning demo**: baseline snapshot on prod → child branch → optional SQL → **restore** baseline onto the demo branch. *(Logical snapshots from the API apply to the **root** branch only; the script skips a second snapshot on the child.)* See [AI database versioning](https://neon.com/docs/ai/ai-database-versioning). |
 | [`restore-snapshot.ts`](restore-snapshot.ts) | `npm run restore-snapshot` | **One-shot restore**: applies an existing snapshot id to a target branch id. |
 | [`transfer-project.ts`](transfer-project.ts) | `npm run transfer` | Moves project(s) between orgs (e.g. sponsored → paid). Needs **personal** API key + permissions. |
 | [`consumption-query.ts`](consumption-query.ts) | `npm run consumption` | **`GET /consumption_history/v2/projects`** — usage-based metrics aligned with billing. |
@@ -86,7 +87,7 @@ Copy [`.env.example`](.env.example) and set only what you need.
 | `NEON_SNAPSHOT_NAME` | `snapshot.ts` — optional label |
 | `NEON_SNAPSHOT_ID` | `restore-snapshot.ts` |
 | `NEON_TARGET_BRANCH_ID` | `restore-snapshot.ts` |
-| `VERSION_BASELINE_NAME`, `VERSION_DEMO_BRANCH_NAME`, `VERSION_AFTER_NAME` | `versioning-flow.ts` — optional overrides |
+| `VERSION_BASELINE_NAME`, `VERSION_DEMO_BRANCH_NAME` | `versioning-flow.ts` — optional branch/snapshot name overrides |
 | `DEMO_MUTATE` | Set to `1` to run optional **SQL** on the demo branch (requires `npm install` so **`pg`** is present). |
 
 ### Org transfer
@@ -111,10 +112,10 @@ Copy [`.env.example`](.env.example) and set only what you need.
 
 | Variable | Used by |
 |----------|---------|
-| `USER_EMAIL`, `USER_NAME` | `auth-users.ts create` |
+| `USER_EMAIL`, `USER_NAME` | `auth-users.ts create` — API requires a **`name`** string; if **`USER_NAME`** is unset, [`NeonApi`](lib/neon-client.ts) derives it from the email local-part. |
 | `AUTH_USER_ID` | `auth-users.ts delete` |
 
-Enable Auth on the branch once: `POST .../projects/{id}/branches/{id}/auth` with `better_auth` — see [Manage Neon Auth via the API](https://neon.com/docs/neon-auth/api).
+Enable Auth on the branch once (for example run **`create-project-enable-auth.ts`**, or call `POST .../projects/{id}/branches/{id}/auth` with **`better_auth`**) — see [Manage Neon Auth via the API](https://neon.com/docs/neon-auth/api).
 
 ---
 
@@ -181,11 +182,19 @@ Print the **[meta]** map (REST vs Postgres `neon_auth`, doc links)—no credenti
 node --env-file=.env --import tsx/esm auth-users.ts meta
 ```
 
+Provision a project **with Auth already enabled** on the default branch:
+
+```bash
+node --env-file=.env --import tsx/esm create-project-enable-auth.ts
+```
+
+Then set **`NEON_PROJECT_ID`** and **`NEON_BRANCH_ID`** (from the JSON) plus **`USER_EMAIL`** for **`auth-users.ts create`** / **`delete`**.
+
 ---
 
 ## Shared library
 
-[`lib/neon-client.ts`](lib/neon-client.ts) wraps the official SDK **[`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)** and exports class **`NeonApi`** with the same convenience methods as the samples (projects, branches, snapshots, **`applySnapshot`** / restore, **`getConnectionUri`**, org transfer, consumption v2, Neon Auth users, operation polling). Prefer importing **`createApiClient`** from **`@neondatabase/api-client`** directly in production apps; use **`NeonApi`** here to keep env validation and script shapes stable.
+[`lib/neon-client.ts`](lib/neon-client.ts) wraps the official SDK **[`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)** and exports class **`NeonApi`** with the same convenience methods as the samples (projects, branches, snapshots — waits for snapshot async **operations** before returning — **`applySnapshot`** / restore with short **retry** on “snapshot not ready”, **`getConnectionUri`**, org transfer, consumption v2, **`enableNeonAuthForBranch`**, Neon Auth users with required **`name`**, operation polling). Prefer importing **`createApiClient`** from **`@neondatabase/api-client`** directly in production apps; use **`NeonApi`** here to keep env validation and script shapes stable.
 
 ---
 

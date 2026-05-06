@@ -5,12 +5,15 @@
 import {
   ConsumptionHistoryGranularity,
   createApiClient,
+  NeonAuthSupportedAuthProvider,
   OperationStatus,
   type Api,
   type Branch,
   type DefaultEndpointSettings,
+  type NeonAuthCreateIntegrationResponse,
   type Operation,
 } from "@neondatabase/api-client";
+import { isAxiosError } from "axios";
 
 export type ConsumptionGranularity = ConsumptionHistoryGranularity;
 
@@ -244,6 +247,12 @@ export class NeonApi {
     if (!snapshotId) {
       throw new Error("Create snapshot: missing snapshot id in response");
     }
+    const opIds = (data.operations ?? [])
+      .map((o: Operation) => o.id)
+      .filter((id): id is string => typeof id === "string" && id.length > 0);
+    if (opIds.length > 0) {
+      await this.waitForOperationsToSettle(projectId, opIds);
+    }
     return snapshotId;
   }
 
@@ -253,20 +262,44 @@ export class NeonApi {
     targetBranchId: string,
     options: ApplySnapshotOptions = {},
   ): Promise<void> {
-    const { data } = await this.api.restoreSnapshot(
-      { projectId, snapshotId },
-      {
-        name: options.restoreBranchName ?? `before_restore_${Date.now()}`,
-        finalize_restore: options.finalizeRestore !== false,
-        target_branch_id: targetBranchId,
-      },
-    );
-    const operationIds = (data.operations ?? [])
-      .map((op: Operation) => op.id)
-      .filter((id): id is string => typeof id === "string" && id.length > 0);
-    if (operationIds.length > 0) {
-      await this.waitForOperationsToSettle(projectId, operationIds);
+    const maxAttempts = 15;
+    const delayMs = 3000;
+    let lastErr: unknown;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const { data } = await this.api.restoreSnapshot(
+          { projectId, snapshotId },
+          {
+            name: options.restoreBranchName ?? `before_restore_${Date.now()}`,
+            finalize_restore: options.finalizeRestore !== false,
+            target_branch_id: targetBranchId,
+          },
+        );
+        const operationIds = (data.operations ?? [])
+          .map((op: Operation) => op.id)
+          .filter((id): id is string => typeof id === "string" && id.length > 0);
+        if (operationIds.length > 0) {
+          await this.waitForOperationsToSettle(projectId, operationIds);
+        }
+        return;
+      } catch (e) {
+        lastErr = e;
+        const status = isAxiosError(e) ? e.response?.status : undefined;
+        const msg =
+          isAxiosError(e) && e.response?.data && typeof e.response.data === "object"
+            ? String((e.response.data as { message?: string }).message ?? "")
+            : "";
+        const retryable =
+          status === 423 ||
+          msg.toLowerCase().includes("snapshot not ready") ||
+          msg.toLowerCase().includes("not ready");
+        if (!retryable || attempt === maxAttempts) {
+          throw e;
+        }
+        await new Promise((r) => setTimeout(r, delayMs));
+      }
     }
+    throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
   }
 
   async getConnectionUri({
@@ -322,9 +355,13 @@ export class NeonApi {
     branchId: string,
     body: CreateBranchAuthUserBody,
   ): Promise<unknown> {
+    const name =
+      body.name?.trim() ||
+      body.email.split("@")[0] ||
+      "Neon Auth user";
     const { data } = await this.api.createBranchNeonAuthNewUser(projectId, branchId, {
       email: body.email,
-      ...(body.name ? { name: body.name } : {}),
+      name,
     });
     return data;
   }
@@ -335,5 +372,22 @@ export class NeonApi {
     authUserId: string,
   ): Promise<void> {
     await this.api.deleteBranchNeonAuthUser(projectId, branchId, authUserId);
+  }
+
+  /**
+   * POST /projects/{project_id}/branches/{branch_id}/auth — Neon Auth (Better Auth).
+   * @see https://neon.com/docs/neon-auth/api
+   */
+  async enableNeonAuthForBranch(
+    projectId: string,
+    branchId: string,
+  ): Promise<NeonAuthCreateIntegrationResponse> {
+    const { data } = await this.api.createNeonAuth(projectId, branchId, {
+      auth_provider: NeonAuthSupportedAuthProvider.BetterAuth,
+    });
+    if (!data) {
+      throw new Error("enableNeonAuthForBranch: empty response");
+    }
+    return data;
   }
 }

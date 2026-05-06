@@ -5,6 +5,7 @@
   "description": "Small Neon Console REST examples (provision, branch, snapshot, versioning, org transfer, consumption)",
   "scripts": {
     "create-project": "tsx create-project.ts",
+    "create-project-enable-auth": "tsx create-project-enable-auth.ts",
     "delete-project": "tsx delete-project.ts",
     "branch": "tsx branch.ts",
     "snapshot": "tsx snapshot.ts",
