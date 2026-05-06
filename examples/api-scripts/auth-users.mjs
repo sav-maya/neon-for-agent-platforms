@@ -79,6 +79,11 @@ if (!["create", "delete"].includes(cmd)) {
   process.exit(1);
 }
 
+if (!key) {
+  console.error("Set NEON_API_KEY.");
+  process.exit(1);
+}
+
 if (!projectId || !branchId) {
   console.error("Set NEON_PROJECT_ID and NEON_BRANCH_ID.");
   process.exit(1);

@@ -10,9 +10,9 @@ const sourceOrgId = process.env.NEON_SOURCE_ORG_ID;
 const destinationOrgId = process.env.NEON_DESTINATION_ORG_ID;
 const rawIds = process.env.NEON_PROJECT_IDS || process.env.NEON_PROJECT_ID || "";
 
-if (!sourceOrgId || !destinationOrgId || !rawIds.trim()) {
+if (!key || !sourceOrgId || !destinationOrgId || !rawIds.trim()) {
   console.error(
-    "Set NEON_SOURCE_ORG_ID, NEON_DESTINATION_ORG_ID, and NEON_PROJECT_IDS (comma-separated) or NEON_PROJECT_ID.",
+    "Set NEON_API_KEY, NEON_SOURCE_ORG_ID, NEON_DESTINATION_ORG_ID, and NEON_PROJECT_IDS (comma-separated) or NEON_PROJECT_ID.",
   );
   process.exit(1);
 }

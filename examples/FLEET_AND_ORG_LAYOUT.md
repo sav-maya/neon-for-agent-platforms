@@ -1,6 +1,6 @@
 # Fleet provisioning and org layout
 
-Agent platforms usually run **two Neon organizations** (e.g. sponsored free vs paid) and **one Neon project per customer app** so isolation and quotas stay aligned. This page maps that **control-plane model** to the **scripts in this repo**—complementing the [repository README](../README.md) and the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration).
+Agent platforms usually run **two Neon organizations** (e.g. sponsored free vs paid) and **one Neon project per customer app** so isolation and quotas stay aligned. Read **[README § Start here](../README.md#start-here-agent-program-partners)** first; this page maps the **control-plane model** to **`examples/api-scripts/`**, alongside the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration).
 
 ---
 
@@ -13,9 +13,9 @@ Agent platforms usually run **two Neon organizations** (e.g. sponsored free vs p
 | **Paid org**             | Paying customers, higher quotas         | `NEON_ORG_ID` (paid), org-scoped **API key** (optional) |
 
 
-Your **control plane** decides which `org_id` to pass when **creating a project** for a new tenant. The same `create-project.mjs` call is used for both; only `**NEON_ORG_ID`** (and which **API key** you load) changes.
+Your **control plane** decides which `org_id` to pass when **creating a project** for a new tenant. The same `create-project.mjs` call is used for both; only **`NEON_ORG_ID`** (and which **API key** you load) changes.
 
-**Diagram and narrative:** [repository README](../README.md) (section *How this repo relates to the Agent Program*).
+**Diagram and narrative:** [README — Program model (reference)](../README.md#program-model-reference).
 
 ---
 

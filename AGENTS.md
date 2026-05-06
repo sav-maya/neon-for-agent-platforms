@@ -2,7 +2,7 @@
 
 Guidance for AI coding agents (Cursor, Claude Code, Copilot, etc.) working in this repository.
 
-For the Agent Skills file layout and frontmatter rules, see the [Agent Skills specification](https://agentskills.io/specification).
+For the Agent Skills file layout and frontmatter rules, see the [Agent Skills specification](https://agentskills.io/specification) and [overview](https://agentskills.io/home).
 
 **Relationship to [postgres-skills](https://github.com/neondatabase/postgres-skills):** That repository is Neon’s home for **general Postgres agent skills** (best practices, schema design, etc.). **This repo does not replace it.** Stay subscribed to postgres-skills for that content. Here we only ship **Agent Program–specific** samples plus one **companion** skill; when you edit that skill, you can use postgres-skills’ [`CONTRIBUTING.md`](https://github.com/neondatabase/postgres-skills/blob/main/CONTRIBUTING.md) as an optional guide for **SKILL.md** quality and structure—same ecosystem, different scope.
 
@@ -10,10 +10,12 @@ For the Agent Skills file layout and frontmatter rules, see the [Agent Skills sp
 
 Sample **Node** examples and documentation for the **[Neon AI Agent Program](https://neon.com/use-cases/ai-agents)** (platforms that provision Neon Postgres per customer), plus a **companion skill** that complements the upstream [`neon-postgres`](https://github.com/neondatabase/agent-skills) bundle.
 
+This repo uses the **[Agent Skills directory shape](https://agentskills.io/specification)** under **`skills/neon-postgres-agent-platforms/`** (`SKILL.md`, `references/`, `scripts/`, `assets/`) and keeps **executable samples** in **`examples/api-scripts/`** at the root — see **[`skills/README.md`](skills/README.md)**.
+
 | Area | Your focus |
 |------|------------|
 | `examples/api-scripts/` | Neon Console REST (`fetch`); shared [`lib/neon-client.mjs`](examples/api-scripts/lib/neon-client.mjs) |
-| `skills/neon-postgres-agent-platforms/` | Companion skill—Agent Program context (orgs, transfers, fleets). Ship with `neon-postgres`, not instead of it |
+| `skills/neon-postgres-agent-platforms/` | Companion skill—Agent Program context (orgs, transfers, fleets). Ship with **`neon-postgres`**, not instead of it |
 | `docs/` | Narrative guides and indexes—keep accurate relative to scripts |
 
 Unlike skill-only repos, **example JavaScript is first-class**. Prefer small, explicit scripts with clear env validation and structured JSON output where appropriate.
@@ -39,5 +41,7 @@ Convenience aliases (same script names some Neon repos use, e.g. postgres-skills
 Expectations: ES modules; validate required env at startup; prefer structured JSON for machine-readable CLI output; propagate `fetch` errors with useful bodies; never commit `.env`, keys, or connection strings.
 
 ## Docs and README
+
+**Human onboarding** uses **[README § Start here](README.md#start-here-agent-program-partners)** only—do not introduce a second “getting started” story in other files without linking back there.
 
 Keep cross-links between `README.md`, `examples/README.md`, and `docs/` consistent when you add or rename scripts.

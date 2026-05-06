@@ -8,6 +8,11 @@ const key = process.env.NEON_API_KEY;
 const orgId = process.env.NEON_ORG_ID;
 const name = process.env.NEON_PROJECT_NAME?.trim() || `tenant-${Date.now()}`;
 
+if (!key) {
+  console.error("Set NEON_API_KEY.");
+  process.exit(1);
+}
+
 const api = new NeonApi(key);
 
 const { projectId, databaseUrl } = await api.createProject({

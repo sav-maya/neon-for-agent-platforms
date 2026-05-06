@@ -38,7 +38,7 @@ const projectIds = projectIdsRaw
       .filter(Boolean)
   : undefined;
 
-if (!orgId || !from || !to) {
+if (!key || !orgId || !from || !to) {
   console.error(
     "Set NEON_API_KEY, NEON_ORG_ID, CONSUMPTION_FROM, CONSUMPTION_TO (RFC 3339). Optional: CONSUMPTION_GRANULARITY, CONSUMPTION_METRICS (comma list), CONSUMPTION_PROJECT_IDS.",
   );

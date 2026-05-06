@@ -1,6 +1,5 @@
 ---
-
-## name: neon-postgres-agent-platforms
+name: neon-postgres-agent-platforms
 description: >-
   Agent Program and agent-platform context: dual Neon orgs (sponsored free + paid),
   org vs personal API keys, project transfer, fleet provisioning, snapshots and
@@ -11,12 +10,17 @@ description: >-
   dual org, free vs paid Neon org, transfer, fleet, snapshots, checkpoints, database
   versioning, pricing, org project limits, HIPAA, or neon-for-agent-platforms.
 license: Apache-2.0
+---
 
-# Neon AI Agent Program
+# Neon AI Agent Program (companion skill)
+
+**Partners cloning the repo:** follow **[README — Start here (Agent Program partners)](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#start-here-agent-program-partners)**, then **[Agent use cases](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/AGENT_USE_CASES.md)** to map product shape → scripts. This file is for **assistants** (after **`neon-postgres`**); it does not replace that skill.
+
+This directory follows the **[Agent Skills](https://agentskills.io/specification)** layout (`SKILL.md`, `references/`, `scripts/`, `assets/`). Runnable Console API samples live in **`examples/api-scripts/`** at the repository root — see **`scripts/README.md`** here.
 
 Neon’s **Agent Program** is for products where **you provision Neon Postgres for end users** (agent platforms, codegen tools, multi-tenant SaaS). Your Neon contact and **[neon.com](https://neon.com)** define pricing, limits, and eligibility.
 
-## Start here: install Neon's agent skills
+## Install Neon agent skills (order matters)
 
 **Step 1** — Install Neon's primary skill from **[github.com/neondatabase/agent-skills](https://github.com/neondatabase/agent-skills)**. This gives your AI assistant full Neon platform knowledge (Auth, Data API, `@neondatabase/toolkit`, MCP, drivers, branching, consumption APIs, and more):
 
@@ -177,7 +181,7 @@ Default: give a **high-level** answer and point to live docs for numbers.
 - Poll consumption about every **15 minutes**; polling does not wake suspended computes.
 - Routing index (Auth users vs Postgres roles vs consumption): [REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md).
 
-**When the user needs line-item rates, full entitlement matrices, or consumption semantics**, read `**[references/pricing-and-plan-features.md](references/pricing-and-plan-features.md)`** (progressive disclosure — keeps `SKILL.md` lean).
+**When the user needs line-item rates, full entitlement matrices, or consumption semantics**, read **[references/pricing-and-plan-features.md](references/pricing-and-plan-features.md)** (progressive disclosure — keeps `SKILL.md` lean).
 
 Quick links: [Agent Plan](https://neon.com/docs/introduction/agent-plan.md) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics.md) · [Consumption limits](https://neon.com/docs/guides/consumption-limits.md) · [Cost optimization](https://neon.com/docs/introduction/cost-optimization.md) · [Plans](https://neon.com/docs/introduction/plans.md)
 
@@ -202,7 +206,7 @@ Key points:
 
 - **Shared Slack channel**: Every Agent Plan participant gets a dedicated Slack channel with direct access to the Neon team. This is the fastest path for technical questions and urgent issues.
 - **Neon representative**: Each partner has a primary contact at Neon for account-level requests, custom configuration, and escalations.
-- **Limit increases** (project caps, rate limits, etc.): Email **`agents@neon.tech`** with org ID(s), growth context, and timeline. Also flag in the shared Slack channel.
+- **Limit increases** (project caps, rate limits, etc.): Email `**agents@neon.tech`** with org ID(s), growth context, and timeline. Also flag in the shared Slack channel.
 - **Billing questions**: Raise via the shared Slack channel or through the Neon representative. Credit balances and invoices are visible in the Neon Console under Billing for each org.
 - **Priority support**: Agent Plan participants receive faster response times for platform-critical issues.
 - **Community resources**: [Neon Discord](https://discord.gg/92vNTzKDGp), [Neon documentation](https://neon.com/docs), [API reference](https://api-docs.neon.tech).
@@ -213,18 +217,18 @@ Contact: mailto:[agents@neon.tech](mailto:agents@neon.tech)
 
 Use when the user wants runnable **Management API** automation from **[neondatabase/neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms)**.
 
-There is **no** separate “mini reference” doc—the **[repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** is the entry point. **All** runnable scripts live under **`examples/api-scripts/`**:
+There is **no** separate “mini reference” doc—the **[repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** (**Start here** section) is the human entry point. **All** runnable scripts live under `**examples/api-scripts/`**:
 
 - **[Fleet provisioning & org layout](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/FLEET_AND_ORG_LAYOUT.md)** — two-org mental model.
 - **[examples/api-scripts/README.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/README.md)** — full script list, env vars, commands.
 - Shared client: **[neon-client.mjs](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/lib/neon-client.mjs)** (`fetch` to Console API v2). Patterns are **adapted and simplified** from [Aileen](https://github.com/andrelandgraf/aileen) (`src/lib/neon.ts`). Fleet-oriented flows include create/delete project, branches, snapshots + **versioning-flow.mjs** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org transfer, consumption **v2**, Neon Auth users (`auth-users.mjs meta` for REST vs Postgres roles). Routing index: **[REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md)**.
 
-For **SQL access from application code** (drivers, pooling, ORMs), use **`neon-postgres`** from agent-skills and **[neon.com/docs](https://neon.com/docs)**—this repo does not ship a separate minimal query sample.
+For **SQL access from application code** (drivers, pooling, ORMs), use `**neon-postgres`** from agent-skills and **[neon.com/docs](https://neon.com/docs)**—this repo does not ship a separate minimal query sample.
 
 For full product guidance on provisioning fleets and org layout, use the **[AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration)** on neon.com alongside these samples.
 
 ## Partner-facing docs in this repo
 
-- **Program model + how to run the samples:** [README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md) (authoritative for this repository).
-- **Post-call addendum** (link table, HIPAA, optional Aileen): [NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)
+- **Single onboarding path:** [README — Start here](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#start-here-agent-program-partners).
+- **Post-call addendum:** [NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/NEON_AGENT_PROGRAM_POST_CALL_GUIDE.md)
 
