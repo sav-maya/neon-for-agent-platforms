@@ -219,7 +219,7 @@ Use when the user wants runnable **Management API** automation from **[neondatab
 
 There is **no** separate “mini reference” doc—the **[repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** (**Start here** section) is the human entry point. **All** runnable scripts live under `**examples/api-scripts/`**:
 
-- **[Fleet provisioning & org layout](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/FLEET_AND_ORG_LAYOUT.md)** — two-org mental model.
+- **[Fleet provisioning & org layout](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/README.md#fleet-provisioning-and-org-layout)** — two-org mental model.
 - **[examples/api-scripts/README.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/README.md)** — full script list, env vars, commands.
 - Shared client: **[neon-client.mjs](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/lib/neon-client.mjs)** (`fetch` to Console API v2). Patterns are **adapted and simplified** from [Aileen](https://github.com/andrelandgraf/aileen) (`src/lib/neon.ts`). Fleet-oriented flows include create/delete project, branches, snapshots + **versioning-flow.mjs** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org transfer, consumption **v2**, Neon Auth users (`auth-users.mjs meta` for REST vs Postgres roles). Routing index: **[REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md)**.
 
