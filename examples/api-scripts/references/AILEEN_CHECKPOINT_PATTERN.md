@@ -2,7 +2,7 @@
 
 This note maps **[andrelandgraf/aileen](https://github.com/andrelandgraf/aileen)** (and the walkthrough **[How to Build a Full-Stack AI Agent](https://neon.com/blog/how-to-build-a-full-stack-ai-agent)**) to **minimal Neon API surface** and to the scripts in **this folder**.
 
-Aileen is a **full application**: control-plane Postgres (meta DB), Freestyle (git + dev server), Stack/Neon Auth, Assistant UI, Mastra, Vercel Workflows. There is **no single “checkpoint script”** in that repo—checkpointing is **orchestration** that pairs **Git commit** with **Neon snapshot id** and stores both in **`project_versions`**.
+Aileen is a **full application**: control-plane Postgres (meta DB), Freestyle (git + dev server), Stack/Neon Auth, Assistant UI, Mastra, Vercel Workflows. There is **no single “checkpoint script”** in that repo, checkpointing is **orchestration** that pairs **Git commit** with **Neon snapshot id** and stores both in **`project_versions`**.
 
 ---
 
@@ -40,9 +40,9 @@ In **this repo**, the same operations are exposed as:
 
 ## What agent platforms still implement themselves
 
-1. **Meta database** — store `neon_snapshot_id`, `git_commit_hash` (or app bundle id), optional `assistant_message_id`, timestamps (see Aileen `project_versions`).
-2. **When to snapshot** — e.g. after each agent commit or user “Create checkpoint” (Aileen: workflow + route).
-3. **Restore UX** — lookup version → restore Git (or deploy) → **`applySnapshot`** to **`main`** (or a preview branch id).
+1. **Meta database**, store `neon_snapshot_id`, `git_commit_hash` (or app bundle id), optional `assistant_message_id`, timestamps (see Aileen `project_versions`).
+2. **When to snapshot**, e.g. after each agent commit or user “Create checkpoint” (Aileen: workflow + route).
+3. **Restore UX**, lookup version → restore Git (or deploy) → **`applySnapshot`** to **`main`** (or a preview branch id).
 
 This folder intentionally stays **API-sized**; use Aileen + the blog as the **full-stack reference** for checkpointing UI and meta-schema.
 

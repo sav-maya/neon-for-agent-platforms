@@ -120,7 +120,7 @@ if (sub === "promote") {
   });
 
   console.error(
-    "[promote] 3/3 Restore dev snapshot onto prod (finalize) — brief connection drop on prod...",
+    "[promote] 3/3 Restore dev snapshot onto prod (finalize); brief connection drop on prod...",
   );
   await applySnapshotToBranch(api, projectId, candidateSnapId, prodId, {
     finalizeRestore: true,

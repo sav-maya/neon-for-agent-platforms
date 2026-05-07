@@ -1,6 +1,6 @@
 /**
  * Shared Neon Management API helpers (operation polling + common SDK call patterns).
- * Uses {@link createApiClient} types only — no alternate Neon packages.
+ * Uses {@link createApiClient} types only; no alternate Neon packages.
  */
 import type { Api } from "@neondatabase/api-client";
 import {

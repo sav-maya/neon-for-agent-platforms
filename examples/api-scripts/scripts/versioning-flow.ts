@@ -1,9 +1,9 @@
 /**
- * Full snapshot → branch → restore flow for AI database versioning (Management API only — no SQL driver).
+ * Full snapshot → branch → restore flow for AI database versioning (Management API only; no SQL driver).
  *
  * 1. Snapshot the production branch (baseline).
  * 2. Create a child branch from production (sandbox).
- * 3. SQL mutation step removed — this package uses only @neondatabase/api-client (no DB query client).
+ * 3. SQL mutation step removed; this package uses only @neondatabase/api-client (no DB query client).
  * 4. Logical snapshots are **root-branch only** in the Neon API for non-root branches.
  * 5. Restore the baseline snapshot onto the child branch (undo / rewind).
  *
@@ -54,11 +54,11 @@ const { id: demoBranchId } = await createBranchWithOperations(api, projectId, {
 });
 
 const sqlNote =
-  "skipped — no SQL/query client in this package (Neon API SDK only). Previous DEMO_MUTATE + pg demo removed.";
+  "skipped: no SQL/query client in this package (Neon API SDK only). Previous DEMO_MUTATE + pg demo removed.";
 console.error("[versioning-flow] 3/5", sqlNote);
 
 console.error(
-  "[versioning-flow] 4/5 Skip snapshot of demo branch — Neon allows logical snapshots on the root branch only.",
+  "[versioning-flow] 4/5 Skip snapshot of demo branch: Neon allows logical snapshots on the root branch only.",
 );
 
 console.error(
