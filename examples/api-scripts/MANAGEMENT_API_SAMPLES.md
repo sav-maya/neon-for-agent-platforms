@@ -1,4 +1,4 @@
-# Management API scripts (`examples/api-scripts`)
+# Management API samples (`examples/api-scripts`)
 
 Small **Node.js + TypeScript** scripts that call Neon’s official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)) via **`createApiClient`** — **no other Neon npm packages**. Sources live in **[`scripts/`](scripts/)**; **`npm run build`** emits **`dist/scripts/*.js`** (see [`tsconfig.json`](tsconfig.json)). Scripts **`import "dotenv/config"`** so variables from **`.env`** load automatically; run with **`node dist/scripts/<name>.js`** or **`npm run …`** (each npm script runs **`build`** then **`node dist/scripts/...`**).
 

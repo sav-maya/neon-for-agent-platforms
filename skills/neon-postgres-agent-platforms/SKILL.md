@@ -15,7 +15,7 @@ license: Apache-2.0
 
 # Neon AI Agent Program (companion skill)
 
-**Partners cloning the repo:** follow **[README — Start here (Agent Program partners)](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#start-here-agent-program-partners)** and **[examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)** for scripts and env vars. This file is for **assistants** (after **`neon-postgres`**); it does not replace that skill.
+**Partners cloning the repo:** follow **[README — Start here (Agent Program partners)](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#start-here-agent-program-partners)** and **[examples/api-scripts/MANAGEMENT_API_SAMPLES.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/MANAGEMENT_API_SAMPLES.md)** for scripts and env vars. This file is for **assistants** (after **`neon-postgres`**); it does not replace that skill.
 
 This directory follows the **[Agent Skills](https://agentskills.io/specification)** layout (`SKILL.md`, optional `references/`, `scripts/`, `assets/`). Runnable Management API samples live under **`examples/api-scripts/`** at the **[repository root](https://github.com/neondatabase/neon-for-agent-platforms)** (not inside this skill folder).
 
@@ -203,7 +203,7 @@ Use when the user wants runnable **Management API** automation from **[neondatab
 There is **no** separate “mini reference” doc—the **[repository README](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md)** (**Start here** section) is the human entry point. **All** runnable scripts live under **`examples/api-scripts/`**:
 
 - **[README — Fleet provisioning & org layout](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#fleet-provisioning-and-org-layout)** — two-org mental model mapped to scripts.
-- **[examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)** — full script list, env vars, commands.
+- **[examples/api-scripts/MANAGEMENT_API_SAMPLES.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/MANAGEMENT_API_SAMPLES.md)** — full script list, env vars, commands.
 - **[Compound checkpoints for agent platforms](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** — what to store besides Neon ids (revision, secrets, deploy, metadata).
 - **Neon TypeScript SDK** in these samples means **`@neondatabase/api-client`** only (no other Neon npm packages). Samples use it directly (`createApiClient`); shared **[operations helpers](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/scripts/lib/operations.ts)** only poll async operations. Fleet-oriented flows include create/delete project, branches, snapshots + **`versioning-flow.ts`** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org transfer, consumption **v2**, Neon Auth admin routes (**`auth-users.ts meta`** distinguishes REST Auth vs Postgres roles).
 

@@ -47,4 +47,4 @@ Expectations: ES modules; TypeScript sources in **`examples/api-scripts/scripts/
 
 **Human onboarding** uses **[README § Start here](README.md#start-here-agent-program-partners)** only—do not introduce a second “getting started” story in other files without linking back there.
 
-Keep cross-links between **[README.md](README.md)** (single doc entry point), **[examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)**, and **[skills/neon-postgres-agent-platforms/SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md)** consistent when you add or rename scripts.
+Keep cross-links between **[README.md](README.md)** (single doc entry point), **[examples/api-scripts/MANAGEMENT_API_SAMPLES.md](examples/api-scripts/MANAGEMENT_API_SAMPLES.md)**, and **[skills/neon-postgres-agent-platforms/SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md)** consistent when you add or rename scripts.

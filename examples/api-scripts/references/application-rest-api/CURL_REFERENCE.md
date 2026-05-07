@@ -2,7 +2,7 @@
 
 These **`curl`** examples are for an **application’s own HTTP API** (your product server), **not** Neon’s Management API. They were aligned with one **reference full-stack agent app** ([andrelandgraf/aileen](https://github.com/andrelandgraf/aileen)) so partner engineers can see how **compound checkpoints** (HTTP surface + Neon orchestration behind it) look in practice—see **[`../COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md`](../COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** for what a platform-owned checkpoint should bind together beyond a Neon branch id.
 
-Use **`APP_BASE_URL=http://localhost:3000`** (or your dev URL). Do **not** point these at Neon **`console.neon.tech`**; control-plane scripts are documented in **[README](../../../../README.md)** and **[MANAGEMENT_API_SCRIPTS.md](../../MANAGEMENT_API_SCRIPTS.md)**.
+Use **`APP_BASE_URL=http://localhost:3000`** (or your dev URL). Do **not** point these at Neon **`console.neon.tech`**; control-plane scripts are documented in **[README](../../../../README.md)** and **[MANAGEMENT_API_SAMPLES.md](../../MANAGEMENT_API_SAMPLES.md)**.
 
 ## Auth
 
