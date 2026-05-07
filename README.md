@@ -34,9 +34,29 @@ npm run versioning-flow   # NEON_API_KEY + NEON_PROJECT_ID in .env
 
 ## Fleet and org model (summary)
 
-Partners typically use **two Neon organizations** (e.g. free-tier vs paid), **organization API keys** per org, and a **personal API key** for [project transfer](https://neon.com/docs/manage/orgs-project-transfer). Neon recommends **one Neon project per customer app**.
+Partners typically run **two Neon organizations** so free-tier users and paying customers land in separate pools. Your control plane picks **which org** when creating a tenant project; upgrades often mean [transferring](https://neon.com/docs/manage/orgs-project-transfer) into the paid org and raising quotas. Use **organization API keys** per org and a **personal API key** for cross-org transfer. Neon recommends **one Neon project per customer app**.
 
-How this maps to scripts, env vars, and npm commands is documented in **[MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)** and the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration). For checkpoints and metadata beyond Neon IDs, see [Compound checkpoints](examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md).
+| Org | Typical role |
+| --- | ------------ |
+| **Sponsored free org** | Free-tier end users (within program rules on [neon.com](https://neon.com)) |
+| **Paid org** | Paying customers (metered per [Agent Plan](https://neon.com/docs/introduction/agent-plan)) |
+
+```mermaid
+flowchart LR
+  subgraph yours [Your platform]
+    CP[Control plane]
+  end
+  subgraph neon_free [Neon sponsored org]
+    F[Free-tier DBs]
+  end
+  subgraph neon_paid [Neon paid org]
+    P[Paid DBs]
+  end
+  CP -->|"Org API key"| F
+  CP -->|"Org API key"| P
+```
+
+How scripts, env vars, and npm commands map to these flows: **[MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)** and the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration). For checkpoints and metadata beyond Neon IDs, see [Compound checkpoints](examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md).
 
 ---
 
