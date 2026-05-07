@@ -16,7 +16,7 @@ For the full mapping (keys, patterns, which script covers which fleet operation)
 
 Scripts in **this folder** call Neon’s **Management API** (`console.neon.tech`, `@neondatabase/api-client`), provisioning, branches, snapshots, org transfer, consumption, Neon Auth management endpoints.
 
-For **`curl`** examples aimed at **your product’s own REST API** (checkpoints, versions, etc.), see **[references/application-rest-api/CURL_REFERENCE.md](references/application-rest-api/CURL_REFERENCE.md)**. Those examples mirror one **reference full-stack app**’s routes; they are **not** Neon control-plane calls. **Compound checkpoints** are described in **[references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**.
+For **`curl`** examples aimed at **your product’s own REST API** (checkpoints, versions, etc.), see **[reference-architecture/application-rest-api/CURL_REFERENCE.md](reference-architecture/application-rest-api/CURL_REFERENCE.md)**. Those examples mirror one **reference full-stack app**’s routes; they are **not** Neon control-plane calls. **Compound checkpoints** are described in **[reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**.
 
 ---
 
@@ -75,7 +75,7 @@ After editing **`scripts/**/*.ts`**, run **`npm run build`** again (or rely on n
 
 ### Compound checkpoints (agent platforms)
 
-These scripts cover **Neon snapshot + restore + branch ops** only, the **database slice** of a version. For agent platforms, a checkpoint usually binds **source revision**, **Neon snapshot/branch ids**, **secrets/env**, **deployment or preview URL**, **agent run metadata**, and **rollback/promotion state**. See **[COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**. Generic Neon branching guidance stays in **`neon-postgres`**.
+These scripts cover **Neon snapshot + restore + branch ops** only, the **database slice** of a version. For agent platforms, a checkpoint usually binds **source revision**, **Neon snapshot/branch ids**, **secrets/env**, **deployment or preview URL**, **agent run metadata**, and **rollback/promotion state**. See **[COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**. Generic Neon branching guidance stays in **`neon-postgres`**.
 
 ---
 

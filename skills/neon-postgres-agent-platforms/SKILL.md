@@ -25,7 +25,7 @@ Neon’s **Agent Program** is for products where **you provision Neon Postgres f
 
 Use **`neon-postgres`** for **general** Neon usage (everything listed in that skill, drivers, connections, ORMs, branching tutorials, Auth in apps, Data API, MCP, etc.). Do not repeat those topics here.
 
-Use **this skill** when the question is **fleet-scale control plane**: separate platform infrastructure vs generated-app databases, **two Neon orgs**, **project transfer**, **per-tenant lifecycle**, coordinating Neon Management API calls from backend workflows, **consumption and isolation**, and **what to persist beyond a branch id** (compound checkpoints, see **[compound checkpoints reference](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** in the repo).
+Use **this skill** when the question is **fleet-scale control plane**: separate platform infrastructure vs generated-app databases, **two Neon orgs**, **project transfer**, **per-tenant lifecycle**, coordinating Neon Management API calls from backend workflows, **consumption and isolation**, and **what to persist beyond a branch id** (compound checkpoints, see **[compound checkpoints reference](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** in the repo).
 
 **This skill’s scope (agent platforms):** dual-org economics and keys · project-per-tenant provisioning and transfer · fleet-wide snapshot/restore orchestration and housekeeping · compound checkpoints · consumption polling for metered fleets · Agent Plan commercial terms (with links, not invented numbers) · partner support paths. Everything else → **`neon-postgres`**.
 
@@ -52,7 +52,7 @@ Teams using Neon **without** the Agent Program / per-customer provisioning model
 Non-obvious facts agents often get wrong without this skill:
 
 - **Install `neon-postgres` first**: This skill is a *companion*; it does not cover Auth for app code, Data API, drivers, Drizzle setup, generic branching tutorials, or other everyday Neon how-tos (those stay in **`neon-postgres`**).
-- **Checkpoints on platforms**: A tenant checkpoint is usually a **compound record** (source revision + Neon snapshot/branch + secrets/env version + deploy URL + agent metadata). Do not equate “checkpoint” with “Neon branch” alone, see the **[compound checkpoints doc](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**.
+- **Checkpoints on platforms**: A tenant checkpoint is usually a **compound record** (source revision + Neon snapshot/branch + secrets/env version + deploy URL + agent metadata). Do not equate “checkpoint” with “Neon branch” alone, see the **[compound checkpoints doc](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**.
 - **Cross-org transfer** needs a **personal** API key (org keys only automate inside one org).
 - **After a finalized snapshot restore**, the active **branch ID changes**; poll operations to completion before reconnecting; delete orphaned `(old)` branches to avoid storage cost.
 - **Billing-aligned usage**: Prefer `GET /api/v2/consumption_history/v2/projects` over legacy consumption endpoints (fields differ).
@@ -130,7 +130,7 @@ Use this when an Agent Program partner needs **undo/redo**, **tenant-level versi
 
 For **snapshot semantics, active-branch patterns, PITR windows, and restore tutorials**, defer to **`neon-postgres`** and Neon’s **[AI database versioning](https://neon.com/docs/ai/ai-database-versioning)**. Here, emphasize **tenant fleets**:
 
-- Persist **snapshot and branch ids per tenant** in your ledger; tie each to **non-Neon state** (**[compound checkpoints](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**).
+- Persist **snapshot and branch ids per tenant** in your ledger; tie each to **non-Neon state** (**[compound checkpoints](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**).
 - After finalized restores, **branch ids change** and orphaned **`(old)`** branches can multiply across projects, automate cleanup and update stored ids (**cost + correctness** at fleet scale).
 - **Poll operations** to completion before reconnecting tenants’ apps.
 - **Snapshot scheduling** is **not** a built-in Agent Plan feature, partners implement via API + **per-tenant** schedulers when needed.
@@ -153,7 +153,7 @@ Key points:
 - Your control plane tracks **`project_id` / `branch_id` ↔ customer / agent run** when you spin previews via the Management API.
 - **Branch and storage counts scale with fleet size**, monitor caps (free vs paid **branch limits** differ; confirm current numbers on neon.com) and garbage-collect idle previews.
 - Short **`suspend_timeout_seconds`** on preview computes reduces cost when agents create sandboxes often.
-- Pair branch/snapshot lifecycle with **secrets rotation** and **deploy URLs** via **[compound checkpoints](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** so previews stay coherent.
+- Pair branch/snapshot lifecycle with **secrets rotation** and **deploy URLs** via **[compound checkpoints](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** so previews stay coherent.
 
 Link: [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration.md)
 
@@ -204,7 +204,7 @@ There is **no** separate “mini reference” doc, the **[repository README](htt
 
 - **[README, Fleet provisioning & org layout](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/README.md#fleet-provisioning-and-org-layout)**: two-org mental model mapped to scripts.
 - **[examples/api-scripts/MANAGEMENT_API_SAMPLES.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/MANAGEMENT_API_SAMPLES.md)**: full script list, env vars, commands.
-- **[Compound checkpoints for agent platforms](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**: what to store besides Neon ids (revision, secrets, deploy, metadata).
+- **[Compound checkpoints for agent platforms](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**: what to store besides Neon ids (revision, secrets, deploy, metadata).
 - **Neon TypeScript SDK** in these samples means **`@neondatabase/api-client`** only (no other Neon npm packages). Samples use it directly (`createApiClient`); shared **[operations helpers](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/examples/api-scripts/scripts/lib/operations.ts)** only poll async operations. Fleet-oriented flows include create/delete project, branches, snapshots + **`versioning-flow.ts`** ([database versioning](https://neon.com/docs/ai/ai-database-versioning)), org transfer, consumption **v2**, Neon Auth admin routes (**`auth-users.ts meta`** distinguishes REST Auth vs Postgres roles).
 
 For **SQL access from application code** (drivers, pooling, ORMs), use **`neon-postgres`** from agent-skills and **[neon.com/docs](https://neon.com/docs)**, this repo does not ship a separate minimal query sample.

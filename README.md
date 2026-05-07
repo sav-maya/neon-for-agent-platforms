@@ -56,7 +56,7 @@ flowchart LR
   CP -->|"Org API key"| P
 ```
 
-How scripts, env vars, and npm commands map to these flows: **[MANAGEMENT_API_SAMPLES.md](examples/api-scripts/MANAGEMENT_API_SAMPLES.md)** and the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration). For checkpoints and metadata beyond Neon IDs, see [Compound checkpoints](examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md).
+How scripts, env vars, and npm commands map to these flows: **[MANAGEMENT_API_SAMPLES.md](examples/api-scripts/MANAGEMENT_API_SAMPLES.md)** and the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration). For checkpoints and metadata beyond Neon IDs, see [Compound checkpoints](examples/api-scripts/reference-architecture/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md).
 
 ---
 
@@ -96,6 +96,7 @@ neon-for-agent-platforms/
 | Resource | Notes |
 | -------- | ----- |
 | [MANAGEMENT_API_SAMPLES.md](examples/api-scripts/MANAGEMENT_API_SAMPLES.md) | Catalog, env vars, flows |
+| [`reference-architecture/`](examples/api-scripts/reference-architecture/) | Architectural patterns, app-level curl examples, and compound checkpoint guidance (not runnable Neon SDK scripts) |
 | [SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md) | Companion skill text |
 | [Agent Skills repo](https://github.com/neondatabase/agent-skills) | `neon-postgres` bundle |
 | [AI Agent Platforms](https://neon.com/use-cases/ai-agents) | Program overview |

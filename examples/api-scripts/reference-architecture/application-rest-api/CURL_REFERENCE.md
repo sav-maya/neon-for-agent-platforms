@@ -25,7 +25,7 @@ There is **no** dedicated `/health` route in that upstream tree; add one in your
 From the **repository root**:
 
 ```bash
-cd examples/api-scripts/references/application-rest-api
+cd examples/api-scripts/reference-architecture/application-rest-api
 chmod +x curl-examples.sh   # once
 ./curl-examples.sh
 ```
