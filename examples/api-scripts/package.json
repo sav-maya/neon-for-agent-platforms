@@ -2,33 +2,32 @@
   "name": "neon-agent-platform-api-scripts",
   "private": true,
   "type": "module",
-  "description": "Small Neon Console REST examples (provision, branch, snapshot, versioning, org transfer, consumption)",
+  "description": "Neon Management API samples using @neondatabase/api-client only",
   "scripts": {
     "build": "tsc",
-    "prepare": "npm run build",
-    "create-project": "node dist/create-project.js",
-    "create-project-with-auth": "node dist/create-project-with-auth.js",
-    "delete-project": "node dist/delete-project.js",
-    "branch": "node dist/branch.js",
-    "snapshot": "node dist/snapshot.js",
-    "list-snapshots": "node dist/list-snapshots.js",
-    "delete-snapshot": "node dist/delete-snapshot.js",
-    "rename-snapshot": "node dist/rename-snapshot.js",
-    "delete-branch": "node dist/delete-branch.js",
-    "promote-safe": "node dist/promote-safe-production.js",
-    "versioning-flow": "node dist/versioning-flow.js",
-    "restore-snapshot": "node dist/restore-snapshot.js",
-    "transfer": "node dist/transfer-project.js",
-    "consumption": "node dist/consumption-query.js",
-    "auth-users": "node dist/auth-users.js"
+    "neon:list-projects": "npm run build && node dist/list-projects.js",
+    "create-project": "npm run build && node dist/create-project.js",
+    "create-project-with-auth": "npm run build && node dist/create-project-with-auth.js",
+    "delete-project": "npm run build && node dist/delete-project.js",
+    "branch": "npm run build && node dist/branch.js",
+    "snapshot": "npm run build && node dist/snapshot.js",
+    "list-snapshots": "npm run build && node dist/list-snapshots.js",
+    "delete-snapshot": "npm run build && node dist/delete-snapshot.js",
+    "rename-snapshot": "npm run build && node dist/rename-snapshot.js",
+    "delete-branch": "npm run build && node dist/delete-branch.js",
+    "promote-safe": "npm run build && node dist/promote-safe-production.js",
+    "versioning-flow": "npm run build && node dist/versioning-flow.js",
+    "restore-snapshot": "npm run build && node dist/restore-snapshot.js",
+    "transfer": "npm run build && node dist/transfer-project.js",
+    "consumption": "npm run build && node dist/consumption-query.js",
+    "auth-users": "npm run build && node dist/auth-users.js"
   },
   "dependencies": {
     "@neondatabase/api-client": "^2.7.1",
-    "pg": "^8.13.1"
+    "dotenv": "^16.5.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.21",
-    "@types/pg": "^8.15.4",
     "typescript": "~5.8.3"
   }
 }

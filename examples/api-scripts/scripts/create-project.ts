@@ -1,20 +1,23 @@
 /**
  * Create a Neon project (REST API). Optional org + autoscaling match multi-tenant / Agent Program flows.
  */
-import { NeonApi } from "./lib/neon-client.js";
+import "dotenv/config";
+import { createApiClient } from "@neondatabase/api-client";
 
-const key = process.env.NEON_API_KEY;
+import { createProjectWithOperations } from "./lib/operations.js";
+
+const apiKey = process.env.NEON_API_KEY?.trim();
 const orgId = process.env.NEON_ORG_ID;
 const name = process.env.NEON_PROJECT_NAME?.trim() || `tenant-${Date.now()}`;
 
-if (!key) {
-  console.error("Set NEON_API_KEY.");
+if (!apiKey) {
+  console.error("NEON_API_KEY is required.");
   process.exit(1);
 }
 
-const api = new NeonApi(key);
+const api = createApiClient({ apiKey });
 
-const { projectId, databaseUrl } = await api.createProject({
+const { projectId, databaseUrl } = await createProjectWithOperations(api, {
   name,
   orgId: orgId || undefined,
   endpointSettings: {

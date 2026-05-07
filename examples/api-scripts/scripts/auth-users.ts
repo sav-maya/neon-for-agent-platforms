@@ -1,21 +1,15 @@
 /**
  * Neon Auth — application users (REST) and how they show up in Postgres.
  *
- * This is the “manage users” path for app accounts (login, sessions), not
- * database roles (`CREATE ROLE`) — see `meta` output and README (Common product shapes).
- *
- * Prerequisites: Neon Auth enabled on the branch
- *   POST /projects/{project_id}/branches/{branch_id}/auth
- *   body: { "auth_provider": "better_auth" }
- *
  * Subcommands:
- *   meta     — print [meta] map: REST vs Postgres, doc links, list-users SQL
+ *   meta     — print [meta] map: REST vs Postgres, doc links
  *   create   — POST .../auth/users (needs USER_EMAIL, optional USER_NAME)
  *   delete   — DELETE .../auth/users/{id} (needs AUTH_USER_ID)
  */
-import { NeonApi } from "./lib/neon-client.js";
+import "dotenv/config";
+import { createApiClient } from "@neondatabase/api-client";
 
-const key = process.env.NEON_API_KEY;
+const apiKey = process.env.NEON_API_KEY?.trim();
 const projectId = process.env.NEON_PROJECT_ID;
 const branchId = process.env.NEON_BRANCH_ID;
 const [, , cmd] = process.argv;
@@ -24,7 +18,8 @@ function printMeta(): void {
   console.log(
     JSON.stringify(
       {
-        title: "[meta] Application users (Neon Auth) vs Postgres database roles",
+        title:
+          "[meta] Application users (Neon Auth) vs Postgres database roles",
         rest: {
           createUser:
             "POST /api/v2/projects/{project_id}/branches/{branch_id}/auth/users",
@@ -32,7 +27,8 @@ function printMeta(): void {
             "DELETE /api/v2/projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}",
           updateRole:
             "PUT /api/v2/projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}/role",
-          enableAuth: "POST /api/v2/projects/{project_id}/branches/{branch_id}/auth",
+          enableAuth:
+            "POST /api/v2/projects/{project_id}/branches/{branch_id}/auth",
         },
         postgres: {
           note: "Neon Auth syncs user data into the branch database (default schema `neon_auth`, e.g. table `users_sync`).",
@@ -54,7 +50,12 @@ function printMeta(): void {
             "USER_EMAIL",
             "USER_NAME (optional)",
           ],
-          delete: ["NEON_API_KEY", "NEON_PROJECT_ID", "NEON_BRANCH_ID", "AUTH_USER_ID"],
+          delete: [
+            "NEON_API_KEY",
+            "NEON_PROJECT_ID",
+            "NEON_BRANCH_ID",
+            "AUTH_USER_ID",
+          ],
         },
       },
       null,
@@ -71,15 +72,15 @@ if (cmd === "meta") {
 if (!["create", "delete"].includes(cmd ?? "")) {
   console.error(
     "Usage: node dist/auth-users.js meta | create | delete\n" +
-      "  meta   — [meta] REST vs Postgres, links, example SQL\n" +
+      "  meta   — [meta] REST vs Postgres, links\n" +
       "  create — requires USER_EMAIL (and project/branch)\n" +
       "  delete — requires AUTH_USER_ID",
   );
   process.exit(1);
 }
 
-if (!key) {
-  console.error("Set NEON_API_KEY.");
+if (!apiKey) {
+  console.error("NEON_API_KEY is required.");
   process.exit(1);
 }
 
@@ -88,7 +89,7 @@ if (!projectId || !branchId) {
   process.exit(1);
 }
 
-const api = new NeonApi(key);
+const api = createApiClient({ apiKey });
 
 if (cmd === "create") {
   const email = process.env.USER_EMAIL;
@@ -97,11 +98,11 @@ if (cmd === "create") {
     console.error("Set USER_EMAIL for create.");
     process.exit(1);
   }
-  const json = await api.createBranchAuthUser(projectId, branchId, {
+  const { data } = await api.createBranchNeonAuthNewUser(projectId, branchId, {
     email,
-    name: name || undefined,
+    ...(name ? { name } : {}),
   });
-  console.log(JSON.stringify(json, null, 2));
+  console.log(JSON.stringify(data, null, 2));
   process.exit(0);
 }
 
@@ -111,7 +112,7 @@ if (cmd === "delete") {
     console.error("Set AUTH_USER_ID for delete.");
     process.exit(1);
   }
-  await api.deleteBranchAuthUser(projectId, branchId, authUserId);
+  await api.deleteBranchNeonAuthUser(projectId, branchId, authUserId);
   console.log(JSON.stringify({ ok: true, deleted: authUserId }, null, 2));
   process.exit(0);
 }

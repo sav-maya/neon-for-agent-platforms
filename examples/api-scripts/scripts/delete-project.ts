@@ -1,10 +1,11 @@
-import { NeonApi } from "./lib/neon-client.js";
+import "dotenv/config";
+import { createApiClient } from "@neondatabase/api-client";
 
-const key = process.env.NEON_API_KEY;
+const apiKey = process.env.NEON_API_KEY?.trim();
 const projectId = process.env.NEON_PROJECT_ID;
 
-if (!key) {
-  console.error("Set NEON_API_KEY.");
+if (!apiKey) {
+  console.error("NEON_API_KEY is required.");
   process.exit(1);
 }
 
@@ -13,6 +14,6 @@ if (!projectId) {
   process.exit(1);
 }
 
-const api = new NeonApi(key);
+const api = createApiClient({ apiKey });
 await api.deleteProject(projectId);
 console.log(`Deleted project ${projectId}`);
