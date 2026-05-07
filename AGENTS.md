@@ -1,4 +1,4 @@
-# AGENTS.md
+# [AGENTS.md](http://AGENTS.md)
 
 Guidance for AI coding agents (Cursor, Claude Code, Copilot, etc.) working in this repository.
 
@@ -12,7 +12,7 @@ Sample **Node** examples and documentation for the **[Neon AI Agent Program](htt
 
 **Differentiation:** `**neon-postgres`** covers general Neon usage (drivers, connection patterns, ORMs, branching tutorials, Auth in apps). **This repo** focuses on **multi-tenant agent-platform control planes**—orgs/fleets, transfers, tenant lifecycle, compound checkpoints, Management API orchestration—without duplicating those generic guides.
 
-This repo uses the **[Agent Skills directory shape](https://agentskills.io/specification)** under **`skills/neon-postgres-agent-platforms/`** (`SKILL.md`, `references/`, `scripts/`, `assets/`) and keeps **executable samples** in **`examples/api-scripts/`** at the root — see **[README — What’s in this repository](README.md#whats-in-this-repository)**.
+This repo uses the **[Agent Skills directory shape](https://agentskills.io/specification)** under `**skills/neon-postgres-agent-platforms/`** (`SKILL.md`, `references/`, `scripts/`, `assets/`) and keeps **executable samples** in `**examples/api-scripts/`** at the root — see **[README — What’s in this repository](README.md#whats-in-this-repository)**.
 
 
 | Area                                    | Your focus                                                                                                                                                                                             |
@@ -41,7 +41,7 @@ npm run typecheck
 
 Formatting scripts align with [postgres-skills](https://github.com/neondatabase/postgres-skills): `**npm run fmt**` / `**npm run fmt:check**`.
 
-Expectations: ES modules (TypeScript via `tsx`); validate required env at startup; prefer structured JSON for machine-readable CLI output; propagate `fetch` errors with useful bodies; never commit `.env`, keys, or connection strings.
+Expectations: ES modules (TypeScript compiled with `tsc`, executed as `.js` with Node); validate required env at startup; prefer structured JSON for machine-readable CLI output; propagate `fetch` errors with useful bodies; never commit `.env`, keys, or connection strings.
 
 ## Docs and README
 

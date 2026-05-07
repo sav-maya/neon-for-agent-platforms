@@ -2,7 +2,7 @@
  * Neon Auth — application users (REST) and how they show up in Postgres.
  *
  * This is the “manage users” path for app accounts (login, sessions), not
- * database roles (`CREATE ROLE`) — see `meta` output and README § Product routes.
+ * database roles (`CREATE ROLE`) — see `meta` output and README (Common product shapes).
  *
  * Prerequisites: Neon Auth enabled on the branch
  *   POST /projects/{project_id}/branches/{branch_id}/auth
@@ -70,7 +70,7 @@ if (cmd === "meta") {
 
 if (!["create", "delete"].includes(cmd ?? "")) {
   console.error(
-    "Usage: npx tsx auth-users.ts meta | create | delete\n" +
+    "Usage: node dist/auth-users.js meta | create | delete\n" +
       "  meta   — [meta] REST vs Postgres, links, example SQL\n" +
       "  create — requires USER_EMAIL (and project/branch)\n" +
       "  delete — requires AUTH_USER_ID",

@@ -18,7 +18,7 @@ if (!key || !sourceOrgId || !destinationOrgId || !rawIds.trim()) {
 
 const projectIds = rawIds
   .split(",")
-  .map((s) => s.trim())
+  .map((s: string) => s.trim())
   .filter(Boolean);
 
 const api = new NeonApi(key);

@@ -13,7 +13,7 @@
  * `main (old)`-style branches — use `delete-branch.ts` and list branches to clean up.
  *
  * Usage:
- *   node --env-file=.env --import tsx/esm promote-safe-production.ts <subcommand>
+ *   node --env-file=.env dist/promote-safe-production.js <subcommand>
  */
 import { NeonApi } from "./lib/neon-client.js";
 
@@ -22,7 +22,7 @@ const projectIdEnv = process.env.NEON_PROJECT_ID;
 const [, , sub] = process.argv;
 
 function usage(): void {
-  console.error(`Usage: promote-safe-production.ts <bootstrap-dev|promote|refresh-dev|rollback-prod>
+  console.error(`Usage: dist/promote-safe-production.js <bootstrap-dev|promote|refresh-dev|rollback-prod>
 
 See https://neon.com/blog/promoting-postgres-changes-safely-production
 `);

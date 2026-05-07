@@ -1,6 +1,6 @@
 # Management API scripts (`examples/api-scripts`)
 
-Small **Node.js + TypeScript** scripts that use Neon’s official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)), wrapped by [`lib/neon-client.ts`](lib/neon-client.ts) for stable CLI shapes. Scripts run with **[tsx](https://github.com/privatenumber/tsx)** (no separate build step).
+Small **Node.js + TypeScript** scripts that use Neon’s official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)), wrapped by [`lib/neon-client.ts`](lib/neon-client.ts) for stable CLI shapes. Source is **TypeScript**; **`npm install`** compiles to **`dist/*.js`** via **`tsc`** (see [`tsconfig.json`](tsconfig.json)), and you run the compiled files with **Node**.
 
 Use these to prototype **per-tenant provisioning**, **fleet branching/snapshot orchestration**, **database versioning** (snapshots + restore), **org transfer** (free ↔ paid org), **consumption** polling, and **Neon Auth management** endpoints—not introductory app connectivity (that is **`neon-postgres`** + app docs).
 
@@ -25,7 +25,7 @@ For **`curl`** examples aimed at **your product’s own REST API** (checkpoints,
 | Node.js **20+** | Enables `node --env-file=.env` (or export vars manually). |
 | `NEON_API_KEY` | [API key](https://neon.com/docs/manage/api-keys). Org keys are scoped to one org; **personal** keys can transfer projects across orgs. |
 | `NEON_ORG_ID` | Often required when creating projects with a personal key. |
-| **`npm run …`** | Does **not** load `.env` by itself — export vars in the shell first, or run **`node --env-file=.env ./node_modules/tsx/dist/cli.mjs`** with a script path (e.g. **`branch.ts`**) so the process reads the file. |
+| **`npm run …`** | Does **not** load `.env` by itself — export vars in the shell first, or run **`node --env-file=.env dist/<script>.js`** (e.g. **`dist/branch.js`**) so the process reads the file. |
 
 Install dependencies once (**`pg`** is only used for optional SQL in **`versioning-flow.ts`**):
 
@@ -36,12 +36,14 @@ cp .env.example .env
 # Fill in NEON_API_KEY and any IDs your scripts need (see table below)
 ```
 
-Run scripts with env vars loaded (**Node.js 20+** loads `.env`; **`--import tsx/esm`** runs TypeScript without a build):
+Run scripts with env vars loaded (**Node.js 20+** loads `.env`). After **`npm install`**, outputs live under **`dist/`**:
 
 ```bash
-node --env-file=.env --import tsx/esm create-project.ts
+node --env-file=.env dist/create-project.js
 # Or: npm run create-project  (only if NEON_* vars are already exported — npm does not read .env)
 ```
+
+To recompile after editing **`.ts`** sources: **`npm run build`** (or **`npx tsc`**).
 
 ---
 
@@ -154,7 +156,7 @@ Enable Auth on the branch once: `POST .../projects/{id}/branches/{id}/auth` with
 2. For each new customer, set **`NEON_ORG_ID`** (and optionally **`NEON_PROJECT_NAME`**) and run:
 
 ```bash
-node --env-file=.env --import tsx/esm create-project.ts
+node --env-file=.env dist/create-project.js
 ```
 
 3. Persist **`projectId`** and **`DATABASE_URL`** from the JSON output in your control-plane database.
@@ -162,14 +164,14 @@ node --env-file=.env --import tsx/esm create-project.ts
 ### Spin up a single tenant project
 
 ```bash
-node --env-file=.env --import tsx/esm create-project.ts
+node --env-file=.env dist/create-project.js
 ```
 
 ### List branches, then create a branch (tenant sandbox / preview)
 
 ```bash
-node --env-file=.env --import tsx/esm branch.ts list
-node --env-file=.env --import tsx/esm branch.ts create my-feature
+node --env-file=.env dist/branch.js list
+node --env-file=.env dist/branch.js create my-feature
 ```
 
 Use this pattern to script **per-tenant** sandboxes from your control plane. Tutorials on branching concepts for a single app belong in **`neon-postgres`** and Neon’s branching guides—not duplicated here.
@@ -179,7 +181,7 @@ Use this pattern to script **per-tenant** sandboxes from your control plane. Tut
 End-to-end demo (creates a **child branch** named `versioning-demo-<timestamp>`):
 
 ```bash
-node --env-file=.env --import tsx/esm versioning-flow.ts
+node --env-file=.env dist/versioning-flow.js
 ```
 
 Optional: **`DEMO_MUTATE=1`** inserts a row so restore visibly rewinds the demo branch.
@@ -187,26 +189,26 @@ Optional: **`DEMO_MUTATE=1`** inserts a row so restore visibly rewinds the demo 
 Restore an arbitrary snapshot onto a branch:
 
 ```bash
-node --env-file=.env --import tsx/esm restore-snapshot.ts
+node --env-file=.env dist/restore-snapshot.js
 # Needs NEON_SNAPSHOT_ID and NEON_TARGET_BRANCH_ID in .env
 ```
 
 ### Move a customer from free org to paid org
 
 ```bash
-node --env-file=.env --import tsx/esm transfer-project.ts
+node --env-file=.env dist/transfer-project.js
 ```
 
 ### Poll usage (invoice-aligned metrics)
 
 ```bash
-node --env-file=.env --import tsx/esm consumption-query.ts
+node --env-file=.env dist/consumption-query.js
 ```
 
 ### Neon Auth app users (REST)
 
 ```bash
-node --env-file=.env --import tsx/esm auth-users.ts meta
+node --env-file=.env dist/auth-users.js meta
 ```
 
 ---
@@ -219,5 +221,5 @@ node --env-file=.env --import tsx/esm auth-users.ts meta
 
 ## Related docs
 
-- [README — § Product routes / routing](../../README.md#2-product-routes) · [Neon Auth API](https://neon.com/docs/neon-auth/api) · [Postgres roles](https://neon.com/docs/manage/users) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics).
+- [README — Common product shapes / routing](../../README.md#2-common-product-shapes) · [Neon Auth API](https://neon.com/docs/neon-auth/api) · [Postgres roles](https://neon.com/docs/manage/users) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics).
 - [README](../../README.md) — Agent Program model (two orgs, keys, skills).

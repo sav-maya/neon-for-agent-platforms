@@ -25,7 +25,7 @@ const metricsRaw = process.env.CONSUMPTION_METRICS;
 const metrics = metricsRaw
   ? metricsRaw
       .split(",")
-      .map((s) => s.trim())
+      .map((s: string) => s.trim())
       .filter(Boolean)
   : DEFAULT_METRICS;
 
@@ -33,7 +33,7 @@ const projectIdsRaw = process.env.CONSUMPTION_PROJECT_IDS;
 const projectIds = projectIdsRaw
   ? projectIdsRaw
       .split(",")
-      .map((s) => s.trim())
+      .map((s: string) => s.trim())
       .filter(Boolean)
   : undefined;
 

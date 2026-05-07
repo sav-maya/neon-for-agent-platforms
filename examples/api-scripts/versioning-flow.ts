@@ -24,7 +24,7 @@ if (!key || !projectId) {
 const api = new NeonApi(key);
 
 const prod = await api.getProductionBranch(projectId);
-if (!prod?.id) {
+if (prod == null || !prod.id) {
   console.error("No production branch (main or production).");
   process.exit(1);
 }
