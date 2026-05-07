@@ -17,7 +17,7 @@ This repo uses the **[Agent Skills directory shape](https://agentskills.io/speci
 
 | Area                                    | Your focus                                                                                                                                                                                             |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `examples/api-scripts/`                 | Neon Management API via **[`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)** (`scripts/*.ts` → `dist/*.js`); shared **[operation helpers](examples/api-scripts/scripts/lib/operations.ts)** only |
+| `examples/api-scripts/`                 | **Neon TypeScript SDK** = **[`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)** only (no other `@neondatabase/*` packages); (`scripts/*.ts` → `dist/scripts/*.js`); shared **[operation polling helpers](examples/api-scripts/scripts/lib/operations.ts)** only |
 | `skills/neon-postgres-agent-platforms/` | Companion skill—Agent Program context (orgs, transfers, fleets). Ship with `**neon-postgres`**, not instead of it                                                                                      |
 
 
@@ -41,7 +41,7 @@ npm run typecheck
 
 Formatting scripts align with [postgres-skills](https://github.com/neondatabase/postgres-skills): `**npm run fmt**` / `**npm run fmt:check**`.
 
-Expectations: ES modules; TypeScript sources in **`examples/api-scripts/scripts/`**, compile with **`npm run build`** (`tsc`) to **`dist/`**, run with **`node dist/...js`**; runtime deps are **`@neondatabase/api-client`** and **`dotenv`** only; validate **`NEON_API_KEY`** (and script-specific env) at startup; prefer structured JSON for machine-readable CLI output; never commit `.env`, keys, or connection strings.
+Expectations: ES modules; TypeScript sources in **`examples/api-scripts/scripts/`**, compile with **`npm run build`** (`tsc`) to **`dist/scripts/`**, run with **`node dist/scripts/...js`**; runtime deps are **`@neondatabase/api-client`** and **`dotenv`** only; validate **`NEON_API_KEY`** (and script-specific env) at startup; prefer structured JSON for machine-readable CLI output; never commit `.env`, keys, or connection strings.
 
 ## Docs and README
 

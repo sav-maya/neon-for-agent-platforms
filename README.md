@@ -29,7 +29,7 @@ For fleet **two-org** patterns (create → transfer → consume → delete), see
 
 ### 3. Clone and run the examples
 
-Source lives under **`examples/api-scripts/scripts/`** as TypeScript. **`npm run build`** runs **`tsc`**, which writes **`dist/*.js`** — you then run those files with **`node dist/...`** (no `tsx`; see **`examples/api-scripts/package.json`**). Scripts use **`import "dotenv/config"`**, so a local **`.env`** is loaded automatically.
+Source lives under **`examples/api-scripts/scripts/`** as TypeScript. **`npm run build`** runs **`tsc`**, which writes **`dist/scripts/*.js`** — run them with **`node dist/scripts/...`** (no `tsx`; see **`examples/api-scripts/package.json`**). Scripts use **`import "dotenv/config"`**, so a local **`.env`** is loaded automatically. **Neon TypeScript SDK** in this repository means **[`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)** only (Neon control-plane / Management API), not drivers or other Neon npm packages.
 
 **This fork (`sav-maya`) may be ahead of [neondatabase/neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms).** Clone the repo where your branch lives (replace with your fork if different):
 
@@ -40,17 +40,17 @@ npm install
 cp .env.example .env
 # Set NEON_API_KEY in .env — see .env.example
 npm run build
-node dist/list-projects.js
-node dist/branch.js list
-node dist/consumption-query.js
-node dist/auth-users.js meta
+node dist/scripts/list-projects.js
+node dist/scripts/branch.js list
+node dist/scripts/consumption-query.js
+node dist/scripts/auth-users.js meta
 ```
 
 **Snapshots + restore (database versioning):**
 
 ```bash
 # NEON_API_KEY + NEON_PROJECT_ID in .env
-npm run build && node dist/versioning-flow.js
+npm run build && node dist/scripts/versioning-flow.js
 ```
 
 **Full script list, env vars, and commands:** [examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md).
@@ -89,7 +89,7 @@ neon-for-agent-platforms/
 
 | Path                                             | Purpose                                                                                                                                                                                                                                                                                                       |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`examples/api-scripts/`](examples/api-scripts/) | **Runnable samples** — [@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client) only; TypeScript under [`scripts/`](examples/api-scripts/scripts/), compiled to **`dist/`**, run with **`node`** ([MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)). |
+| [`examples/api-scripts/`](examples/api-scripts/) | **Runnable samples** — [@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client) only; TypeScript under [`scripts/`](examples/api-scripts/scripts/), compiled to **`dist/scripts/`**, run with **`node`** ([MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)). |
 | [`skills/neon-postgres-agent-platforms/`](skills/neon-postgres-agent-platforms/) | **Companion skill** — [SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md) + `references/`. Use with **[neon-postgres](https://github.com/neondatabase/agent-skills)**.                               |
 
 ---

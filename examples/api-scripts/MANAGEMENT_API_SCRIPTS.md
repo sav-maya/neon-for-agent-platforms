@@ -1,6 +1,8 @@
 # Management API scripts (`examples/api-scripts`)
 
-Small **Node.js + TypeScript** scripts that call Neon’s official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)) via **`createApiClient`** — **no other Neon npm packages**. Sources live in **[`scripts/`](scripts/)**; **`npm run build`** emits **`dist/*.js`** (see [`tsconfig.json`](tsconfig.json)). Scripts **`import "dotenv/config"`** so variables from **`.env`** load automatically; run with **`node dist/<name>.js`** or **`npm run …`** (each npm script runs **`build`** then **`node dist/...`**).
+Small **Node.js + TypeScript** scripts that call Neon’s official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)) via **`createApiClient`** — **no other Neon npm packages**. Sources live in **[`scripts/`](scripts/)**; **`npm run build`** emits **`dist/scripts/*.js`** (see [`tsconfig.json`](tsconfig.json)). Scripts **`import "dotenv/config"`** so variables from **`.env`** load automatically; run with **`node dist/scripts/<name>.js`** or **`npm run …`** (each npm script runs **`build`** then **`node dist/scripts/...`**).
+
+**When we say “Neon TypeScript SDK” here, we mean [`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client) and nothing else** — not `@neondatabase/serverless`, `@neondatabase/neon-js`, `@neondatabase/toolkit`, or any other `@neondatabase/*` package.
 
 Use these to prototype **per-tenant provisioning**, **fleet branching/snapshot orchestration**, **database versioning** (snapshots + restore), **org transfer** (free ↔ paid org), **consumption** polling, and **Neon Auth management** endpoints—not introductory app connectivity (that is **`neon-postgres`** + app docs).
 
@@ -40,7 +42,7 @@ npm run build
 Run a compiled script:
 
 ```bash
-node dist/list-projects.js
+node dist/scripts/list-projects.js
 # Or: npm run neon:list-projects
 ```
 
@@ -157,7 +159,7 @@ Enable Auth on the branch once: `POST .../projects/{id}/branches/{id}/auth` with
 2. For each new customer, set **`NEON_ORG_ID`** (and optionally **`NEON_PROJECT_NAME`**) and run:
 
 ```bash
-node --env-file=.env dist/create-project.js
+node --env-file=.env dist/scripts/create-project.js
 ```
 
 3. Persist **`projectId`** and **`DATABASE_URL`** from the JSON output in your control-plane database.
@@ -165,14 +167,14 @@ node --env-file=.env dist/create-project.js
 ### Spin up a single tenant project
 
 ```bash
-node --env-file=.env dist/create-project.js
+node --env-file=.env dist/scripts/create-project.js
 ```
 
 ### List branches, then create a branch (tenant sandbox / preview)
 
 ```bash
-node --env-file=.env dist/branch.js list
-node --env-file=.env dist/branch.js create my-feature
+node --env-file=.env dist/scripts/branch.js list
+node --env-file=.env dist/scripts/branch.js create my-feature
 ```
 
 Use this pattern to script **per-tenant** sandboxes from your control plane. Tutorials on branching concepts for a single app belong in **`neon-postgres`** and Neon’s branching guides—not duplicated here.
@@ -182,32 +184,32 @@ Use this pattern to script **per-tenant** sandboxes from your control plane. Tut
 End-to-end demo (creates a **child branch** named `versioning-demo-<timestamp>`):
 
 ```bash
-node --env-file=.env dist/versioning-flow.js
+node --env-file=.env dist/scripts/versioning-flow.js
 ```
 
 Restore an arbitrary snapshot onto a branch:
 
 ```bash
-node --env-file=.env dist/restore-snapshot.js
+node --env-file=.env dist/scripts/restore-snapshot.js
 # Needs NEON_SNAPSHOT_ID and NEON_TARGET_BRANCH_ID in .env
 ```
 
 ### Move a customer from free org to paid org
 
 ```bash
-node --env-file=.env dist/transfer-project.js
+node --env-file=.env dist/scripts/transfer-project.js
 ```
 
 ### Poll usage (invoice-aligned metrics)
 
 ```bash
-node --env-file=.env dist/consumption-query.js
+node --env-file=.env dist/scripts/consumption-query.js
 ```
 
 ### Neon Auth app users (REST)
 
 ```bash
-node --env-file=.env dist/auth-users.js meta
+node --env-file=.env dist/scripts/auth-users.js meta
 ```
 
 ---
