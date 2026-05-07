@@ -35,7 +35,7 @@ const { projectId, databaseUrl } = await api.createProject({
 });
 
 const prod = await api.getProductionBranch(projectId);
-if (!prod?.id) {
+if (prod == null || !prod.id) {
   console.error(JSON.stringify({ error: "No production branch after create", projectId }, null, 2));
   process.exit(1);
 }
