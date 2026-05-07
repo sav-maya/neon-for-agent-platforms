@@ -1,16 +1,19 @@
 /**
  * Create a logical snapshot on the default branch (same pattern as many agent hosts).
  */
-import { NeonApi } from "./lib/neon-client.js";
+import "dotenv/config";
+import { createApiClient } from "@neondatabase/api-client";
 
-const key = process.env.NEON_API_KEY;
+import { createLogicalSnapshot } from "./lib/operations.js";
+
+const apiKey = process.env.NEON_API_KEY?.trim();
 const projectId = process.env.NEON_PROJECT_ID;
 const snapshotName = process.env.NEON_SNAPSHOT_NAME;
 const expiresAt = process.env.NEON_SNAPSHOT_EXPIRES_AT?.trim();
 const lsn = process.env.NEON_SNAPSHOT_LSN?.trim();
 
-if (!key) {
-  console.error("Set NEON_API_KEY.");
+if (!apiKey) {
+  console.error("NEON_API_KEY is required.");
   process.exit(1);
 }
 
@@ -19,8 +22,8 @@ if (!projectId) {
   process.exit(1);
 }
 
-const api = new NeonApi(key);
-const snapshotId = await api.createSnapshot(projectId, {
+const api = createApiClient({ apiKey });
+const snapshotId = await createLogicalSnapshot(api, projectId, {
   name: snapshotName || undefined,
   ...(expiresAt ? { expiresAt } : {}),
   ...(lsn ? { lsn } : {}),

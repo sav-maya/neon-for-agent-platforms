@@ -12,5 +12,5 @@
     "isolatedModules": true,
     "types": ["node"]
   },
-  "include": ["api-scripts/**/*.ts"]
+  "include": ["api-scripts/scripts/**/*.ts"]
 }

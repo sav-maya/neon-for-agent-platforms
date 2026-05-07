@@ -34,7 +34,7 @@ In **this repo**, the same operations are exposed as:
 | End-to-end branching + snapshots + restore demo | [`versioning-flow.ts`](../versioning-flow.ts) |
 | Provision project + enable Auth (Better Auth) | [`create-project-with-auth.ts`](../create-project-with-auth.ts) |
 
-**Auth note:** Aileen uses **Stack** (`auth_provider: "stack"`, `POST /projects/auth/create`). Agent Program samples often use **`better_auth`** on the branch (`enableBranchNeonAuth` in [`lib/neon-client.ts`](../lib/neon-client.ts)). Product choice differs; Neon Auth APIs are documented separately.
+**Auth note:** Aileen uses **Stack** (`auth_provider: "stack"`, `POST /projects/auth/create`). Agent Program samples often use **`better_auth`** on the branch (`createNeonAuth` via **`@neondatabase/api-client`** in [`scripts/create-project-with-auth.ts`](../scripts/create-project-with-auth.ts)). Product choice differs; Neon Auth APIs are documented separately.
 
 ---
 

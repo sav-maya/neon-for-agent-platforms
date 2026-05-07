@@ -5,14 +5,20 @@
  *   NEON_API_KEY=... NEON_PROJECT_ID=... node dist/branch.js list
  *   NEON_API_KEY=... NEON_PROJECT_ID=... node dist/branch.js create <branch-name>
  */
-import { NeonApi } from "./lib/neon-client.js";
+import "dotenv/config";
+import { createApiClient } from "@neondatabase/api-client";
 
-const key = process.env.NEON_API_KEY;
+import {
+  createBranchWithOperations,
+  getProductionBranchId,
+} from "./lib/operations.js";
+
+const apiKey = process.env.NEON_API_KEY?.trim();
 const projectId = process.env.NEON_PROJECT_ID;
 const [, , cmd, branchName] = process.argv;
 
-if (!key) {
-  console.error("Set NEON_API_KEY.");
+if (!apiKey) {
+  console.error("NEON_API_KEY is required.");
   process.exit(1);
 }
 
@@ -21,10 +27,16 @@ if (!projectId) {
   process.exit(1);
 }
 
-const api = new NeonApi(key);
+const api = createApiClient({ apiKey });
 
 if (cmd === "list") {
-  const branches = await api.listBranches(projectId);
+  const { data } = await api.listProjectBranches({ projectId });
+  const branches = (data.branches ?? []).map((b) => ({
+    id: b.id,
+    name: b.name,
+    created_at: b.created_at,
+    parent_id: b.parent_id,
+  }));
   console.log(JSON.stringify(branches, null, 2));
   process.exit(0);
 }
@@ -34,18 +46,20 @@ if (cmd === "create") {
     console.error("Usage: node dist/branch.js create <branch-name>");
     process.exit(1);
   }
-  const parent = await api.getProductionBranch(projectId);
-  if (parent == null || !parent.id) {
+  const prodId =
+    process.env.NEON_PARENT_BRANCH_ID?.trim() ||
+    (await getProductionBranchId(api, projectId));
+  if (!prodId) {
     console.error("Could not resolve production branch (main or production).");
     process.exit(1);
   }
-  const optionalParent = process.env.NEON_PARENT_BRANCH_ID;
-  const parentId = optionalParent || parent.id;
-  const { id } = await api.createBranch(projectId, {
+  const { id } = await createBranchWithOperations(api, projectId, {
     name: branchName,
-    parentId,
+    parentId: prodId,
   });
-  console.log(JSON.stringify({ branchId: id, parentBranchId: parentId }, null, 2));
+  console.log(
+    JSON.stringify({ branchId: id, parentBranchId: prodId }, null, 2),
+  );
   process.exit(0);
 }
 

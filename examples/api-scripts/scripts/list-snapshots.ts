@@ -2,16 +2,18 @@
  * List all logical snapshots for a project (IDs, names, timestamps — see Neon API).
  * @see https://neon.com/docs/ai/ai-database-versioning#list-available-snapshots
  */
-import { NeonApi } from "./lib/neon-client.js";
+import "dotenv/config";
+import { createApiClient } from "@neondatabase/api-client";
 
-const key = process.env.NEON_API_KEY;
+const apiKey = process.env.NEON_API_KEY?.trim();
 const projectId = process.env.NEON_PROJECT_ID;
 
-if (!key || !projectId) {
+if (!apiKey || !projectId) {
   console.error("Set NEON_API_KEY and NEON_PROJECT_ID.");
   process.exit(1);
 }
 
-const api = new NeonApi(key);
-const snapshots = await api.listSnapshots(projectId);
+const api = createApiClient({ apiKey });
+const { data } = await api.listSnapshots(projectId);
+const snapshots = data.snapshots ?? [];
 console.log(JSON.stringify({ projectId, snapshots }, null, 2));

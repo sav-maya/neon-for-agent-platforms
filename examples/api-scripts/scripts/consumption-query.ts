@@ -2,9 +2,13 @@
  * GET /consumption_history/v2/projects — usage-based metrics aligned with billing.
  * @see https://neon.com/docs/guides/consumption-metrics
  */
-import { NeonApi, type ConsumptionGranularity } from "./lib/neon-client.js";
+import "dotenv/config";
+import {
+  ConsumptionHistoryGranularity,
+  createApiClient,
+} from "@neondatabase/api-client";
 
-const key = process.env.NEON_API_KEY;
+const apiKey = process.env.NEON_API_KEY?.trim();
 const orgId = process.env.NEON_ORG_ID;
 const from = process.env.CONSUMPTION_FROM;
 const to = process.env.CONSUMPTION_TO;
@@ -37,36 +41,37 @@ const projectIds = projectIdsRaw
       .filter(Boolean)
   : undefined;
 
-function isConsumptionGranularity(s: string): s is ConsumptionGranularity {
-  return s === "hourly" || s === "daily" || s === "monthly";
-}
+const GRANULARITY_BY_ENV: Record<string, ConsumptionHistoryGranularity> = {
+  hourly: ConsumptionHistoryGranularity.Hourly,
+  daily: ConsumptionHistoryGranularity.Daily,
+  monthly: ConsumptionHistoryGranularity.Monthly,
+};
 
-if (!key || !orgId || !from || !to) {
+if (!apiKey || !orgId || !from || !to) {
   console.error(
     "Set NEON_API_KEY, NEON_ORG_ID, CONSUMPTION_FROM, CONSUMPTION_TO (RFC 3339). Optional: CONSUMPTION_GRANULARITY, CONSUMPTION_METRICS (comma list), CONSUMPTION_PROJECT_IDS.",
   );
   process.exit(1);
 }
 
-if (!isConsumptionGranularity(granularityRaw)) {
+const granularity = GRANULARITY_BY_ENV[granularityRaw];
+if (granularity === undefined) {
   console.error("CONSUMPTION_GRANULARITY must be hourly, daily, or monthly.");
   process.exit(1);
 }
 
-const granularity = granularityRaw;
-
-const api = new NeonApi(key);
-const json = await api.getConsumptionHistoryV2({
-  orgId,
+const api = createApiClient({ apiKey });
+const { data } = await api.getConsumptionHistoryPerProjectV2({
+  org_id: orgId,
   from,
   to,
   granularity,
   metrics,
-  projectIds,
+  project_ids: projectIds,
   limit: process.env.CONSUMPTION_LIMIT
     ? Number(process.env.CONSUMPTION_LIMIT)
     : undefined,
   cursor: process.env.CONSUMPTION_CURSOR || undefined,
 });
 
-console.log(JSON.stringify(json, null, 2));
+console.log(JSON.stringify(data, null, 2));

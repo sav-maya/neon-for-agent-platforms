@@ -29,24 +29,26 @@ For fleet **two-org** patterns (create → transfer → consume → delete), see
 
 ### 3. Clone and run the examples
 
+Source lives under **`examples/api-scripts/scripts/`** as TypeScript. Build once, then run compiled **`dist/*.js`** with Node (scripts use **`import "dotenv/config"`** so a local **`.env`** is picked up automatically).
+
 ```bash
 git clone https://github.com/neondatabase/neon-for-agent-platforms.git
 cd neon-for-agent-platforms/examples/api-scripts
 npm install
 cp .env.example .env
-# Node 20+: load vars from .env — see .env.example for each script (npm install compiles TypeScript to dist/)
-node --env-file=.env dist/create-project.js
-node --env-file=.env dist/branch.js list
-node --env-file=.env dist/consumption-query.js
-node --env-file=.env dist/auth-users.js meta
+# Set NEON_API_KEY in .env — see .env.example
+npm run build
+node dist/list-projects.js
+node dist/branch.js list
+node dist/consumption-query.js
+node dist/auth-users.js meta
 ```
 
 **Snapshots + restore (database versioning):**
 
 ```bash
 # NEON_API_KEY + NEON_PROJECT_ID in .env
-node --env-file=.env dist/versioning-flow.js
-# Optional: DEMO_MUTATE=1 for a visible restore demo
+npm run build && node dist/versioning-flow.js
 ```
 
 **Full script list, env vars, and commands:** [examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md).
@@ -85,7 +87,7 @@ neon-for-agent-platforms/
 
 | Path                                             | Purpose                                                                                                                                                                                                                                                                                                       |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`examples/api-scripts/`](examples/api-scripts/) | **Runnable samples** — [@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client); thin [lib/neon-client.ts](examples/api-scripts/lib/neon-client.ts) wrapper (TypeScript compiled with `tsc`, run with Node — [MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)). |
+| [`examples/api-scripts/`](examples/api-scripts/) | **Runnable samples** — [@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client) only; TypeScript under [`scripts/`](examples/api-scripts/scripts/), compiled to **`dist/`**, run with **`node`** ([MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)). |
 | [`skills/neon-postgres-agent-platforms/`](skills/neon-postgres-agent-platforms/) | **Companion skill** — [SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md) + `references/`. Use with **[neon-postgres](https://github.com/neondatabase/agent-skills)**.                               |
 
 ---
@@ -157,11 +159,11 @@ These scripts are the **building blocks** for a fleet; your product wraps them i
 
 | Fleet goal | Script | Notes |
 | ---------- | ------ | ----- |
-| **Provision** a new tenant DB | [`create-project.ts`](examples/api-scripts/create-project.ts) | Set **`NEON_ORG_ID`** to the org for that customer tier; **`NEON_PROJECT_NAME`** (e.g. `tenant-{customerId}`). Output includes **`projectId`** and **`DATABASE_URL`** — persist both. |
-| **Offboard** / destroy tenant | [`delete-project.ts`](examples/api-scripts/delete-project.ts) | **`NEON_PROJECT_ID`** |
-| **Upgrade tier** (free org → paid org) | [`transfer-project.ts`](examples/api-scripts/transfer-project.ts) | **`NEON_SOURCE_ORG_ID`**, **`NEON_DESTINATION_ORG_ID`**, **`NEON_PROJECT_ID`** (or **`NEON_PROJECT_IDS`**). Uses **personal** API key with transfer permissions. After transfer, **raise quotas** per Neon docs (PATCH project / integration guide). |
-| **Observe usage** across projects | [`consumption-query.ts`](examples/api-scripts/consumption-query.ts) | **`NEON_ORG_ID`** + time range; optional **`CONSUMPTION_PROJECT_IDS`** to slice the fleet. |
-| **Branches / versioning** per tenant | [`branch.ts`](examples/api-scripts/branch.ts), [`versioning-flow.ts`](examples/api-scripts/versioning-flow.ts), [`snapshot.ts`](examples/api-scripts/snapshot.ts) | Orchestrate **per-tenant** sandbox/preview DBs and restores; keep `project_id` / branch ids in your ledger. Conceptual branching tutorials → **`neon-postgres`** + [branching docs](https://neon.com/docs/guides/branching); this repo focuses on **fleet-scale** Management API calls. |
+| **Provision** a new tenant DB | [`scripts/create-project.ts`](examples/api-scripts/scripts/create-project.ts) | Set **`NEON_ORG_ID`** to the org for that customer tier; **`NEON_PROJECT_NAME`** (e.g. `tenant-{customerId}`). Output includes **`projectId`** and **`DATABASE_URL`** — persist both. |
+| **Offboard** / destroy tenant | [`scripts/delete-project.ts`](examples/api-scripts/scripts/delete-project.ts) | **`NEON_PROJECT_ID`** |
+| **Upgrade tier** (free org → paid org) | [`scripts/transfer-project.ts`](examples/api-scripts/scripts/transfer-project.ts) | **`NEON_SOURCE_ORG_ID`**, **`NEON_DESTINATION_ORG_ID`**, **`NEON_PROJECT_ID`** (or **`NEON_PROJECT_IDS`**). Uses **personal** API key with transfer permissions. After transfer, **raise quotas** per Neon docs (PATCH project / integration guide). |
+| **Observe usage** across projects | [`scripts/consumption-query.ts`](examples/api-scripts/scripts/consumption-query.ts) | **`NEON_ORG_ID`** + time range; optional **`CONSUMPTION_PROJECT_IDS`** to slice the fleet. |
+| **Branches / versioning** per tenant | [`scripts/branch.ts`](examples/api-scripts/scripts/branch.ts), [`scripts/versioning-flow.ts`](examples/api-scripts/scripts/versioning-flow.ts), [`scripts/snapshot.ts`](examples/api-scripts/scripts/snapshot.ts) | Orchestrate **per-tenant** sandbox/preview DBs and restores; keep `project_id` / branch ids in your ledger. Conceptual branching tutorials → **`neon-postgres`** + [branching docs](https://neon.com/docs/guides/branching); this repo focuses on **fleet-scale** Management API calls. |
 
 Full env reference: [`examples/api-scripts/MANAGEMENT_API_SCRIPTS.md`](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md).
 
@@ -169,7 +171,7 @@ Full env reference: [`examples/api-scripts/MANAGEMENT_API_SCRIPTS.md`](examples/
 
 1. **Per-tier provisioning** — When a user signs up on the free plan, call **create-project** with the **free** `NEON_ORG_ID` and your naming convention. When they convert to paid, either provision net-new in the paid org **or** **transfer** the existing project and adjust quotas.
 2. **Secrets layout** — Common: `NEON_API_KEY` + `NEON_ORG_ID_FREE` + `NEON_ORG_ID_PAID` in your worker; pick org id by tier before calling create. Alternatively, two separate API keys (one per org) and match **`NEON_ORG_ID`** to the key you use.
-3. **Idempotency & bookkeeping** — This repo prints JSON; your fleet layer should persist **`project_id` ↔ `customer_id`** and handle partial failures (Neon is async; **`create-project`** already waits on initial operations via **`neon-client.ts`**).
+3. **Idempotency & bookkeeping** — This repo prints JSON; your fleet layer should persist **`project_id` ↔ `customer_id`** and handle partial failures (Neon is async; **`create-project`** waits on initial operations via **`scripts/lib/operations.ts`** polling).
 
 ### 5. What is not automated here
 
@@ -191,7 +193,7 @@ For how these map to product shapes, see **[Common product shapes](#2-common-pro
 
 | Resource                                                          | Use when                                            |
 | ----------------------------------------------------------------- | --------------------------------------------------- |
-| [Management API scripts](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md) | Script catalog, env vars, typical flows, `neon-client.ts` |
+| [Management API scripts](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md) | Script catalog, env vars, typical flows, `@neondatabase/api-client` |
 | [Agent Plan](https://neon.com/docs/introduction/agent-plan)       | Pricing, credits, program details                   |
 | [Agent Skills repo](https://github.com/neondatabase/agent-skills) | `neon-postgres` bundle                              |
 | [AI Agent Platforms](https://neon.com/use-cases/ai-agents)        | Apply / program overview on neon.com                |
