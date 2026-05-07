@@ -29,10 +29,12 @@ For fleet **two-org** patterns (create → transfer → consume → delete), see
 
 ### 3. Clone and run the examples
 
-Source lives under **`examples/api-scripts/scripts/`** as TypeScript. Build once, then run compiled **`dist/*.js`** with Node (scripts use **`import "dotenv/config"`** so a local **`.env`** is picked up automatically).
+Source lives under **`examples/api-scripts/scripts/`** as TypeScript. **`npm run build`** runs **`tsc`**, which writes **`dist/*.js`** — you then run those files with **`node dist/...`** (no `tsx`; see **`examples/api-scripts/package.json`**). Scripts use **`import "dotenv/config"`**, so a local **`.env`** is loaded automatically.
+
+**This fork (`sav-maya`) may be ahead of [neondatabase/neon-for-agent-platforms](https://github.com/neondatabase/neon-for-agent-platforms).** Clone the repo where your branch lives (replace with your fork if different):
 
 ```bash
-git clone https://github.com/neondatabase/neon-for-agent-platforms.git
+git clone https://github.com/sav-maya/neon-for-agent-platforms.git
 cd neon-for-agent-platforms/examples/api-scripts
 npm install
 cp .env.example .env
