@@ -3,7 +3,7 @@
  * https://neon.com/blog/promoting-postgres-changes-safely-production
  *
  * Usage:
- *   node --env-file=.env dist/promote-safe-production.js <subcommand>
+ *   node --env-file=.env dist/scripts/promote-safe-production.js <subcommand>
  */
 import "dotenv/config";
 import { createApiClient } from "@neondatabase/api-client";

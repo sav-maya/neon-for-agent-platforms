@@ -2,8 +2,8 @@
  * List branches or create a dev branch from production (main / production).
  *
  * Usage:
- *   NEON_API_KEY=... NEON_PROJECT_ID=... node dist/branch.js list
- *   NEON_API_KEY=... NEON_PROJECT_ID=... node dist/branch.js create <branch-name>
+ *   NEON_API_KEY=... NEON_PROJECT_ID=... node dist/scripts/branch.js list
+ *   NEON_API_KEY=... NEON_PROJECT_ID=... node dist/scripts/branch.js create <branch-name>
  */
 import "dotenv/config";
 import { createApiClient } from "@neondatabase/api-client";
@@ -43,7 +43,7 @@ if (cmd === "list") {
 
 if (cmd === "create") {
   if (!branchName) {
-    console.error("Usage: node dist/branch.js create <branch-name>");
+    console.error("Usage: node dist/scripts/branch.js create <branch-name>");
     process.exit(1);
   }
   const prodId =
@@ -63,5 +63,5 @@ if (cmd === "create") {
   process.exit(0);
 }
 
-console.error("Usage: node dist/branch.js list | create <branch-name>");
+console.error("Usage: node dist/scripts/branch.js list | create <branch-name>");
 process.exit(1);

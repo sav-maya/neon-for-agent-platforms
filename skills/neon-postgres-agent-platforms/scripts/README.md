@@ -6,6 +6,6 @@ This repository keeps **runnable Console API examples** at the **repository root
 
 **→ [`examples/api-scripts/`](../../../examples/api-scripts/)**
 
-Use that folder for runnable **`examples/api-scripts/scripts/`** (TypeScript → **`dist/`**), env templates, and full command lists ([**MANAGEMENT_API_SCRIPTS.md**](../../../examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)).
+Use that folder for runnable **`examples/api-scripts/scripts/`** (TypeScript → **`dist/scripts/`**), env templates, and full command lists ([**MANAGEMENT_API_SCRIPTS.md**](../../../examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)).
 
 Agents implementing automation should **read or execute** those paths relative to the cloned repo—not expect copies under `skills/…/scripts/`.
