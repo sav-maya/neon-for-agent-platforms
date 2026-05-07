@@ -1,6 +1,6 @@
 # Pricing, consumption, and Agent Plan feature matrix
 
-Read this file when the user needs **line-item rates**, **quota numbers**, the **full Agent Plan entitlement list**, or **consumption API** field guidance—not for a high-level “what is the Agent Program” answer (use `SKILL.md` for that).
+Read this file when the user needs **line-item rates**, **quota numbers**, the **full Agent Plan entitlement list**, or **consumption API** field guidance, not for a high-level “what is the Agent Program” answer (use `SKILL.md` for that).
 
 Always re-verify numbers on live **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** and **[consumption](https://neon.com/docs/guides/consumption-metrics)** docs before quoting.
 
@@ -22,7 +22,7 @@ Use when a partner asks about **pricing**, **cost optimization**, or **consumpti
 
 ### Cost optimization levers
 
-- **Scale-to-zero**: Most tenant databases are idle most of the time. Set `suspend_timeout_seconds` aggressively (300s for free, 60s–300s for paid).
+- **Scale-to-zero**: Most tenant databases are idle most of the time. Set `suspend_timeout_seconds` aggressively (300s for free, 60s-300s for paid).
 - **Autoscaling caps**: Set `autoscaling_limit_max_cu` per project to prevent runaway compute. Free: max 2 CU. Paid: up to 16 CU.
 - **Per-project quotas**: Configure `active_time_seconds`, `logical_size_bytes`, `compute_time_seconds`, `data_transfer_bytes` on project creation or via PATCH.
 - **Branch cleanup**: Delete old dev branches and orphaned `(old)` branches after restores.
@@ -30,7 +30,7 @@ Use when a partner asks about **pricing**, **cost optimization**, or **consumpti
 
 ### Consumption tracking
 
-- On **usage-based plans** (Launch, Scale, Agent, Enterprise), use `GET /api/v2/consumption_history/v2/projects` for metrics that match billing (`compute_unit_seconds`, branch storage byte-hours, transfer bytes, etc.). Legacy endpoints return different fields — see Neon’s consumption docs.
+- On **usage-based plans** (Launch, Scale, Agent, Enterprise), use `GET /api/v2/consumption_history/v2/projects` for metrics that match billing (`compute_unit_seconds`, branch storage byte-hours, transfer bytes, etc.). Legacy endpoints return different fields, see Neon’s consumption docs.
 - Poll about every **15 minutes** (Neon’s update cadence). Polling does **not** wake suspended computes.
 - Alert users at **80%** and **95%** of their quota to prevent unexpected suspension.
 - Routing index (Auth `/users` vs Postgres roles vs consumption): [REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md) in this repo.
@@ -41,7 +41,7 @@ Use when a partner asks about **pricing**, **cost optimization**, or **consumpti
 
 ## Agent Plan features summary
 
-Use when a partner asks **what's included** in the Agent Plan. Do not invent numbers — verify against live docs. This summary reflects the docs as of April 2026.
+Use when a partner asks **what's included** in the Agent Plan. Do not invent numbers, verify against live docs. This summary reflects the docs as of April 2026.
 
 ### Database and compute
 
@@ -53,9 +53,9 @@ Use when a partner asks **what's included** in the Agent Plan. Do not invent num
 
 ### APIs and services
 
-- **Neon Auth** — managed auth built on Better Auth (up to 1M MAU on paid)
-- **Data API** — PostgREST-compatible REST API for direct DB access
-- **Management API** — full CRUD for projects, branches, snapshots, quotas
+- **Neon Auth**: managed auth built on Better Auth (up to 1M MAU on paid)
+- **Data API**: PostgREST-compatible REST API for direct DB access
+- **Management API**: full CRUD for projects, branches, snapshots, quotas
 - **Higher rate limits** on both Management and Data APIs for Agent Plan
 
 ### Versioning and recovery

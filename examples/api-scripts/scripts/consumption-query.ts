@@ -1,5 +1,5 @@
 /**
- * GET /consumption_history/v2/projects — usage-based metrics aligned with billing.
+ * GET /consumption_history/v2/projects: usage-based metrics aligned with billing.
  * @see https://neon.com/docs/guides/consumption-metrics
  */
 import "dotenv/config";

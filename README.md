@@ -14,7 +14,7 @@ Sources: [`examples/api-scripts/scripts/`](examples/api-scripts/scripts/) (TypeS
 
 **Neon TypeScript SDK** in this repository means **[`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)** only (Neon Management API), not other Neon npm packages.
 
-Script names, env vars, and full command list: **[examples/api-scripts/MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)**.
+Script names, env vars, and full command list: **[examples/api-scripts/MANAGEMENT_API_SAMPLES.md](examples/api-scripts/MANAGEMENT_API_SAMPLES.md)**.
 
 ```bash
 git clone https://github.com/neondatabase/neon-for-agent-platforms.git
@@ -56,7 +56,7 @@ flowchart LR
   CP -->|"Org API key"| P
 ```
 
-How scripts, env vars, and npm commands map to these flows: **[MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)** and the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration). For checkpoints and metadata beyond Neon IDs, see [Compound checkpoints](examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md).
+How scripts, env vars, and npm commands map to these flows: **[MANAGEMENT_API_SAMPLES.md](examples/api-scripts/MANAGEMENT_API_SAMPLES.md)** and the [AI Agent integration guide](https://neon.com/docs/guides/ai-agent-integration). For checkpoints and metadata beyond Neon IDs, see [Compound checkpoints](examples/api-scripts/references/COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md).
 
 ---
 
@@ -86,7 +86,7 @@ neon-for-agent-platforms/
 
 | Path | Purpose |
 | ---- | ------- |
-| [`examples/api-scripts/`](examples/api-scripts/) | [`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client) samples. Build and run via **`npm run …`** ([MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md)). |
+| [`examples/api-scripts/`](examples/api-scripts/) | [`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client) samples. Build and run via **`npm run …`** ([MANAGEMENT_API_SAMPLES.md](examples/api-scripts/MANAGEMENT_API_SAMPLES.md)). |
 | [`skills/neon-postgres-agent-platforms/`](skills/neon-postgres-agent-platforms/) | Companion skill ([SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md)). Use with [neon-postgres](https://github.com/neondatabase/agent-skills). |
 
 ---
@@ -95,13 +95,13 @@ neon-for-agent-platforms/
 
 | Resource | Notes |
 | -------- | ----- |
-| [MANAGEMENT_API_SCRIPTS.md](examples/api-scripts/MANAGEMENT_API_SCRIPTS.md) | Catalog, env vars, flows |
+| [MANAGEMENT_API_SAMPLES.md](examples/api-scripts/MANAGEMENT_API_SAMPLES.md) | Catalog, env vars, flows |
 | [SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md) | Companion skill text |
 | [Agent Skills repo](https://github.com/neondatabase/agent-skills) | `neon-postgres` bundle |
 | [AI Agent Platforms](https://neon.com/use-cases/ai-agents) | Program overview |
 | [API reference](https://api-docs.neon.tech) | Management API |
 
-**Requirements:** Node **20+** recommended (`node --env-file=.env`). [Neon API key](https://neon.com/docs/manage/api-keys) (`NEON_API_KEY`). Org-scoped keys often need `NEON_ORG_ID` (see MANAGEMENT doc).
+**Requirements:** Node **20+** recommended (`node --env-file=.env`). [Neon API key](https://neon.com/docs/manage/api-keys) (`NEON_API_KEY`). Org-scoped keys often need `NEON_ORG_ID` (see **MANAGEMENT_API_SAMPLES.md**).
 
 ---
 

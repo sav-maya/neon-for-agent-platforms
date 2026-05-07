@@ -1,6 +1,6 @@
 /**
  * Delete a branch by id (e.g. orphaned `main (old)` after a finalized restore).
- * Destructive — Neon may reject protected/root branches.
+ * Destructive; Neon may reject protected/root branches.
  *
  * @see https://neon.com/docs/ai/ai-database-versioning#cleanup-strategy
  */
@@ -19,7 +19,7 @@ if (!apiKey || !projectId || !branchId) {
 }
 
 console.error(
-  "[delete-branch] Deleting branch — irreversible for that branch environment.",
+  "[delete-branch] Deleting branch; irreversible for that branch environment.",
 );
 
 const api = createApiClient({ apiKey });

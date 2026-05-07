@@ -1,5 +1,5 @@
 /**
- * List all logical snapshots for a project (IDs, names, timestamps — see Neon API).
+ * List all logical snapshots for a project (IDs, names, timestamps; see Neon API).
  * @see https://neon.com/docs/ai/ai-database-versioning#list-available-snapshots
  */
 import "dotenv/config";

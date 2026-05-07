@@ -1,7 +1,7 @@
 /**
  * Create a Neon project, then enable Neon Auth on the default branch (Better Auth).
  *
- * Prints Neon Auth keys once — store pub_client_key / secret_server_key securely.
+ * Prints Neon Auth keys once; store pub_client_key / secret_server_key securely.
  */
 import "dotenv/config";
 import {

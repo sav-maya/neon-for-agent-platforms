@@ -1,10 +1,10 @@
 /**
- * Neon Auth — application users (REST) and how they show up in Postgres.
+ * Neon Auth: application users (REST) and how they show up in Postgres.
  *
  * Subcommands:
- *   meta     — print [meta] map: REST vs Postgres, doc links
- *   create   — POST .../auth/users (needs USER_EMAIL, optional USER_NAME)
- *   delete   — DELETE .../auth/users/{id} (needs AUTH_USER_ID)
+ *   meta     print [meta] map: REST vs Postgres, doc links
+ *   create   POST .../auth/users (needs USER_EMAIL, optional USER_NAME)
+ *   delete   DELETE .../auth/users/{id} (needs AUTH_USER_ID)
  */
 import "dotenv/config";
 import { createApiClient } from "@neondatabase/api-client";
@@ -34,7 +34,7 @@ function printMeta(): void {
           note: "Neon Auth syncs user data into the branch database (default schema `neon_auth`, e.g. table `users_sync`).",
           listUsersExampleSql: "SELECT * FROM neon_auth.users_sync LIMIT 50;",
           rolesNote:
-            "Database roles (connection users, privileges) are separate — use SQL or Console (Manage roles), not this REST API.",
+            "Database roles (connection users, privileges) are separate; use SQL or Console (Manage roles), not this REST API.",
         },
         docs: [
           "https://neon.com/docs/neon-auth/api",
@@ -72,9 +72,9 @@ if (cmd === "meta") {
 if (!["create", "delete"].includes(cmd ?? "")) {
   console.error(
     "Usage: node dist/scripts/auth-users.js meta | create | delete\n" +
-      "  meta   — [meta] REST vs Postgres, links\n" +
-      "  create — requires USER_EMAIL (and project/branch)\n" +
-      "  delete — requires AUTH_USER_ID",
+      "  meta   [meta] REST vs Postgres, links\n" +
+      "  create requires USER_EMAIL (and project/branch)\n" +
+      "  delete requires AUTH_USER_ID",
   );
   process.exit(1);
 }
