@@ -4,3 +4,6 @@ scripts/**/*.ts -linguist-documentation
 scripts/**/*.ts -linguist-vendored
 scripts/**/*.ts -linguist-generated
 scripts/**/*.ts linguist-language=TypeScript
+
+# Curl samples are reference docs; omit Shell from the repo language bar.
+skills/neon-postgres-agent-platforms/references/application-rest-api/*.sh linguist-documentation=true
