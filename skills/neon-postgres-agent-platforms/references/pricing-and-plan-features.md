@@ -33,7 +33,7 @@ Use when a partner asks about **pricing**, **cost optimization**, or **consumpti
 - On **usage-based plans** (Launch, Scale, Agent, Enterprise), use `GET /api/v2/consumption_history/v2/projects` for metrics that match billing (`compute_unit_seconds`, branch storage byte-hours, transfer bytes, etc.). Legacy endpoints return different fields, see Neon’s consumption docs.
 - Poll about every **15 minutes** (Neon’s update cadence). Polling does **not** wake suspended computes.
 - Alert users at **80%** and **95%** of their quota to prevent unexpected suspension.
-- Routing index (Auth `/users` vs Postgres roles vs consumption): [REST_API_META.md](https://github.com/neondatabase/neon-for-agent-platforms/blob/main/docs/REST_API_META.md) in this repo.
+- Routing index (Auth `/users` vs Postgres roles vs consumption): run `**auth-users.ts meta`**; see **[MANAGEMENT_API_SAMPLES.md](MANAGEMENT_API_SAMPLES.md)**.
 
 **Links:** [Agent Plan](https://neon.com/docs/introduction/agent-plan.md) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics.md) · [Consumption limits](https://neon.com/docs/guides/consumption-limits.md) · [Cost optimization](https://neon.com/docs/introduction/cost-optimization.md)
 

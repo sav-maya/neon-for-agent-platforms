@@ -1,0 +1,1 @@
+../../../scripts/promote-safe-production.ts

@@ -1,0 +1,1 @@
+../../../scripts/delete-snapshot.ts
