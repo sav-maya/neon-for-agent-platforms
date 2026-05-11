@@ -27,7 +27,7 @@ The skill package includes `**SKILL.md`** plus `**references/`** (long-form docs
 
 ### Example scripts
 
-Runnable samples live under `**[scripts/](scripts/)`** as `**.ts` sources**. **There** is **no compile step** or emitted JavaScript. From that directory, `**npm install`** adds **[tsx](https://github.com/privatenumber/tsx)**; each `**npm run …`** in `**[scripts/package.json](scripts/package.json)`** runs the matching `**.ts`** file with `**tsx`** (see `**package.json**` scripts). Scripts use `**import "dotenv/config"**` so `**.env**` loads automatically.
+Runnable samples live under `**[scripts/](scripts/)`** as `**.ts` sources**. **There** is **no compile step** or emitted JavaScript. From that directory, `**npm install`** adds **[tsx](https://github.com/privatenumber/tsx)**; each `**npm run …`** in `**[scripts/package.json](scripts/package.json)`** runs the matching `**.ts`** file with `**tsx`** (see `**package.json`** scripts). Scripts use `**import "dotenv/config"**` so `**.env**` loads automatically.
 
 **Neon TypeScript SDK** here means `**[@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client)`** only (Neon Management API), not other Neon npm packages.
 
