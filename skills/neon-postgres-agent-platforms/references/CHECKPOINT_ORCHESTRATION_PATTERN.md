@@ -1,6 +1,8 @@
 # Full-stack checkpoint orchestration (pattern)
 
-Agent platforms usually implement **checkpoints as orchestration**, not a single Management API script. A useful mental model: pair **source revision** (Git commit, template hash, artifact digest, or codegen bundle id) with **Neon database state** (snapshot id, branch id, project id) and store both in **your** meta-database or ledger, alongside secrets, deployment URLs, and agent run metadata. See **[COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)** for what belongs in that compound record.
+**Read [COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md) first** for the **“what to record”** dimension table. **This doc** is about **how** meta DB, workflows, Neon API usage, and restore steps usually layer.
+
+Agent platforms usually implement **checkpoints as orchestration**, not a single Management API script. A useful mental model: pair **source revision** (Git commit, template hash, artifact digest, or codegen bundle id) with **Neon database state** (snapshot id, branch id, project id) and store both in **your** meta-database or ledger, alongside secrets, deployment URLs, and agent run metadata. The compound record itself is defined in **COMPOUND_CHECKPOINTS** (link above).
 
 This folder’s **`scripts/*.ts`** files stay **API-sized**: they cover the Neon control-plane slice only. Your product adds workflows, HTTP routes, durable jobs, and schema.
 

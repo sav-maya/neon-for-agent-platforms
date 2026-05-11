@@ -12,7 +12,7 @@ Sample **Node** examples and documentation for the **[Neon AI Agent Program](htt
 
 **Differentiation:** `**neon-postgres`** covers general Neon usage (drivers, connection patterns, ORMs, branching tutorials, Auth in apps). **This repo** focuses on **multi-tenant agent-platform control planes**, orgs/fleets, transfers, tenant lifecycle, compound checkpoints, Management API orchestration, without duplicating those generic guides.
 
-This repo has `**README.md`** at the repository root plus **two application directories**: `**scripts/`** (TypeScript samples + `**package.json`** / `**tsconfig.json`** / `**.env.example**`) and `**skills/neon-postgres-agent-platforms/**` (`**SKILL.md**` + `**references/**` only). See **[README § Repository layout](../../../README.md#repository-layout)**.
+This repo has `**README.md`** at the repository root plus **two application directories**: `**scripts/`** (TypeScript samples + `**package.json`** / `**tsconfig.json`** / `**.env.example**`) and `**skills/neon-postgres-agent-platforms/**` (`**SKILL.md**` + `**references/**` only). See **[Repository layout in README](../../../README.md#repository-layout)**.
 
 
 | Area                                        | Your focus                                                                                                                                                                                                                                                               |
@@ -48,6 +48,6 @@ When you add or rename a `**scripts/*.ts**` file, add a matching **symlink** in 
 
 ## Docs and onboarding
 
-**Human onboarding** uses **[README § Start here](../../../README.md#start-here-agent-program-partners)** (repository root) only; do not introduce a second “getting started” story in other files without linking back there.
+**Human onboarding** uses **[Quick start in README](../../../README.md#quick-start)** (repository root) only; do not introduce a second “getting started” story in other files without linking back there.
 
 Keep cross-links between **[README.md](../../../README.md)** (single human entry point), **[MANAGEMENT_API_SAMPLES.md](MANAGEMENT_API_SAMPLES.md)**, and **[SKILL.md](../SKILL.md)** consistent when you add or rename scripts.

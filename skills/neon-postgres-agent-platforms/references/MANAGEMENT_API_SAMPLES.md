@@ -10,7 +10,7 @@ Use these to prototype **per-tenant provisioning**, **fleet branching/snapshot o
 
 Agent Program teams usually maintain **two Neon orgs** (sponsored free vs paid) and route **`NEON_ORG_ID`** per customer tier when calling **`create-project.ts`**. Upgrades use **`transfer-project.ts`** with a **personal** API key; fleet-wide usage uses **`consumption-query.ts`** with **`NEON_ORG_ID`**.
 
-For the full mapping (keys, patterns, which script covers which fleet operation), see **[README § Fleet and org model](../../../README.md#fleet-and-org-model-summary)**.
+For the full mapping (keys, patterns, which script covers which fleet operation), see **[Fleet and org model in README](../../../README.md#fleet-and-org-model-summary)**.
 
 ### Application REST API vs Neon Management API
 

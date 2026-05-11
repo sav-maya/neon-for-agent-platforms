@@ -1,5 +1,9 @@
 # Compound checkpoints for agent platforms
 
+**Read this for:** what dimensions belong in a **compound checkpoint record** (beyond Neon branch/snapshot ids alone). **For system layering and restore flow**, continue to **[CHECKPOINT_ORCHESTRATION_PATTERN.md](CHECKPOINT_ORCHESTRATION_PATTERN.md)** after you understand the table below.
+
+---
+
 For **multi-tenant AI agent platforms**, products that provision, mutate, version, and retire **many** Neon-backed databases on behalf of users, a **checkpoint is not merely a Neon branch or snapshot**.
 
 Treat a checkpoint as a **compound version record** your control plane owns. It should bind together, at minimum:

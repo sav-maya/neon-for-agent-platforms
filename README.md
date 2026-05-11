@@ -37,6 +37,12 @@ Scripts are `.ts` files run directly via `tsx` — no compile step. Full catalog
 
 ---
 
+## Fleet and org model (summary)
+
+Partners often run **two Neon organizations** (for example sponsored free-tier vs paid). Your control plane chooses **`NEON_ORG_ID`** per customer tier when creating projects; upgrades may use [project transfer](https://neon.com/docs/manage/orgs-project-transfer) into the paid org. Use **organization API keys** per org and a **personal API key** when moving projects across orgs. Script-level mapping: [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md).
+
+---
+
 ## Repository layout
 
 ```
