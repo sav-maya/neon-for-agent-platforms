@@ -15,7 +15,7 @@ npx skills add neondatabase/agent-skills -s neon-postgres
 npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms
 ```
 
-`neon-postgres` covers auth, drivers, branching, Data API, MCP, and core Postgres-on-Neon guidance. `neon-postgres-agent-platforms` adds Agent Program context: dual-org fleets, project transfer, per-tenant provisioning, compound checkpoints, and consumption v2.
+`neon-postgres` covers auth, drivers, branching, Data API, MCP, and core Postgres-on-Neon guidance. `neon-postgres-agent-platforms` adds Agent Program context: dual-org fleets, project transfer, per-tenant provisioning, compound checkpoints, and consumption api.
 
 ### 2. Run the example scripts
 
