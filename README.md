@@ -9,7 +9,7 @@ Use this repo for Agent Program orchestration (dual-org fleets, project
 transfer, per-tenant provisioning, compound checkpoints, and Consumption
 API). For connection strings, drivers, ORMs, and general Neon app
 integration, use the
-[`neon-postgres skill`](https://github.com/neondatabase/postgres-skills)
+`[neon-postgres skill](https://github.com/neondatabase/postgres-skills)`
 and [Neon docs](https://neon.com/docs) first.
 
 Official Neon docs:
@@ -17,6 +17,7 @@ Official Neon docs:
 - [Agent Plan](https://neon.com/docs/introduction/agent-plan)
 - [AI Agent integration](https://neon.com/docs/guides/ai-agent-integration)
 - [Database versioning](https://neon.com/docs/ai/ai-database-versioning)
+
 ---
 
 ## Quick start
@@ -49,7 +50,7 @@ npm run versioning-flow # NEON_API_KEY + NEON_PROJECT_ID in .env
 
 ## Fleet and org model (summary)
 
-Partners often run **two Neon organizations** (for example sponsored free-tier vs paid). Your control plane chooses ```NEON_ORG_ID``` per customer tier when creating projects; upgrades may use [project transfer](https://neon.com/docs/manage/orgs-project-transfer) into the paid org. Use **organization API keys** per org and a **personal API key** when moving projects across orgs. Script-level mapping: [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md). 
+Partners often run **two Neon organizations** (for example sponsored free-tier vs paid). Your control plane chooses `NEON_ORG_ID` per customer tier when creating projects; upgrades may use [project transfer](https://neon.com/docs/manage/orgs-project-transfer) into the paid org. Use **organization API keys** per org and a **personal API key** when moving projects across orgs. Script-level mapping: [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md). 
 
 
 | Org                    | Typical role                                                                               |
@@ -87,11 +88,10 @@ neon-for-agent-platforms/
 ```
 
 
-| Path                                    | Purpose                                                                                                                              |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `scripts/`                              | Runnable `[@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client)`samples                                |
-| `skills/neon-postgres-agent-platforms/` | Companion skill — `SKILL.md` + `references/` with detailed docs and symlinked `.ts` sources for agents                               |
-| `skills/.../references/README.md`       | **Doc index only** (reading order + symlink table). Does **not** duplicate Quick start; use the **root** `README.md` above for that. |
+| Path                                    | Purpose                                                      |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `scripts/`                              | Runnable `@neondatabase/api-client` samples                  |
+| `skills/neon-postgres-agent-platforms/` | Companion agent skill, reference docs, and symlinked sources |
 
 
 ---
