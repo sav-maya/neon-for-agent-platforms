@@ -9,7 +9,7 @@ Use this repo for Agent Program orchestration (dual-org fleets, project
 transfer, per-tenant provisioning, compound checkpoints, and Consumption
 API). For connection strings, drivers, ORMs, and general Neon app
 integration, use the
-`[neon-postgres skill](https://github.com/neondatabase/postgres-skills)`
+[neon-postgres skill](https://github.com/neondatabase/postgres-skills)
 and [Neon docs](https://neon.com/docs) first.
 
 Official Neon docs:
