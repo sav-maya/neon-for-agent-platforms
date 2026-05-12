@@ -1,10 +1,14 @@
 # Neon for Agent Platforms
 
-Sample code and a companion Agent Skill for the [Neon AI Agent Program](https://neon.com/use-cases/ai-agents). It targets products that **provision and operate Neon Postgres for their users** (agent platforms, codegen tools, multi-tenant SaaS).
+Sample code and a companion Agent Skill for the [Neon AI Agent Program](https://neon.com/use-cases/ai-agents). It targets products that **provision and operate Neon Postgres for their users** (agent platforms, codegen tools, multi-tenant SaaS). 
 
-**Scope:** control-plane and fleet patterns (orgs, provisioning, branching, snapshots, transfer, consumption). For connection strings, drivers, ORMs, and general Neon app integration, use the **neon-postgres** skill and [Neon docs](https://neon.com/docs) first, then this repo for Agent Program orchestration.
+**Scope:** 
+Control-plane and fleet patterns (orgs, provisioning, branching, snapshots, transfer, consumption). For connection strings, drivers, ORMs, and general Neon app integration, use the [`neon-postgres skill`](https://github.com/neondatabase/postgres-skills) and [Neon docs](https://neon.com/docs) first for core Postgres-on-Neon guidance, then this repo for Agent Program orchestration.
 
-Official Neon docs: [Agent Plan](https://neon.com/docs/introduction/agent-plan), [AI Agent integration](https://neon.com/docs/guides/ai-agent-integration), [Database versioning](https://neon.com/docs/ai/ai-database-versioning).
+Official Neon docs: 
+- [Agent Plan](https://neon.com/docs/introduction/agent-plan)
+- [AI Agent integration](https://neon.com/docs/guides/ai-agent-integration)
+- [Database versioning](https://neon.com/docs/ai/ai-database-versioning)
 
 ---
 
@@ -16,8 +20,6 @@ Official Neon docs: [Agent Plan](https://neon.com/docs/introduction/agent-plan),
 npx skills add neondatabase/agent-skills -s neon-postgres
 npx skills add neondatabase/agent-skills -s neon-postgres-agent-platforms
 ```
-
-`neon-postgres` covers auth, drivers, branching, Data API, MCP, and core Postgres-on-Neon guidance. `neon-postgres-agent-platforms` adds Agent Program context: dual-org fleets, project transfer, per-tenant provisioning, compound checkpoints, and consumption api.
 
 ### 2. Clone and run
 
@@ -40,7 +42,7 @@ npm run versioning-flow # NEON_API_KEY + NEON_PROJECT_ID in .env
 
 ## Fleet and org model (summary)
 
-Partners often run **two Neon organizations** (for example sponsored free-tier vs paid). Your control plane chooses **NEON_ORG_ID** per customer tier when creating projects; upgrades may use [project transfer](https://neon.com/docs/manage/orgs-project-transfer) into the paid org. Use **organization API keys** per org and a **personal API key** when moving projects across orgs. Script-level mapping: [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md).
+Partners often run **two Neon organizations** (for example sponsored free-tier vs paid). Your control plane chooses ```NEON_ORG_ID``` per customer tier when creating projects; upgrades may use [project transfer](https://neon.com/docs/manage/orgs-project-transfer) into the paid org. Use **organization API keys** per org and a **personal API key** when moving projects across orgs. Script-level mapping: [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md). 
 
 
 | Org                    | Typical role                                                                               |
@@ -70,17 +72,17 @@ flowchart LR
 
 ```
 neon-for-agent-platforms/
-├── README.md                          # You are here
-├── scripts/                           # *.ts sources → dist/scripts/*.js (npm run build), utils.ts, package.json, tsconfig, .env.example
+├── README.md
+├── scripts/                           # Runnable TS samples (npm run build)
 └── skills/neon-postgres-agent-platforms/
-    ├── SKILL.md
-    └── references/                    # README = doc index; other *.md + symlinked *.ts (sources in scripts/)
+    ├── SKILL.md                       # Companion agent skill
+    └── references/                    # Docs + symlinked script sources
 ```
 
 
 | Path                                    | Purpose                                                                                                                              |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `scripts/`                              | Runnable `[@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client)` samples                                |
+| `scripts/`                              | Runnable `[@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client)`samples                                |
 | `skills/neon-postgres-agent-platforms/` | Companion skill — `SKILL.md` + `references/` with detailed docs and symlinked `.ts` sources for agents                               |
 | `skills/.../references/README.md`       | **Doc index only** (reading order + symlink table). Does **not** duplicate Quick start; use the **root** `README.md` above for that. |
 
