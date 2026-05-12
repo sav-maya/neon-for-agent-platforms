@@ -51,13 +51,14 @@ neon-for-agent-platforms/
 ├── scripts/                           # *.ts source (run via tsx), utils.ts, package.json, tsconfig.json, .env.example
 └── skills/neon-postgres-agent-platforms/
     ├── SKILL.md
-    └── references/                    # Docs + symlinked *.ts (same sources as scripts/)
+    └── references/                    # README = doc index; other *.md + symlinked *.ts (sources in scripts/)
 ```
 
 | Path | Purpose |
 |------|---------|
 | `scripts/` | Runnable [`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client) samples |
 | `skills/neon-postgres-agent-platforms/` | Companion skill — `SKILL.md` + `references/` with detailed docs and symlinked `.ts` sources for agents |
+| `skills/.../references/README.md` | **Doc index only** (reading order + symlink table). Does **not** duplicate Quick start; use the **root** `README.md` above for that. |
 
 ---
 
@@ -66,6 +67,7 @@ neon-for-agent-platforms/
 | Resource | Notes |
 |----------|-------|
 | [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md) | Script catalog, env vars, flows |
+| [Skill `references/` doc index](skills/neon-postgres-agent-platforms/references/README.md) | Reading order + symlink table (not Quick start; use this file for clone and scripts) |
 | [SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md) | Companion skill for assistants |
 | [Agent Skills repo](https://github.com/neondatabase/agent-skills) | `neon-postgres` bundle |
 | [AI Agent Platforms](https://neon.com/use-cases/ai-agents) | Program overview |
