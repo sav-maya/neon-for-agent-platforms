@@ -1,15 +1,22 @@
 # Neon for Agent Platforms
 
-Sample code and a companion Agent Skill for the [Neon AI Agent Program](https://neon.com/use-cases/ai-agents). It targets products that **provision and operate Neon Postgres for their users** (agent platforms, codegen tools, multi-tenant SaaS). 
+Sample code and a companion Agent Skill for the Neon AI Agent Program,
+targeting products that provision and operate Neon Postgres for their users
+(agent platforms, codegen tools, multi-tenant SaaS).
 
-**Scope:** 
-Control-plane and fleet patterns (orgs, provisioning, branching, snapshots, transfer, consumption). For connection strings, drivers, ORMs, and general Neon app integration, use the [`neon-postgres skill`](https://github.com/neondatabase/postgres-skills) and [Neon docs](https://neon.com/docs) first for core Postgres-on-Neon guidance, then this repo for Agent Program orchestration.
+**Scope:**
+Use this repo for Agent Program orchestration (dual-org fleets, project
+transfer, per-tenant provisioning, compound checkpoints, and Consumption
+API). For connection strings, drivers, ORMs, and general Neon app
+integration, use the
+[`neon-postgres skill`](https://github.com/neondatabase/postgres-skills)
+and [Neon docs](https://neon.com/docs) first.
 
-Official Neon docs: 
+Official Neon docs:
+
 - [Agent Plan](https://neon.com/docs/introduction/agent-plan)
 - [AI Agent integration](https://neon.com/docs/guides/ai-agent-integration)
 - [Database versioning](https://neon.com/docs/ai/ai-database-versioning)
-
 ---
 
 ## Quick start
