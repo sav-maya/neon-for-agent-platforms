@@ -1,6 +1,6 @@
 # Neon for Agent Platforms
 
-Sample TypeScript for Neon's Management API and a companion Agent Skill for the [Neon AI Agent Program](https://neon.com/use-cases/ai-agents). Use this repo when your product provisions and operates Neon Postgres for end users — agent platforms, codegen tools, multi-tenant SaaS.
+Sample code and a companion Agent Skill for the [Neon AI Agent Program](https://neon.com/use-cases/ai-agents). It targets products that **provision and operate Neon Postgres for their users** (agent platforms, codegen tools, multi-tenant SaaS).
 
 > **Scope:** Control-plane and fleet patterns: orgs, provisioning, branching, snapshots, transfer, consumption. For drivers, connection strings, and everyday Neon app integration, install `neon-postgres` first and see [Neon docs](https://neon.com/docs).
 
