@@ -36,6 +36,6 @@ Each **`*.ts`** here is a symlink to the same file under **`scripts/`** so assis
 | [versioning-flow.ts](versioning-flow.ts) | Snapshot → branch → restore demo. |
 | [utils.ts](utils.ts) | Shared polling helpers for async Management API ops. |
 
-**Run:** from **`scripts/`**, use **`npm run …`** or **`npx tsx <script>.ts`**.
+**Run:** from **`scripts/`**, **`npm run build`** (or any **`npm run <sample>`**, which runs **`build`** first) emits **`dist/scripts/*.js`**. Then **`node dist/scripts/<name>.js`** or **`npm run …`**.
 
 **Windows:** `git config core.symlinks true` (or Developer Mode) so symlinks resolve after clone.

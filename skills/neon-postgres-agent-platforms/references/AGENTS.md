@@ -17,7 +17,7 @@ This repo has `**README.md`** at the repository root plus **two application dire
 
 | Area                                        | Your focus                                                                                                                                                                                                                                                               |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `**scripts/`**                              | **Neon TypeScript SDK** = `**[@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client)`** only (no other `@neondatabase/`* packages); run `**.ts`** with **tsx** (see `**package.json`**); shared **[helpers](../../../scripts/utils.ts)** only |
+| `**scripts/`**                              | **Neon TypeScript SDK** = `**[@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client)`** only (no other `@neondatabase/`* packages); **`npm run build`** emits **`dist/scripts/*.js`**; run **`node dist/scripts/…`** or **`npm run …`** from **`scripts/`**; shared **[helpers](../../../scripts/utils.ts)** only |
 | `**skills/neon-postgres-agent-platforms/`** | Companion skill, Agent Program context (orgs, transfers, fleets). Ship with `**neon-postgres`**, not instead of it                                                                                                                                                       |
 
 
@@ -42,7 +42,7 @@ npm run typecheck
 
 Formatting aligns with [postgres-skills](https://github.com/neondatabase/postgres-skills): `**npm run fmt**` / `**npm run fmt:check**`.
 
-Expectations: ES modules; TypeScript sources in `**scripts/**`, executed with **tsx** via `**npm run …`** or `**npx tsx`**—sources are run directly with no emitted JavaScript artifacts; runtime deps are `**@neondatabase/api-client`** and `**dotenv**` only; validate `**NEON_API_KEY**` (and script-specific env) at startup; prefer structured JSON for machine-readable CLI output; never commit `.env`, keys, or connection strings.
+Expectations: ES modules; TypeScript sources in `**scripts/**`, compiled to **`dist/scripts/*.js`** via **`npm run build`**; **`npm run …`** runs **`build`** then **`node dist/scripts/…`**; runtime deps are `**@neondatabase/api-client`** and `**dotenv**` only; validate `**NEON_API_KEY**` (and script-specific env) at startup; prefer structured JSON for machine-readable CLI output; never commit `.env`, keys, or connection strings.
 
 When you add or rename a `**scripts/*.ts**` file, add a matching **symlink** in `**skills/neon-postgres-agent-platforms/references/`**, update **[MANAGEMENT_API_SAMPLES.md](MANAGEMENT_API_SAMPLES.md)** and this folder’s **[README.md](README.md)** (doc index / symlink catalog), and mention new scripts in the repository **[README.md](../../../README.md)** if the human-facing story changes.
 

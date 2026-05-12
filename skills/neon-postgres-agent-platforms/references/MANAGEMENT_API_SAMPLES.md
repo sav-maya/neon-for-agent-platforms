@@ -1,6 +1,6 @@
 # Management API samples (`scripts/`)
 
-Small **Node.js + TypeScript** scripts that call Neon’s official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)) via **`createApiClient`**, **no other Neon npm packages**. Sources are **`.ts` files** in **[`scripts/`](../../../scripts/)**—there is **no compile step** or build output. **`package.json`** runs each script with **[tsx](https://github.com/privatenumber/tsx)**; **`tsconfig.json`** is for **`npm run typecheck`** only ([**`noEmit`**](../../../scripts/tsconfig.json)). Scripts **`import "dotenv/config"`** so variables from **`.env`** load automatically; run with **`npm run …`** from **`scripts/`**, or **`npx tsx <file>.ts`** (same directory).
+Small **Node.js + TypeScript** scripts that call Neon’s official **[Management API TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)** ([`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client)) via **`createApiClient`**, **no other Neon npm packages**. Sources live in **[`scripts/`](../../../scripts/)**; **`npm run build`** runs **`tsc`** and emits **`dist/scripts/*.js`** per **[`tsconfig.json`](../../../scripts/tsconfig.json)**. **`npm run typecheck`** runs **`tsc --noEmit`** (no emit). Scripts **`import "dotenv/config"`** so variables from **`.env`** load automatically; run with **`node dist/scripts/<name>.js`** or **`npm run …`** (each npm script runs **`build`** then **`node dist/scripts/...`**).
 
 **When we say “Neon TypeScript SDK” here, we mean [`@neondatabase/api-client`](https://www.npmjs.com/package/@neondatabase/api-client) and nothing else**, not `@neondatabase/serverless`, `@neondatabase/neon-js`, `@neondatabase/toolkit`, or any other `@neondatabase/*` package.
 
@@ -10,11 +10,11 @@ Use these to prototype **per-tenant provisioning**, **fleet branching/snapshot o
 
 Agent Program teams usually maintain **two Neon orgs** (sponsored free vs paid) and route **`NEON_ORG_ID`** per customer tier when calling **`create-project.ts`**. Upgrades use **`transfer-project.ts`** with a **personal** API key; fleet-wide usage uses **`consumption-query.ts`** with **`NEON_ORG_ID`**.
 
-For the full mapping (keys, patterns, which script covers which fleet operation), see **[Fleet and org model in README](../../../README.md#fleet-and-org-model-summary)**.
+For the full mapping (keys, patterns, which script covers which fleet operation), see **[Fleet and org model (summary) in README](../../../README.md#fleet-and-org-model-summary)**.
 
 ### Application REST API vs Neon Management API
 
-Scripts under **`scripts/`** call Neon’s **Management API** (`console.neon.tech`, `@neondatabase/api-client`), provisioning, branches, snapshots, org transfer, consumption, Neon Auth management endpoints.
+Scripts in **`scripts/`** call Neon’s **Management API** (`console.neon.tech`, `@neondatabase/api-client`), provisioning, branches, snapshots, org transfer, consumption, Neon Auth management endpoints.
 
 For **`curl`** examples aimed at **your product’s own REST API** (checkpoints, versions, etc.), see **[application-rest-api/CURL_REFERENCE.md](application-rest-api/CURL_REFERENCE.md)**. Those routes are **not** Neon control-plane calls. **Compound checkpoints** are described in **[COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md](COMPOUND_CHECKPOINTS_FOR_AGENT_PLATFORMS.md)**.
 
@@ -36,16 +36,17 @@ cd neon-for-agent-platforms/scripts
 npm install
 cp .env.example .env
 # Set NEON_API_KEY=… and any IDs your scripts need (see tables below)
+npm run build
 ```
 
-Run a script (`.ts` executed directly—no separate build):
+Run a compiled script (**from `scripts/`**, same directory as **`package.json`**):
 
 ```bash
-npx tsx list-projects.ts
+node dist/scripts/list-projects.js
 # Or: npm run neon:list-projects
 ```
 
-After editing **`scripts/**/*.ts`**, run **`npm run typecheck`** if you want to verify types.
+After editing **`scripts/**/*.ts`**, run **`npm run build`** again (or rely on npm scripts that invoke **`build`** first).
 
 ---
 
@@ -152,13 +153,15 @@ Enable Auth on the branch once: `POST .../projects/{id}/branches/{id}/auth` with
 
 ## Typical flows
 
+Commands below assume **current working directory** is **`scripts/`** (where **`dist/scripts/`** is written after **`npm run build`**).
+
 ### Provision fleet tenants (free vs paid org)
 
 1. Store **`NEON_ORG_ID`** for each Neon org (free pool vs paid pool) and choose an **API key** that can create projects there ([details](../../../README.md#fleet-and-org-model-summary)).
 2. For each new customer, set **`NEON_ORG_ID`** (and optionally **`NEON_PROJECT_NAME`**) and run:
 
 ```bash
-tsx create-project.ts
+node --env-file=.env dist/scripts/create-project.js
 ```
 
 3. Persist **`projectId`** and **`DATABASE_URL`** from the JSON output in your control-plane database.
@@ -166,14 +169,14 @@ tsx create-project.ts
 ### Spin up a single tenant project
 
 ```bash
-tsx create-project.ts
+node --env-file=.env dist/scripts/create-project.js
 ```
 
 ### List branches, then create a branch (tenant sandbox / preview)
 
 ```bash
-tsx branch.ts list
-tsx branch.ts create my-feature
+node --env-file=.env dist/scripts/branch.js list
+node --env-file=.env dist/scripts/branch.js create my-feature
 ```
 
 Use this pattern to script **per-tenant** sandboxes from your control plane. Tutorials on branching concepts for a single app belong in **`neon-postgres`** and Neon’s branching guides, not duplicated here.
@@ -183,32 +186,32 @@ Use this pattern to script **per-tenant** sandboxes from your control plane. Tut
 End-to-end demo (creates a **child branch** named `versioning-demo-<timestamp>`):
 
 ```bash
-tsx versioning-flow.ts
+node --env-file=.env dist/scripts/versioning-flow.js
 ```
 
 Restore an arbitrary snapshot onto a branch:
 
 ```bash
-tsx restore-snapshot.ts
+node --env-file=.env dist/scripts/restore-snapshot.js
 # Needs NEON_SNAPSHOT_ID and NEON_TARGET_BRANCH_ID in .env
 ```
 
 ### Move a customer from free org to paid org
 
 ```bash
-tsx transfer-project.ts
+node --env-file=.env dist/scripts/transfer-project.js
 ```
 
 ### Poll usage (invoice-aligned metrics)
 
 ```bash
-tsx consumption-query.ts
+node --env-file=.env dist/scripts/consumption-query.js
 ```
 
 ### Neon Auth app users (REST)
 
 ```bash
-tsx auth-users.ts meta
+node --env-file=.env dist/scripts/auth-users.js meta
 ```
 
 ---
@@ -221,5 +224,5 @@ tsx auth-users.ts meta
 
 ## Related docs
 
-- [README, Common product shapes / routing](../../../README.md) · [Neon Auth API](https://neon.com/docs/neon-auth/api) · [Postgres roles](https://neon.com/docs/manage/users) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics).
+- [README — fleet and org model](../../../README.md#fleet-and-org-model-summary) · [Neon Auth API](https://neon.com/docs/neon-auth/api) · [Postgres roles](https://neon.com/docs/manage/users) · [Consumption metrics](https://neon.com/docs/guides/consumption-metrics).
 - [README](../../../README.md), Agent Program model (two orgs, keys, skills).

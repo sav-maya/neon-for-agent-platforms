@@ -71,7 +71,7 @@ if (cmd === "meta") {
 
 if (!["create", "delete"].includes(cmd ?? "")) {
   console.error(
-    "Usage: tsx auth-users.ts meta | create | delete\n" +
+    "Usage: npm run auth-users -- meta | create | delete\n" +
       "  meta   [meta] REST vs Postgres, links\n" +
       "  create requires USER_EMAIL (and project/branch)\n" +
       "  delete requires AUTH_USER_ID",
