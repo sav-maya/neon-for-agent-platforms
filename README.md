@@ -5,12 +5,7 @@ targeting products that provision and operate Neon Postgres for their users
 (agent platforms, codegen tools, multi-tenant SaaS).
 
 **Scope:**
-Use this repo for Agent Program orchestration (dual-org fleets, project
-transfer, per-tenant provisioning, compound checkpoints, and Consumption
-API). For connection strings, drivers, ORMs, and general Neon app
-integration, use the
-`[neon-postgres skill](https://github.com/neondatabase/postgres-skills)`
-and [Neon docs](https://neon.com/docs) first.
+Use this repo for Agent Program orchestration (dual-org fleets, project transfer, per-tenant provisioning, compound checkpoints, and Consumption API). For connection strings, drivers, ORMs, and general Neon app integration, use the neon-postgres skill and Neon docs first.
 
 Official Neon docs:
 
