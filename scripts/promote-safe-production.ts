@@ -2,8 +2,9 @@
  * Snapshot-based promotion workflow from:
  * https://neon.com/blog/promoting-postgres-changes-safely-production
  *
- * Usage:
- *   tsx promote-safe-production.ts <subcommand>
+ * Usage (from `scripts/` after `npm run build`):
+ *   npm run promote-safe -- <subcommand>
+ *   node dist/scripts/promote-safe-production.js <subcommand>
  */
 import "dotenv/config";
 import { createApiClient } from "@neondatabase/api-client";
@@ -20,7 +21,7 @@ const projectIdEnv = process.env.NEON_PROJECT_ID;
 const [, , sub] = process.argv;
 
 function usage(): void {
-  console.error(`Usage: promote-safe-production.ts <bootstrap-dev|promote|refresh-dev|rollback-prod>
+  console.error(`Usage: npm run promote-safe -- <bootstrap-dev|promote|refresh-dev|rollback-prod>
 
 See https://neon.com/blog/promoting-postgres-changes-safely-production
 `);

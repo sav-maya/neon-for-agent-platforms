@@ -6,8 +6,12 @@
     "moduleResolution": "NodeNext",
     "strict": true,
     "skipLibCheck": true,
-    "noEmit": true,
+    "noEmit": false,
+    "outDir": "dist/scripts",
+    "rootDir": ".",
+    "sourceMap": false,
     "types": ["node"]
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
