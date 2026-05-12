@@ -95,7 +95,7 @@ Copy [`.env.example`](../../../scripts/.env.example) and set only what you need.
 |----------|---------|
 | `NEON_ORG_ID` | `create-project.ts` (often required with personal keys) |
 | `NEON_PROJECT_NAME` | `create-project.ts` (optional; default `tenant-<timestamp>`) |
-| `NEON_PROJECT_ID` | `delete-project`, `branch`, `snapshot`, `list-snapshots`, `delete-snapshot`, `rename-snapshot`, `delete-branch`, `promote-safe-production`, `versioning-flow`, `consumption` (filter), `auth-users`, `restore-snapshot` (with snapshot vars) |
+| `NEON_PROJECT_ID` | `delete-project`, `branch`, `snapshot`, `list-snapshots`, `delete-snapshot`, `rename-snapshot`, `delete-branch`, `promote-safe-production`, `versioning-flow`, `auth-users`, `restore-snapshot` (with snapshot vars). Not used by `consumption-query.ts` (see **`CONSUMPTION_PROJECT_IDS`** below). |
 
 ### Branches
 
@@ -106,6 +106,7 @@ Copy [`.env.example`](../../../scripts/.env.example) and set only what you need.
 | `NEON_PROD_BRANCH_ID` | **`promote-safe-production.ts`**, optional; defaults to **main** / **production** branch |
 | `NEON_DEV_BRANCH_ID` | **`promote-safe-production.ts`**, required for **`promote`** and **`refresh-dev`** |
 | `NEON_BOOTSTRAP_DEV_BRANCH_NAME` | **`promote-safe-production.ts bootstrap-dev`**, default `dev` |
+| `NEON_SNAPSHOT_BOOTSTRAP_NAME` | **`bootstrap-dev`**, optional snapshot label |
 | `NEON_SNAPSHOT_PRE_PROMOTION_NAME`, `NEON_SNAPSHOT_DEV_CANDIDATE_NAME` | **`promote`**, optional snapshot labels |
 | `NEON_SNAPSHOT_REFRESH_NAME` | **`refresh-dev`**, optional |
 | `NEON_RESTORE_BACKUP_BRANCH_NAME` | **`promote-safe-production`** restore steps, optional backup branch name prefix |
@@ -117,7 +118,7 @@ Copy [`.env.example`](../../../scripts/.env.example) and set only what you need.
 | `NEON_SNAPSHOT_NAME` | `snapshot.ts`, optional label |
 | `NEON_SNAPSHOT_EXPIRES_AT` | `snapshot.ts`, optional RFC 3339 auto-deletion time |
 | `NEON_SNAPSHOT_LSN` | `snapshot.ts`, optional; mutually exclusive with default timestamp (advanced) |
-| `NEON_SNAPSHOT_ID` | `restore-snapshot.ts`, **`delete-snapshot.ts`**, **`rename-snapshot.ts`** |
+| `NEON_SNAPSHOT_ID` | `restore-snapshot.ts`, **`delete-snapshot.ts`**, **`rename-snapshot.ts`**, **`promote-safe-production.ts rollback-prod`** |
 | `NEON_SNAPSHOT_NEW_NAME` | **`rename-snapshot.ts`** |
 | `NEON_TARGET_BRANCH_ID` | `restore-snapshot.ts` |
 | `VERSION_BASELINE_NAME`, `VERSION_DEMO_BRANCH_NAME` | `versioning-flow.ts`, optional branch/snapshot name overrides |
@@ -137,7 +138,7 @@ Copy [`.env.example`](../../../scripts/.env.example) and set only what you need.
 | `CONSUMPTION_FROM`, `CONSUMPTION_TO` | RFC 3339 range |
 | `CONSUMPTION_GRANULARITY` | `hourly` \| `daily` \| `monthly` |
 | `CONSUMPTION_METRICS` | Optional comma list (defaults include compute + storage + transfer) |
-| `CONSUMPTION_PROJECT_IDS` | Optional filter |
+| `CONSUMPTION_PROJECT_IDS` | Optional comma-separated Neon project ids to include (this script does **not** read `NEON_PROJECT_ID`) |
 | `CONSUMPTION_LIMIT`, `CONSUMPTION_CURSOR` | Pagination |
 
 ### Neon Auth users
@@ -218,7 +219,7 @@ node --env-file=.env dist/scripts/auth-users.js meta
 
 ## Shared helpers
 
-[`scripts/utils.ts`](../../../scripts/utils.ts) contains **non-sdk** utilities only: **operation polling** (`waitForOperationsToSettle`), **error formatting**, and small **compose** helpers around raw **`createApiClient`** calls so scripts stay readable. Every Neon API call still goes through **`@neondatabase/api-client`**, there is no alternate Neon package.
+[`scripts/utils.ts`](../../../scripts/utils.ts) holds **shared helpers** on top of the same **`@neondatabase/api-client`** surface: **operation polling** (`waitForOperationsToSettle`), **error formatting**, and small **compose** helpers around **`createApiClient`** calls so scripts stay readable. There is no second Neon client package.
 
 ---
 
