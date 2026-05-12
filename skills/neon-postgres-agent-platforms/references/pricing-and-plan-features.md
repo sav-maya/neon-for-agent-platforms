@@ -2,7 +2,11 @@
 
 Read this file when the user needs **line-item rates**, **quota numbers**, the **full Agent Plan entitlement list**, or **consumption API** field guidance, not for a high-level “what is the Agent Program” answer (use `SKILL.md` for that).
 
-Always re-verify numbers on live **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** and **[consumption](https://neon.com/docs/guides/consumption-metrics)** docs before quoting.
+## Disclaimer (read first)
+
+- Everything below with **dollar amounts**, **per-unit rates**, **included gigabytes**, **project or branch caps**, **credit ceilings**, **Beta or GA dates** (for example snapshot storage), and **feature limits** is a **convenience snapshot** transcribed from Neon’s public docs.
+- Neon updates **[Agent Plan](https://neon.com/docs/introduction/agent-plan)**, **[Plans](https://neon.com/docs/introduction/plans)**, **[consumption metrics](https://neon.com/docs/guides/consumption-metrics)**, and related pages **without** this repository changing. **Treat neon.com as the only source of truth** for anything you put in a contract, invoice, support reply, or customer-facing UI.
+- Last intentional alignment with those pages: **April 2026**. Before you **quote externally** (blog, deck, ticket, social), open the live links in this file and **copy numbers from there**, not from this markdown alone.
 
 ---
 
@@ -11,6 +15,8 @@ Always re-verify numbers on live **[Agent Plan](https://neon.com/docs/introducti
 Use when a partner asks about **pricing**, **cost optimization**, or **consumption monitoring** for their fleet.
 
 ### Pricing (paid org only; free org is $0)
+
+*Illustrative line items from Neon’s public pricing as of the snapshot above; confirm on **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** and **[Plans](https://neon.com/docs/introduction/plans)** before relying on them.*
 
 - **Compute**: $0.106/CU-hour (roughly half of standard Scale pricing at $0.222)
 - **Storage**: $0.35/GB-month
@@ -41,7 +47,7 @@ Use when a partner asks about **pricing**, **cost optimization**, or **consumpti
 
 ## Agent Plan features summary
 
-Use when a partner asks **what's included** in the Agent Plan. Do not invent numbers, verify against live docs. This summary reflects the docs as of April 2026.
+Use when a partner asks **what's included** in the Agent Plan. **Do not invent numbers.** The bullets below mirror Neon’s Agent Plan / Plans documentation as of **April 2026**; caps, windows, and included quantities **change**—always confirm on **[Agent Plan](https://neon.com/docs/introduction/agent-plan)** (and linked pages) before quoting outside this repo.
 
 ### Database and compute
 

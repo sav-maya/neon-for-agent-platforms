@@ -9,7 +9,7 @@ Use this repo for Agent Program orchestration (dual-org fleets, project
 transfer, per-tenant provisioning, compound checkpoints, and Consumption
 API). For connection strings, drivers, ORMs, and general Neon app
 integration, use the
-[`neon-postgres skill`](https://github.com/neondatabase/postgres-skills)
+`[neon-postgres skill](https://github.com/neondatabase/postgres-skills)`
 and [Neon docs](https://neon.com/docs) first.
 
 Official Neon docs:
@@ -52,6 +52,7 @@ npm run versioning-flow # NEON_API_KEY + NEON_PROJECT_ID in .env
 
 Partners typically run two Neon organizations so free-tier users and paying customers land in separate pools. Your control plane picks which org when creating a tenant project; upgrades often mean transferring into the paid org and raising quotas. Use organization API keys per org and a personal API key for cross-org transfer.
 
+
 | Org                    | Typical role                                                                               |
 | ---------------------- | ------------------------------------------------------------------------------------------ |
 | **Sponsored free org** | Free-tier end users (within program rules on [neon.com](https://neon.com))                 |
@@ -82,7 +83,7 @@ neon-for-agent-platforms/
 ├── README.md
 ├── scripts/                           # Runnable TS samples (npm run build)
 └── skills/neon-postgres-agent-platforms/
-    ├── SKILL.md                       # Companion agent skill
+    ├── SKILL.md                       
     └── references/                    # Docs + symlinked script sources
 ```
 
@@ -98,14 +99,14 @@ neon-for-agent-platforms/
 ## Reference
 
 
-| Resource                                                                                               | Notes                                                                                |
-| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md) | Script catalog, env vars, flows                                                      |
-| [Skill `references/` doc index](skills/neon-postgres-agent-platforms/references/README.md)             | Reading order + symlink table (not Quick start; use this file for clone and scripts) |
-| [SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md)                                              | Companion skill for assistants                                                       |
-| [Agent Skills repo](https://github.com/neondatabase/agent-skills)                                      | `neon-postgres` bundle                                                               |
-| [AI Agent Platforms](https://neon.com/use-cases/ai-agents)                                             | Program overview                                                                     |
-| [API reference](https://api-docs.neon.tech)                                                            | Management API                                                                       |
+| Resource                                                                                               | Notes                                     |
+| ------------------------------------------------------------------------------------------------------ | ----------------------------------------- |
+| [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md) | Script catalog, env vars, `npm run` flows |
+| [references/README.md](skills/neon-postgres-agent-platforms/references/README.md)                      | Doc index and symlink table               |
+| [SKILL.md](skills/neon-postgres-agent-platforms/SKILL.md)                                              | Companion skill                           |
+| [Agent Skills repo](https://github.com/neondatabase/agent-skills)                                      | `neon-postgres` install bundle            |
+| [AI Agent Platforms](https://neon.com/use-cases/ai-agents)                                             | Program overview                          |
+| [API reference](https://api-docs.neon.tech)                                                            | Management API                            |
 
 
 **Requirements:** Node 20+, [Neon API key](https://neon.com/docs/manage/api-keys). Org-scoped keys need `NEON_ORG_ID` — see `.env.example`.
