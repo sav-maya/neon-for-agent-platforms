@@ -1,6 +1,8 @@
-# Skill references
+# Doc index for `references/` (not the repo README)
 
-Material for assistants using **neon-postgres-agent-platforms** with **`neon-postgres`** ([Agent Skills `references/`](https://agentskills.io/specification)). **Clone, skill install, and running scripts:** use the **[repository README](../../../README.md#quick-start)** first. This file is only a **map** for deeper docs and symlinked samples next to **`SKILL.md`**.
+This file lives under **`skills/neon-postgres-agent-platforms/references/`**. It is **not** the repository root [README.md](../../../README.md): that one covers **clone, skill install, Quick start, and `scripts/`**.
+
+Material for assistants using **neon-postgres-agent-platforms** with **`neon-postgres`** ([Agent Skills `references/`](https://agentskills.io/specification)). **This file** is only a **map** for the markdown and symlinked **`*.ts`** samples beside **`SKILL.md`**.
 
 ## Reading order
 
