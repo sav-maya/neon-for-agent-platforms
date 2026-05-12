@@ -14,7 +14,7 @@
     "fmt": "prettier --write \"**/*.ts\"",
     "fmt:check": "prettier --check \"**/*.ts\"",
     "typecheck": "tsc --noEmit",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc",
     "neon:list-projects": "npm run build && node dist/scripts/list-projects.js",
     "create-project": "npm run build && node dist/scripts/create-project.js",
     "create-project-with-auth": "npm run build && node dist/scripts/create-project-with-auth.js",
