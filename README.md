@@ -9,7 +9,7 @@ Use this repo for Agent Program orchestration (dual-org fleets, project
 transfer, per-tenant provisioning, compound checkpoints, and Consumption
 API). For connection strings, drivers, ORMs, and general Neon app
 integration, use the
-`[neon-postgres skill](https://github.com/neondatabase/postgres-skills)`
+[`neon-postgres skill`](https://github.com/neondatabase/postgres-skills)
 and [Neon docs](https://neon.com/docs) first.
 
 Official Neon docs:
@@ -50,8 +50,7 @@ npm run versioning-flow # NEON_API_KEY + NEON_PROJECT_ID in .env
 
 ## Fleet and org model (summary)
 
-Partners often run **two Neon organizations** (for example sponsored free-tier vs paid). Your control plane chooses `NEON_ORG_ID` per customer tier when creating projects; upgrades may use [project transfer](https://neon.com/docs/manage/orgs-project-transfer) into the paid org. Use **organization API keys** per org and a **personal API key** when moving projects across orgs. Script-level mapping: [MANAGEMENT_API_SAMPLES.md](skills/neon-postgres-agent-platforms/references/MANAGEMENT_API_SAMPLES.md). 
-
+Partners typically run two Neon organizations so free-tier users and paying customers land in separate pools. Your control plane picks which org when creating a tenant project; upgrades often mean transferring into the paid org and raising quotas. Use organization API keys per org and a personal API key for cross-org transfer.
 
 | Org                    | Typical role                                                                               |
 | ---------------------- | ------------------------------------------------------------------------------------------ |
